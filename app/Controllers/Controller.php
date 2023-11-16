@@ -13,9 +13,9 @@ switch ($prefix) {
     case "mileIn" :
         setView($prefix, $include_view, $action, $title);
       break;
-    case "mileOut":
-        setViewTree($prefix, 'mileOut', $include_view, $action, $title);
-      break;
+    case "vehicleconfig":
+      setViewTree($prefix, 'Setting', $include_view, $action, $title);
+    break;
     default:
         setView($prefix, $include_view, $action, $title);
       break;
@@ -28,6 +28,7 @@ function setView($prefix, &$include_view, &$action, &$title) {
     $title = $AppPage[$prefix]['title'];
 }
 
+//ชื่อหน้า , ชื่อหัวข้อของ Tree
 function setViewTree($prefix, $treeName, &$include_view, &$action, &$title) {
     $AppPage = PageSetting::$AppPage;
     $include_view = $AppPage[$treeName][$prefix]['view'];

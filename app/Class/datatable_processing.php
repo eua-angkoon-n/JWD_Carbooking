@@ -11,13 +11,17 @@ Class TableProcessing {
     protected $column;
     protected $dir;
     protected $draw;
+    protected $dataCol;
+    protected $dataSearch;
     public function __construct($dataGet)
     {
-        $this->pStart = $dataGet['start'];
-        $this->length = $dataGet['length'];
-        $this->search = $dataGet['search'];
-        $this->dir    = $dataGet['dir'];
-        $this->draw   = $dataGet['draw'];
+        $this->pStart     = $dataGet['start'];
+        $this->length     = $dataGet['length'];
+        $this->search     = $dataGet['search'];
+        $this->dir        = $dataGet['dir'];
+        $this->draw       = $dataGet['draw'];
+        $this->dataCol    = $dataGet['dataCol'];
+        $this->dataSearch = $dataGet['dataSearch'];
 
         $this->query_search = $this->getQuery_search($dataGet['search']);
         $this->length = $this->getLength($dataGet['start']);
@@ -39,7 +43,7 @@ Class TableProcessing {
     }
 
     public function getStringSearch($search) {
-        $arrSearch = Setting::$DataTableSearch;
+        $arrSearch = $this->dataSearch;
         
         // Initialize an empty array to store individual search conditions
         $conditions = [];
@@ -87,7 +91,7 @@ Class TableProcessing {
     }
 
     public function getColumn_sort(){
-        $column_sort = Setting::$DataTableCol;
+        $column_sort = $this->dataCol;
         return $column_sort;
     }
 

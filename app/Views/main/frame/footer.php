@@ -7,6 +7,6 @@
             echo print_mem();
             ?>
     <div class="float-right d-none d-sm-inline-block">
-        <b>Phase 1 / Version</b> 1.0
+        <b>Phase 2 / Version</b> Alpha 0.1
     </div>
 </footer>

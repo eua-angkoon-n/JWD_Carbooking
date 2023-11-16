@@ -11,13 +11,16 @@
     ?>
 </head>
 
-<body class="layout-fixed layout-navbar-fixed sidebar-collapse">
+<!-- Script -->
+<?php include( __DIR__ . "/component/script.php"); ?>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <!--sidebar-collapse sidebar-mini layout-fixed layout-navbar-fixed sidebar-closed sidebar-collapse layout-navbar-fixed-->
     <div class="wrapper">
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/SCGJWDLogo.png" alt="AdminLTELogo" height="40" width="200">
+            <img class="animation__shake" src="dist/img/SCGJWDLogo.png" alt="SCGJWDLogo" height="40" width="200">
         </div>
 
         <!-- Main Navbar Container -->
@@ -49,8 +52,7 @@
     <!-- ./wrapper -->
 
     
-    <!-- Script -->
-    <?php include( __DIR__ . "/component/script.php"); ?>
+    
 
     <a href="#" class="scrollup"><i class="fas fa-angle-double-up"></i> เลื่อนขึ้น</a>
 </body>

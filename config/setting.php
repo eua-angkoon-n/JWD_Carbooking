@@ -64,21 +64,7 @@ class Setting
         "#022a5c"
     );
     public static $SQLSET = "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
-    public static $DataTableCol = array( 
-        0 => "new_car_car_reservation.id",
-        1 => "new_car_car_reservation.id",
-        2 => "new_car_car_reservation.begin",
-        3 => "new_car_car_reservation.vehicle_id",
-        4 => "new_car_car_reservation.member_id",
-        5 => "new_car_car_reservation.detail",
-        6 => "new_car_car_reservation.status",
-        7 => "new_car_car_reservation.travelers",
-
-    );
-    public static $DataTableSearch = array(
-        "begin",
-    );
-
+    
     public static $Warehouse = array(
         "b8" => "PCS B8",
         "b9" => "PCS B9",
@@ -117,18 +103,18 @@ class PageSetting
             "isTreeView" => false,
             "title" => "หน้าหลัก",
             "action" => "Dashboard",
-            "view" => "Dashboard.php",
+            "view" => "../dashboard/view.php",
             "href" => "",
             "SideIcon" => "fa-chalkboard"
         ),
-        "mileIn" => array(
-            "isTreeView" => false,
-            "title" => "บันทึกเลขไมล์เข้า",
-            "action" => "mileIn",
-            "view" => "../mileIn/mileIn.php",
-            "href" => "mileIn",
-            "SideIcon" => "fa-book"
-        ),
+        // "mileIn" => array(
+        //     "isTreeView" => false,
+        //     "title" => "บันทึกเลขไมล์เข้า",
+        //     "action" => "mileIn",
+        //     "view" => "../mileIn/mileIn.php",
+        //     "href" => "mileIn",
+        //     "SideIcon" => "fa-book"
+        // ),
         //  "Test1" => array(
         //     "isTreeView" => false,
         //     "title" => "จองยานพาหนะ",
@@ -157,28 +143,28 @@ class PageSetting
         // ),
        
 
-        // "Miles" => array(
-        //     "isTreeView" => true,
-        //     "menu-open" => true,
-        //     "TreeIcon" => "fa-car",
-        //     "TreeTitle" => "บันทึกเลขไมล์",
-        //     "mileOut"=> array(
-        //         "isTreeView" => false,
-        //         "title" => "เลขไมล์ขาออก",
-        //         "action" => "mileOut",
-        //         "view" => "../mileOut/mileOut.php",
-        //         "href" => "mileOut",
-        //         "SideIcon" => "fa-caret-square-right"
-        //     ),
-        //     "mileIn"=> array(
-        //         "isTreeView" => false,
-        //         "title" => "เลขไมล์ขาเข้า",
-        //         "action" => "mileIn",
-        //         "view" => "../mileIn/mileIn.php",
-        //         "href" => "mileIn",
-        //         "SideIcon" => "fa-caret-square-left"
-        //     ),
-        // ),
+        "Setting" => array(
+            "isTreeView" => true,
+            "menu-open" => true,
+            "TreeIcon" => "fa-cog",
+            "TreeTitle" => "จัดการระบบ",
+            "vehicleconfig"=> array(
+                "isTreeView" => false,
+                "title" => "ยานพาหนะ",
+                "action" => "vehicleconfig",
+                "view" => "../vehicleconfig/view.php",
+                "href" => "vehicleconfig",
+                "SideIcon" => "fa-car"
+            ),
+            "mileIn"=> array(
+                "isTreeView" => false,
+                "title" => "ไซต์งาน",
+                "action" => "mileIn",
+                "view" => "../mileIn/mileIn.php",
+                "href" => "mileIn",
+                "SideIcon" => "fa-caret-square-left"
+            ),
+        ),
         // "Miles2" => array(
         //     "isTreeView" => true,
         //     "menu-open" => true,
