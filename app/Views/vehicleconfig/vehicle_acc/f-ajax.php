@@ -26,6 +26,11 @@ switch ($action) {
         $Data   = $Call->getData();
         $Result = json_encode($Data);
         break;
+    case 'view' :
+        $Call   = new View_Acc($_POST['id_row']);
+        $Data   = $Call->getData();
+        $Result = json_encode($Data);
+        break;
 }
 
 print_r($Result);
@@ -36,6 +41,7 @@ Class Acc_Vehicle {
     public bool $isEdit;
     public $acc_status;
     public $vehicle_acc;
+    public $acc_remark;
     public $id_row;
     public $action;
 
@@ -46,6 +52,7 @@ Class Acc_Vehicle {
         !empty($output['id_vehicle_acc']) ? $this->isEdit = true : $this->isEdit = false;
         $this->acc_status  = $output['acc_status'];
         $this->vehicle_acc = $output['vehicle_acc'];
+        $this->acc_remark  = $output['acc_remark'];
         $this->id_row       = $output['id_vehicle_acc'];
         $this->action       = $action;
     }
@@ -70,6 +77,7 @@ Class Acc_Vehicle {
     public function DoAddData(){
 
         $vehicle_acc = $this->vehicle_acc;
+        $acc_remark  = $this->acc_remark;
         $acc_status  = $this->acc_status;
         $date_created = date("Y-m-d H:i:s");
 
@@ -80,7 +88,8 @@ Class Acc_Vehicle {
         $value = [
             'acc_name' => $vehicle_acc,
             'acc_status'  => $acc_status,
-            'date_created' => $date_created
+            'date_created' => $date_created,
+            'acc_remark' => $acc_remark
         ];
 
         try {
@@ -103,6 +112,7 @@ Class Acc_Vehicle {
     public function DoEditData() {
         $vehicle_acc = $this->vehicle_acc;
         $acc_status  = $this->acc_status;
+        $acc_remark  = $this->acc_remark;
         $date_edited    = date("Y-m-d H:i:s");
 
         $chk = $this->chkName($vehicle_acc, 'edit');
@@ -112,7 +122,8 @@ Class Acc_Vehicle {
         $value = [
             'acc_name' => $vehicle_acc,
             'acc_status'  => $acc_status,
-            'date_edited' => $date_edited
+            'date_edited' => $date_edited,
+            'acc_remark' => $acc_remark
         ];
 
         try {
@@ -232,4 +243,51 @@ Class Edit_Acc {
             $con = null;
         }
     }
+}
+
+Class View_Acc {
+
+    public $id_row;
+
+    public function __construct($id_row){
+        $this->id_row = $id_row;
+    }
+
+    public function getData(){
+        return $this->DoGetData();
+    }
+
+    public function DoGetData(){
+        $sql = $this->getViewQuery();
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->fetchRows($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+
+    }
+
+    public function getViewQuery(){
+        $id = $this->id_row;
+        
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_accessories ";
+        $sql .= "WHERE id_acc=$id";
+
+        return $sql;
+    }
+    
+
 }

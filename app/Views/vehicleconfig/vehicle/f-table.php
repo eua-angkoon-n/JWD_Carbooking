@@ -23,6 +23,7 @@ Class DataTable extends TableProcessing {
     public function SqlQuery(){
         $sql      = $this->getSQL(true);
         $sqlCount = $this->getSQL(false);
+        // return $sql;
 
         try {
             $con = connect_database();
@@ -49,8 +50,11 @@ Class DataTable extends TableProcessing {
        if($OrderBY)
            $sql  = "SELECT * ";
        else
-           $sql  = "SELECT count(id) AS total_row ";
+           $sql  = "SELECT count(id_vehicle) AS total_row ";
        $sql .= "FROM tb_vehicle ";
+       $sql .= "LEFT JOIN tb_attachment ON (tb_vehicle.ref_id_attachment = tb_attachment.id_attachment) ";
+       $sql .= "LEFT JOIN tb_vehicle_type ON  (tb_vehicle.ref_id_vehicle_type = tb_vehicle_type.id_vehicle_type) ";
+       $sql .= "LEFT JOIN tb_vehicle_brand ON  (tb_vehicle.ref_id_vehicle_brand = tb_vehicle_brand.id_vehicle_brand) ";
        $sql .= "WHERE 1=1 ";
        // $sql .= "ref_id_site = '".$_SESSION['site']."' "; 
     
@@ -78,18 +82,27 @@ Class DataTable extends TableProcessing {
         if (count($fetchRow) > 0) {
             $No = ($numRow - $this->pStart);
             foreach ($fetchRow as $key => $value) {
+                $id      = $fetchRow[$key]['id_vehicle'];
+                $checked = ($fetchRow[$key]['vehicle_status']==1 ? 'checked value="1" disabled' : ' disabled ');
+                if(!empty($fetchRow[$key]['vehicle_reg_date'])){
+                    $dateString = $fetchRow[$key]['vehicle_reg_date'];
+                    $dateObj = DateTime::createFromFormat('Y-m-d', $dateString);
+                    $formattedDate = $dateObj->format('d/m/Y');
+                }
+                $folderDate = str_replace("-", "", $fetchRow[$key]['date_uploaded']);
+                $img =  $folderDate . "/" . $fetchRow[$key]['attachment'];
 
                 $dataRow = array();
                 $dataRow[] = $No . '.';
-              
-                $dataRow[] = ($fetchRow[$key]['vehicle_name']               == '' ? '-' : $fetchRow[$key]['vehicle_name']);
-                $dataRow[] = ($fetchRow[$key]['ref_id_attachment']          == '' ? '-' : $fetchRow[$key]['ref_id_attachment']);
-                $dataRow[] = ($fetchRow[$key]['ref_id_vehicle_type']        == '' ? '-' : $fetchRow[$key]['ref_id_vehicle_type']);
-                $dataRow[] = ($fetchRow[$key]['ref_id_vehicle_brand']       == '' ? '-' : $fetchRow[$key]['ref_id_vehicle_brand']);
-                $dataRow[] = ($fetchRow[$key]['vehicle_seat']               == '' ? '-' : $fetchRow[$key]['vehicle_seat']);
-                $dataRow[] = ($fetchRow[$key]['vehicle_status']             == '' ? '-' : $fetchRow[$key]['vehicle_status']);
-                $dataRow[] = 0;
-
+                $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='img-thumbnail rounded mx-auto d-block'>";
+                $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
+                $dataRow[] = ($fetchRow[$key]['vehicle_reg_date'] == '' ? '-' : $formattedDate );
+                $dataRow[] = ($fetchRow[$key]['vehicle_type'] == '' ? '-' : $fetchRow[$key]['vehicle_type']);
+                $dataRow[] = ($fetchRow[$key]['vehicle_brand'] == '' ? '-' : $fetchRow[$key]['vehicle_brand']);
+                $dataRow[] = ($fetchRow[$key]['vehicle_seat'] == '' ? '-' : $fetchRow[$key]['vehicle_seat']);
+                $dataRow[] = $this->Div($id, $checked, 'status');
+                $dataRow[] = $this->Div($id, $checked, 'control');
+    
                 $arrData[] = $dataRow;
                 $No--;
             }
@@ -105,6 +118,23 @@ Class DataTable extends TableProcessing {
         return $output;
     }
 
+    public function Div($id, $checked, $div){
+
+        if($div == 'status'){
+            $result  = "<div class='check-status custom-control custom-switch custom-switch-on-success custom-switch-off-danger d-inline'>";
+            $result .= "<input type='checkbox' class='custom-control-input' data-id='$id' id='customSwitch$id' $checked>";
+            $result .= "<label class='custom-control-label custom-control-label' for='customSwitch$id'></label>";
+            $result .= "</div>";
+        } else if ($div == 'control'){
+            $result  = "<button type='button' class='btn btn-success btn-sm view-vehicle mr-1' data-id='$id' data-toggle='modal' data-target='#modal-view' id='viewData' data-backdrop='static' data-keyboard='false' title='ดูข้อมูล'>";
+            $result .= "<i class='fa fa-file-alt'></i>";
+            $result .= "</button>";
+            $result .= "<button type='button' class='btn btn-warning btn-sm edit-vehicle' data-id='$id' data-toggle='modal' data-target='#modal-vehicle' id='edit-data' data-backdrop='static' data-keyboard='false' title='แก้ไขข้อมูล'>";
+            $result .= "<i class='fa fa-pencil-alt'></i>";
+            $result .= "</button>";
+        }
+        return $result;
+    }
     
 }
 
@@ -120,12 +150,22 @@ $draw   = $_POST["draw"];
 $DataTableCol = array( 
     0 => "tb_vehicle.id_vehicle",
     1 => "tb_vehicle.id_vehicle",
-    2 => "tb_vehicle.vehicle_name",
-    3 => "tb_vehicle.ref_id_attachment",
-    4 => "ref_id_vehicle_type",
+    2 => "tb_vehicle.id_vehicle",
+    3 => "tb_vehicle.vehicle_name",
+    4 => "tb_vehicle.vehicle_reg_date",
+    5 => "tb_vehicle_type.vehicle_type",
+    6 => "tb_vehicle_brand.vehicle_brand",
+    7 => "tb_vehicle.vehicle_seat",
+    8 => "tb_vehicle.vehicle_status",
+    9 => "tb_vehicle.id_vehicle",
+
 );
 $DataTableSearch = array(
     "vehicle_name",
+    "vehicle_type",
+    "vehicle_brand",
+    "vehicle_reg_date",
+    "vehicle_seat",
 );
 
 $dataGet = array(
@@ -139,10 +179,10 @@ $dataGet = array(
     'dataSearch' => $DataTableSearch
 );
 ///////////////////////////////////////////////////////////////////////////////////
-
+//  echo 'asdasd';
 $Call   = new DataTable($_POST['formData'],$dataGet);
 $result = $Call->getTable(); 
-// print_r($result);
+// print_r(json_encode($result));
 echo json_encode($result);
 exit;
 ?>

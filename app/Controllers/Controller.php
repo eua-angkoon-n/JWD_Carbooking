@@ -10,6 +10,9 @@ isset($_REQUEST[$prefixController]) ? $prefix = $_REQUEST[$prefixController] : $
 $AppPage = PageSetting::$AppPage;
 
 switch ($prefix) {
+    case "reservation" :
+        setView($prefix, $include_view, $action, $title);
+      break;
     case "mileIn" :
         setView($prefix, $include_view, $action, $title);
       break;

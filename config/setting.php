@@ -9,6 +9,7 @@ class Setting
     public static $keygen = 'Pcs@'; //sha1+password
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $pass_mail = "Pcs@1234";
+    public static $PathImg = "../../../../dist/temp_img";
     public static $warning_text = array(
         0=> "คุณไม่มีสิทธิ์ใช้งานในส่วนนี้", 
         1 => "คุณไม่มีสิทธิ์เข้าดูข้อมูลส่วนนี้", 
@@ -64,17 +65,6 @@ class Setting
         "#022a5c"
     );
     public static $SQLSET = "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
-    
-    public static $Warehouse = array(
-        "b8" => "PCS B8",
-        "b9" => "PCS B9",
-        "paca" => "PACA",
-        "pacm" => "PACM",
-        "pacs" => "PACS",
-        "pact" => "PACT"
-    );
-
-    public static $ErrorFilePath = '/temp/bot/jaibot/gr/เก็บข้อมูล Error ASRS';
 
     public static $HundredColor = array (
         '#0054FF', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#FFFF00', '#00FFFF', '#FFA500', '#800080', '#008000',
@@ -106,6 +96,14 @@ class PageSetting
             "view" => "../dashboard/view.php",
             "href" => "",
             "SideIcon" => "fa-chalkboard"
+        ),
+        "reservation" => array( 
+            "isTreeView" => false,
+            "title" => "จองยานพาหนะ",
+            "action" => "Reservation",
+            "view" => "../reservation/view.php",
+            "href" => "reservation",
+            "SideIcon" => "fa-book"
         ),
         // "mileIn" => array(
         //     "isTreeView" => false,

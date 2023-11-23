@@ -37,7 +37,7 @@
               <div class="card-body">
                 <div class="tab-content" id="custom-tabs-one-tabContent">
                   <div class="tab-pane fade show active" id="custom-tabs-1" role="tabpanel" aria-labelledby="custom-tabs-1">
-                      <?php //include_once __DIR__ . '/vehicle/list.php'; //หน้ารายการ ?>
+                      <?php include_once __DIR__ . '/vehicle/v-list.php'; //หน้ารายการ ?>
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-2" role="tabpanel" aria-labelledby="custom-tabs-2">
                     ...TAB-2 Wait process

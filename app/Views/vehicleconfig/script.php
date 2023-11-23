@@ -22,7 +22,7 @@ $(document).ready(function() {
             beforeSend: function () {
             },
             success: function (data) {
-                //console.log(data);
+                // console.log(data);
                 $('#custom-tabs-1').html(data);
                 event.preventDefault();
             },
@@ -47,7 +47,7 @@ $(document).ready(function() {
             beforeSend: function () {
             },
             success: function (data) {
-                //console.log(data);
+                // console.log(data);
                 $('#custom-tabs-2').html(data);
                 event.preventDefault();
             },

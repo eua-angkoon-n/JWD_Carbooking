@@ -111,12 +111,9 @@ Class DataTable extends TableProcessing {
             $result .= "<label class='custom-control-label custom-control-label' for='customSwitch$id'></label>";
             $result .= "</div>";
         } else if ($div == 'control'){
-            $result  = "<div class='btn-group dropdown'>";
-            $result .= "<button type='button' class='btn btn-success dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>จัดการ</button>";
-            $result .= "<div class='dropdown-menu' style='margin-left:-4rem;'>";
-            $result .= "<a class='dropdown-item edit-vehicle_brand' data-id='$id' data-toggle='modal' data-target='#modal-vehicle_brand' data-backdrop='static' data-keyboard='false' title='แก้ไขข้อมูล'>";
-            $result .= "<i class='fas fa-pencil-alt'></i> แก้ไขข้อมูล</a>";
-            $result .= "</div></div>";
+            $result  = "<button type='button' class='btn btn-warning btn-sm edit-vehicle_brand' data-id='$id' data-toggle='modal' data-target='#modal-vehicle_brand' id='edit-data' data-backdrop='static' data-keyboard='false' title='แก้ไขข้อมูล'>";
+            $result .= "<i class='fa fa-pencil-alt'></i>";
+            $result .= "</button>";
         }
         return $result;
     }

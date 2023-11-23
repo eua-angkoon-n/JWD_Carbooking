@@ -52,6 +52,15 @@
    
                         </div><!--row-4-->
 
+                        <div class="row row-4">
+                            <div class="col-sm-6 col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="seat">หมายเหตุ</label>  
+                                    <textarea class="form-control" id="acc_remark" name="acc_remark" rows="3" placeholder="หมายเหตุ..."  aria-describedby="inputGroupPrepend"></textarea>
+                                </div>
+                            </div>
+                        </div><!--row-4-->  
+
                     </div><!--card-body id_mt_type, name_mt_type, ref_id_dept, mt_type_remark, status_mt_type-->
                 </div><!--card-->
             </div>                
