@@ -6,7 +6,7 @@ function connect_database($DBMode = "")
   $con = MySecret::$conNow;
   switch($con){
     case 'db':
-      if($DBMode == "login")
+      if($DBMode == "login" || $DBMode == "e-service")
         $database = MySecret::$dbDatabaseLogin;
       else
         $database = MySecret::$dbDatabase;
@@ -16,7 +16,7 @@ function connect_database($DBMode = "")
       $port = MySecret::$dbPort;
       break;
     case 'local';
-      if($DBMode == "login")
+      if($DBMode == "login" || $DBMode == "e-service")
         $database = MySecret::$dbDatabaseLogin;
       else
         $database = MySecret::$LocalDatabase;

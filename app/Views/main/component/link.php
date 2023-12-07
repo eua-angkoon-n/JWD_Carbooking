@@ -13,6 +13,10 @@
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
+<!-- Select2 -->
+<link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
 <!-- iCheck -->
 <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
@@ -49,5 +53,6 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
+<link rel="stylesheet" type="text/css" href="plugins/lightpick/css/lightpick.css">
 
-
+<link href="plugins/mobiscroll/css/mobiscroll.javascript.min.css" rel="stylesheet" />

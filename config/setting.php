@@ -17,6 +17,7 @@ class Setting
         3=>"กรุณาติดต่อแผนก IT/MIS เพื่อสอบถามข้อมูลเพิ่มเติม โทร. 1111"
     );	//ข้อความ เกี่ยวกับความปลอดภัย
 
+    public static $reservationStatus = array(0=>"รออนุมัติ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"รอคืนรถ", 4=>"คืนรถ" , 5=>"ยกเลิก");
     public static $arr_day_of_week = array('','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์');
     public static $arr_day_of_weekEN = array('','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');	
     public static $arr_mouth = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');	
@@ -104,6 +105,14 @@ class PageSetting
             "view" => "../reservation/view.php",
             "href" => "reservation",
             "SideIcon" => "fa-book"
+        ),
+        "reservationList" => array( 
+            "isTreeView" => false,
+            "title" => "รายการจองของฉัน",
+            "action" => "Reservation",
+            "view" => "../reservationList/view.php",
+            "href" => "reservationList",
+            "SideIcon" => "fa-address-book"
         ),
         // "mileIn" => array(
         //     "isTreeView" => false,

@@ -10,6 +10,9 @@
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
 
@@ -47,6 +50,9 @@
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+<script src="plugins/lightpick/lightpick.js"></script>
+<script src="plugins/mobiscroll/js/mobiscroll.javascript.min.js"></script>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $('#pushmenu').click(function(){
@@ -71,28 +77,34 @@
 
   });//document
 
-  function updateTime() {
+  function updateTime(mode) {
+    var mode = '24-hour';
     var currentDate = new Date();
     var hours = currentDate.getHours();
     var minutes = currentDate.getMinutes();
     var seconds = currentDate.getSeconds();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
 
-    // Convert hours to 12-hour format
-    if (hours > 12) {
-        hours -= 12;
-    } else if (hours === 0) {
-        hours = 12;
+    if (mode === '12-hour') {
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+
+        // Convert hours to 12-hour format
+        if (hours > 12) {
+            hours -= 12;
+        } else if (hours === 0) {
+            hours = 12;
+        }
+    } else if (mode === '24-hour') {
+        // No need for AM/PM in 24-hour format
+        var ampm = '';
     }
 
     // Add leading zeros to minutes and seconds
-    
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
     $("#currentTime").text(formattedTime);
-  }
+}
 
   if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);

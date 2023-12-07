@@ -1,0 +1,405 @@
+<script>
+    $(document).ready(function () {
+
+        //input ต่างๆ////////////////////////////////////////////////////////////////
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        $('#time_start').datetimepicker({
+            format: 'HH:mm',
+            defaultDate: moment().add(1, 'hours'),
+        });
+
+        $('#time_end').datetimepicker({
+            format: 'HH:mm',
+            defaultDate: moment().add(2, 'hours'),
+        });
+
+        $('#date_start').datetimepicker({
+            format: 'L',
+            minDate: moment(), // Prevent selecting past dates
+            inline: true,
+            opens: 'center',
+        })
+
+        $('#date_end').datetimepicker({
+            format: 'L',
+            minDate: moment(), // Prevent selecting past dates
+            inline: true,
+            opens: 'center',
+        })
+
+        $('#date_start').on('change.datetimepicker', function (e) {
+            // When date_start changes, update minDate of date_end
+            var selectedDate = e.date;
+            $('#date_end').datetimepicker('minDate', selectedDate);
+        });
+
+        $('#time_start, #time_end').on('change.datetimepicker', function (e) {
+            // Get selected dates from date_start and date_end
+            var dateStart = $('#date_start').datetimepicker('viewDate');
+            var dateEnd = $('#date_end').datetimepicker('viewDate');
+
+            // Compare the selected dates
+            if (dateStart.isSame(dateEnd, 'day')) {
+                var timeStart = moment($('#time_start').datetimepicker('viewDate')).format('HH:mm');
+                var timeEnd = moment($('#time_end').datetimepicker('viewDate')).format('HH:mm');
+
+                // Check if timeEnd is earlier than timeStart and adjust if necessary
+                if (timeEnd <= timeStart) {
+                    $('#time_end').datetimepicker('date', moment($('#time_start').datetimepicker('viewDate')).add(1, 'minute'));
+                }
+            }
+        });
+
+        $('#res_companion').select2({
+            theme: 'bootstrap4',
+            tags: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters if needed
+                };
+            }
+        }).on('select2:select', function (e) {
+            if (e.params.data.newTag) {
+                // Handle the addition of a new tag here (if needed)
+                console.log('New tag selected:', e.params.data);
+            }
+        });
+
+        $('#res_companion').on('change', function () {
+            var selectedCompanions = $(this).find('option:selected').length;
+            $('#count_travel').val(selectedCompanions);
+            $('#res_travel').val(selectedCompanions);
+        });
+
+        $('#res_date').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 1,
+            timePicker24Hour: true,
+            minDate: moment(),
+            locale: {
+                format: 'MM/DD/YYYY HH:mm'
+            }
+        })
+        
+        $('.form-group input[type="radio"]').on('change', function () {
+            $('#reservation_table').DataTable().ajax.reload();
+        });
+
+        $(window).on('blur visibilitychange', function () {
+            $('#carouselPage').carousel('pause');
+        });
+
+        //จบ input ต่างๆ////////////////////////////////////////////////////////////////
+
+        //ปุ่มต่างๆ///////////////////////////////////////////////////////////////////////
+
+        $(document).off("click", ".btn-search").on("click", ".btn-search", function (e) {
+            $('#reservation_table').DataTable().ajax.reload();
+        });
+
+        $(document).off('click', '.viewReservation').on('click', '.viewReservation', function () {
+            $('#viewReservation_table').DataTable().ajax.reload();
+            var id_row = $(this).data("id");
+
+            $.ajax({
+                type: 'POST',
+                url: "app/Views/reservation/functions/f-ajax.php",
+                data: {
+                    action: "viewReservation",
+                    id_row: id_row,
+                },
+                beforeSend: function (data) {},
+                success: function (data) {
+                    // console.log(data);
+                    if (data) {
+                        var jsonParse = JSON.parse(data);
+                        // console.log(jsonParse);
+                        show_vehicle_img(jsonParse[0].attachment, jsonParse[0].date_uploaded, 'img_tb')
+
+                        $('#TitleModalView span').html(jsonParse[0].vehicle_name);
+                    } else {
+                        swal("ผิดพลาด!", "ไม่พบข้อมูลที่ระบุ", "error");
+                    }
+                },
+                error: function (data) {
+                    swal("ผิดพลาด!", "ไม่พบข้อมูลที่ระบุ.", "error");
+                }
+            });
+        });
+        
+        $(document).off("click", ".doReservation").on("click", ".doReservation", function (e) {
+            $('.carousel').carousel('next');
+
+            var startDate = moment($('#date_start').val() + " " + $('#time_start').val(), "MM/DD/YYYY HH:mm");
+            var endDate = moment($('#date_end').val() + " " + $('#time_end').val(), "MM/DD/YYYY HH:mm");
+            $('#res_date').data('daterangepicker').setStartDate(startDate);
+            $('#res_date').data('daterangepicker').setEndDate(endDate);
+
+
+            $('#res_user').val('<?php echo $_SESSION['sess_fullname'] ?>');
+            $('#res_tel').val('<?php echo $_SESSION['sess_phone'] ?>');
+
+            var id = $(this).data('id');
+
+            $.ajax({
+                type: 'POST',
+                url: "app/Views/reservation/functions/f-ajax.php",
+                data: {
+                    action: "DoReservation",
+                    id_vehicle: id
+                },
+                beforeSend: function (data) {},
+                success: function (data) {
+                    var jsonParse = JSON.parse(data);
+                    // console.log(jsonParse);
+                    show_vehicle_img(jsonParse.attachment, jsonParse.date_uploaded, 'show_img')
+                    $('#res_vehicle').val(jsonParse.vehicle);
+                    $('#id_vehicle').val(jsonParse.id_vehicle);
+                    $('#id_user').val(jsonParse.id_user);
+                },
+                error: function (data) {
+                    swal("ผิดพลาด!", "ไม่พบข้อมูลที่ระบุ.", "error");
+                }
+            });
+
+        });
+
+        $(document).off("click", ".btn-confirm").on("click", ".btn-confirm", function (e) {
+
+            var form = document.getElementById('sendForm');
+            var formData = new FormData(form);
+
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                show_reservation()
+            }
+            form.classList.add('was-validated');
+            return false;
+        });
+
+        $(document).off("click", ". Reservation-cancel").on("click", ".Reservation-cancel", function (e) {
+            swal({
+                title: "ยกเลิก ?",
+                text: "ต้องการยกเลิกการจองหรือไม่",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ไม่, ยกเลิก",
+                closeOnConfirm: true
+            }, function () {
+                $('.carousel').carousel('prev');
+                $("#map_lat").val('');
+                $("#map_lon").val('');
+                $("#map_zoom").val('');
+                $("#map_place").val('');
+                $("#res_travel").val('');
+                $("#res_reason").val('');
+                $('#res_vehicle').val('');
+                $('#id_vehicle').val('');
+                $('#id_user').val('');
+
+                $('#res_companion').val([]).trigger('change');
+                $('#res_acc').val([]).trigger('change');
+                $('#res_driver').val('1').trigger('change');
+
+                $('body').find('.was-validated').removeClass();
+                $('form#sendForm').each(function () {
+                    this.reset()
+                });
+
+            });
+
+        });
+
+        $(document).off("click", ".backPage").on("click", ".backPage", function (e) {
+            $('.carousel').carousel('prev');
+        });
+
+        $(document).off("click", ".btn-submit").on("click", ".btn-submit", function () {
+
+            swal({
+                title: "ยืนยัน ?",
+                text: "ยืนยันการจองยานพาหนะ.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ไม่, ยกเลิก",
+                closeOnConfirm: false
+            }, function () {
+                var frmData = $('#sendForm').serialize();
+                $.ajax({
+                    url: "app/Views/reservation/functions/f-ajax.php",
+                    type: "POST",
+                    data: {
+                        "frmData": frmData,
+                        "action": "addReservation"
+                    },
+                    beforeSend: function () {},
+                    success: function (data) {
+                        // var log = data.replaceAll(' ', '');
+                        // console.log(data);
+                        // return false;
+                        if (data == 0) {
+                            sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการจองได้", "error");
+                            return false;
+                        } else if (data.trim() === "dupTime") {
+                            sweetAlert("เกิดข้อผิดพลาด!", "ช่วงเวลาดังกล่าวมีการจองไว้แล้ว", "error");
+                            return false;
+                        } else {
+                            // sweetAlert("สำเร็จ...", "บันทึกข้อมูลเรียบร้อยแล้ว", "success"); //The error will display
+
+                            $('body').find('.was-validated').removeClass();
+                            $('form').each(function () {
+                                this.reset()
+                            });
+
+                            swal({
+                                    title: "ทำการจองสำเร็จ!",
+                                    text: "กรุณาการอนุมัติ จากฝ่ายบุคคล",
+                                    type: "success",
+                                },
+                                function () {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    window.location.href = '?app=reservation';
+                                })
+                        }
+
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        //console.log(data);
+                        alert(errorThrown);
+                        sweetAlert("ผิดพลาด!", "ไม่สามารถบันทึกข้อมูลได้", "error");
+                    }
+                });
+                event.preventDefault();
+            });
+
+        });
+
+    });
+
+    //จบ ปุ่มต่างๆ///////////////////////////////////////////////////////////////////////
+    //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
+    function show_reservation() {
+        show_map()
+        $('.show_vehicle').text($("#res_vehicle").val());
+        show_date();
+        show_user();
+        $('.show_place').text($("#map_place").val());
+        show_companion();
+        $('#show_reason').text($("#res_reason").val());
+        show_acc();
+        show_driver();
+        $('#carouselPage').carousel('next');
+        window.scrollTo(0,0);
+    }
+
+    function show_map() {
+        var lat = $("#map_lat").val();
+        var lng = $("#map_lon").val();
+        var zoom = $("#map_zoom").val();
+        var mapOlvDiv = $("#map_olv");
+        if (lat != '' && lng != '' && zoom != '') {
+            mapOlvDiv.parent().css('height', '250px');
+            mapOlvDiv.css('height', '100%');
+            updateMapOlv(lat, lng, zoom);
+        } else {
+            mapOlvDiv.parent().css('height', '0');
+            mapOlvDiv.css('height', '0');
+        }
+    }
+
+    function show_user() {
+        var tel = ($('#res_tel').val() !== '') ? ' (' + $('#res_tel').val() + ')' : '';
+        $('#show_user').text($("#res_user").val() + tel);
+    }
+
+    function show_date() {
+
+        var dateString = $('#res_date').val();
+        var months = [
+            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+            "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+        ];
+
+        var dateParts = dateString.split(" - ");
+        var startDate = new Date(dateParts[0]);
+        var endDate = new Date(dateParts[1]);
+
+        var startDay = startDate.getDate();
+        var startMonth = months[startDate.getMonth()];
+        var startYear = startDate.getFullYear() + 543; // Convert to Buddhist Era
+
+        var startHours = startDate.getHours();
+        var startMinutes = startDate.getMinutes();
+
+        var endDay = endDate.getDate();
+        var endMonth = months[endDate.getMonth()];
+        var endYear = endDate.getFullYear() + 543; // Convert to Buddhist Era
+
+        var endHours = endDate.getHours();
+        var endMinutes = endDate.getMinutes();
+
+        var showDate =
+            `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;
+
+        $('#show_date').text(showDate);
+    }
+
+    function show_companion() {
+        var selectedCompanions = $('#res_companion').val();
+        $('#show_companion').empty();
+        if (selectedCompanions && selectedCompanions.length > 0) {
+            selectedCompanions.forEach(function (companion) {
+                $('#show_companion').append('<li><a>' + companion + '</a></li>');
+            });
+        }
+    }
+
+    function show_acc() {
+    var selectedAcc = $('#res_acc option:selected');
+    if (selectedAcc && selectedAcc.length > 0) {
+        var accTextArray = [];
+        selectedAcc.each(function() {
+            accTextArray.push($(this).text());
+        });
+        var accString = accTextArray.join(', ');
+        $('#show_acc').text(accString);
+    } else {
+        $('#show_acc').text('ไม่มี'); // Placeholder text if no accessories selected
+    }
+}
+
+    function show_driver() {
+        var selectedDriverText = $('#res_driver option:selected').text();
+        $('#show_driver').text(selectedDriverText);
+    }
+
+    function show_vehicle_img(img, date, ID) {
+        if (img) {
+            var imageName = img;
+            var imagePath = 'dist/temp_img/' + date.split('-').join("") + '/';
+            var ImageShow = imagePath + imageName;
+        } else {
+            var ImageShow = 'dist/img/SCGJWDLogo.png';
+        }
+        var imagePreview = document.getElementById(ID);
+        imagePreview.src = ImageShow;
+    }
+</script>

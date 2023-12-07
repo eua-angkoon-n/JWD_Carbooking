@@ -66,7 +66,7 @@ Class Vehicle {
             $this->haveFile = false;
         }
             
-        $this->site           = $frmData['site'];
+        $this->site           = $_SESSION['sess_ref_id_site'];
         
         $this->id_row         = $frmData['id_vehicle'];
         $this->vehicle_status = $frmData['vehicle_status'];
@@ -374,7 +374,7 @@ Class Edit_Vehicle {
         $sql .= "LEFT JOIN tb_vehicle_type ON  (tb_vehicle.ref_id_vehicle_type = tb_vehicle_type.id_vehicle_type) ";
         $sql .= "LEFT JOIN tb_vehicle_brand ON  (tb_vehicle.ref_id_vehicle_brand = tb_vehicle_brand.id_vehicle_brand) ";
         $sql .= "WHERE id_vehicle = $id_row ";
-        // $sql .= "ref_id_site = '".$_SESSION['site']."' "; 
+        $sql .= "AND ref_id_site = '".$_SESSION['sess_ref_id_site']."' "; 
  
         return $sql;
     }

@@ -795,6 +795,97 @@ function getChartHundred($line,$HundredColor){
     return $colorOptions;
 }
 
+function formatDates($start, $end) {
+    // Convert start and end dates to the desired format
+    $formattedStart = date('H.i', strtotime($start));
+    $formattedEnd = date('H.i', strtotime($end));
+
+    // Extract day, month, and year separately for start and end dates
+    $startDay = date('j', strtotime($start));
+    $startMonth = date('n', strtotime($start));
+    $startYear = date('y', strtotime($start));
+
+    $endDay = date('j', strtotime($end));
+    $endMonth = date('n', strtotime($end));
+    $endYear = date('y', strtotime($end));
+
+    // Convert month number to Thai month abbreviation
+    $thaiMonths = array(
+        1 => 'ม.ค.',
+        2 => 'ก.พ.',
+        3 => 'มี.ค.',
+        4 => 'เม.ย.',
+        5 => 'พ.ค.',
+        6 => 'มิ.ย.',
+        7 => 'ก.ค.',
+        8 => 'ส.ค.',
+        9 => 'ก.ย.',
+        10 => 'ต.ค.',
+        11 => 'พ.ย.',
+        12 => 'ธ.ค.'
+    );
+
+    $startThaiMonth = $thaiMonths[$startMonth];
+    $endThaiMonth = $thaiMonths[$endMonth];
+
+    // Create the formatted string
+    $formattedString = "$startDay $startThaiMonth $startYear $formattedStart - $endDay $endThaiMonth $endYear $formattedEnd";
+
+    return $formattedString;
+}
+
+function convertToThaiDate($endDate) {
+    // Create a DateTime object from the provided date string
+    $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
+
+    // Convert the date to Thai Buddhist era
+    $thaiDate = $dateTime->format('d M Y');
+    $thaiDate = str_replace(
+        ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+        $thaiDate
+    );
+
+    return $thaiDate;
+}
+
+function convertDateRange($dateRange, &$formattedStart, &$formattedEnd) {
+    // Split the date range string into start and end parts
+    $dates = explode(' - ', $dateRange);
+
+    $start = DateTime::createFromFormat('m/d/Y H:i', $dates[0]);
+    $end = DateTime::createFromFormat('m/d/Y H:i', $dates[1]);
+
+    // Format the dates to 'Y-m-d H:i:s' format
+    $formattedStart = $start ? $start->format('Y-m-d H:i:s') : null;
+    $formattedEnd = $end ? $end->format('Y-m-d H:i:s') : null;
+
+    // Return an array with start and end keys
+    // return array(
+    //     'start' => $formattedStart,
+    //     'end' => $formattedEnd
+    // );
+}
+
+function ResStatusTable($idStatus){
+    $status = Setting::$reservationStatus;
+    if($idStatus == 0){
+        $r = "<h4 class='text-center'><span class='badge badge-warning'>".$status[0]."</span></h4>";
+    } else if ($idStatus == 1) {
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[1]."</span></h4>";
+    } else if ($idStatus == 2) {
+        $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[2]."</span></h4>";
+    } else if ($idStatus == 3) {
+        $r = "<h4 class='text-center'><span class='badge badge-info'>".$status[3]."</span></h4>";
+    } else if ($idStatus == 4) {
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[4]."</span></h4>";
+    } else if ($idStatus == 5) {
+        $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[5]."</span></h4>";
+    }
+    return $r;
+}
+
+
 class Processing{
 
     function __construct(){

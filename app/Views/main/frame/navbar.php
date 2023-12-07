@@ -18,8 +18,8 @@
                 <li class="nav-item">
                     <div class="ul-datetime-clock">
                         <ul>
-                            <li><?php echo Setting::$arr_day_of_weekEN[date('N', strtotime('today'))]; ?> 
-                                <?php echo nowDateEN(date('Y-m-d H:i:s')); ?>&nbsp;
+                            <li>วัน<?php echo Setting::$arr_day_of_week[date('N', strtotime('today'))]; ?>ที่ 
+                                <?php echo nowDate(date('Y-m-d H:i:s')); ?>&nbsp;
                             </li>
                             <li id="currentTime"></li>
                         </ul>

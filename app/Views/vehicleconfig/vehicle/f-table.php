@@ -56,7 +56,7 @@ Class DataTable extends TableProcessing {
        $sql .= "LEFT JOIN tb_vehicle_type ON  (tb_vehicle.ref_id_vehicle_type = tb_vehicle_type.id_vehicle_type) ";
        $sql .= "LEFT JOIN tb_vehicle_brand ON  (tb_vehicle.ref_id_vehicle_brand = tb_vehicle_brand.id_vehicle_brand) ";
        $sql .= "WHERE 1=1 ";
-       // $sql .= "ref_id_site = '".$_SESSION['site']."' "; 
+       $sql .= "AND ref_id_site = ".$_SESSION['sess_ref_id_site']." "; 
     
        $sql .= "$this->query_search ";
        if($OrderBY) {

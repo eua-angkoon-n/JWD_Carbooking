@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<markers>
+	<marker id="1"><name>(PCS) Pacific Cold Storage</name><latitude>13.584586432868923</latitude><longitude>100.29150401289502</longitude></marker>
+	<marker id="2"><name>(PACM) Pacific M Cold Storage</name><latitude>13.580030562385819</latitude><longitude>100.24518058326467</longitude></marker>
+	<marker id="3"><name>(PACS) Pacific Cold Storage Saraburi</name><latitude>14.375993492200331</latitude><longitude>100.8530006328398</longitude></marker>
+	<marker id="4"><name>(PACA) Pacific Cold Storage Samut Prakarn</name><latitude>13.597370157555444</latitude><longitude>100.79687484695023</longitude></marker>
+	<marker id="5"><name>(PACK) JPK Cold Storage</name><latitude>13.564127699053545</latitude><longitude>100.75759086290962</longitude></marker>
+	<marker id="6"><name>(PACJ) JWD Pacific (สุวินทวงศ์)</name><latitude>13.774737126934193</latitude><longitude>100.97994764076637</longitude></marker>
+</markers>
