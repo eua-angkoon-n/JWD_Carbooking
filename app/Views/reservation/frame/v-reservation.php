@@ -99,7 +99,7 @@ $user = $r->getUser();
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-3 col-md-3 ">
                                             <div class="form-group">
-                                                <label for="res_companion">ผู้เดินทาง</label>
+                                                <label for="res_companion">ผู้เดินทาง</label><code> *ค้นหาหรือระบุเอง</code>
                                                 <select class="select2bs4 " multiple="multiple" rows="3"
                                                     id="res_companion" name="res_companion[]"
                                                     data-placeholder="ค้นหาหรือระบุเอง..." style="width: 100%;"

@@ -140,7 +140,7 @@
         
         $(document).off("click", ".doReservation").on("click", ".doReservation", function (e) {
             $('.carousel').carousel('next');
-
+            window.scrollTo(0,0);
             var startDate = moment($('#date_start').val() + " " + $('#time_start').val(), "MM/DD/YYYY HH:mm");
             var endDate = moment($('#date_end').val() + " " + $('#time_end').val(), "MM/DD/YYYY HH:mm");
             $('#res_date').data('daterangepicker').setStartDate(startDate);

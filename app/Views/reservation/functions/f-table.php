@@ -115,6 +115,7 @@ Class DataTable extends TableProcessing {
         $result .= "AND ( ";
         $result .= "    tb_reservation.start_date < '$end' ";
         $result .= "    AND tb_reservation.end_date > '$start' ";
+        $result .= "    AND tb_reservation.reservation_status NOT IN (2,4,5) ";
         $result .= ") ";
         switch($mode){
             case 'rFree':
@@ -296,6 +297,7 @@ Class DataTable_ViewReservation extends TableProcessing {
         $sql .= "WHERE ref_id_vehicle = $id ";
         $sql .= "AND start_date < '$end' ";
         $sql .= "AND end_date > '$start' ";
+        $sql .= "AND tb_reservation.reservation_status NOT IN (2,4,5) ";
      
        $sql .= "$this->query_search ";
        if($OrderBY) {
