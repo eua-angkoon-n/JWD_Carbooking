@@ -2,13 +2,13 @@
     <div class="card">
         <div class="card-header">
             <h6 class="display-8 d-inline-block font-weight-bold"><i class="fas fa-chalkboard"></i>
-                <?PHP echo PageSetting::$AppPage['Setting'][$prefix]['title']; ?>
+                <?PHP echo PageSetting::$AppPage[$nowHref]['title']; ?>
             </h6>
             <div class="card-tools">
                 <ol class="breadcrumb float-sm-right pt-1 pb-1 m-0">
                     <li class="breadcrumb-item"><a href="./">Home</a></li>
                     <li class="breadcrumb-item active">
-                        <?PHP echo PageSetting::$AppPage['Setting'][$prefix]['title']; ?>
+                        <?PHP echo PageSetting::$AppPage[$nowHref]['title']; ?>
                     </li>
                 </ol>
             </div>
