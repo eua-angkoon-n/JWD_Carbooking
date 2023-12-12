@@ -28,7 +28,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <?php 
-                            echo SideBar($prefix);
+                            echo Show_Sidebar($nowHref);
                         ?>
                         <li>&nbsp;</li>
                         <li>&nbsp;</li>

@@ -11,13 +11,13 @@ class Setting
     public static $pass_mail = "Pcs@1234";
     public static $PathImg = "../../../../dist/temp_img";
     public static $warning_text = array(
-        0=> "คุณไม่มีสิทธิ์ใช้งานในส่วนนี้", 
+        0 => "คุณไม่มีสิทธิ์ใช้งานในส่วนนี้", 
         1 => "คุณไม่มีสิทธิ์เข้าดูข้อมูลส่วนนี้", 
         2 => "คุณไม่มีสิทธิ์จัดการข้อมูลส่วนนี้",
-        3=>"กรุณาติดต่อแผนก IT/MIS เพื่อสอบถามข้อมูลเพิ่มเติม โทร. 1111"
+        3 => "กรุณาติดต่อแผนก IT/MIS เพื่อสอบถามข้อมูลเพิ่มเติม โทร. 1111"
     );	//ข้อความ เกี่ยวกับความปลอดภัย
 
-    public static $reservationStatus = array(0=>"รออนุมัติ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"รอคืนรถ", 4=>"คืนรถ" , 5=>"ยกเลิก");
+    public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"รอคืนรถ", 4=>"คืนรถ" , 5=>"ยกเลิก");
     public static $arr_day_of_week = array('','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์');
     public static $arr_day_of_weekEN = array('','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');	
     public static $arr_mouth = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');	
@@ -89,31 +89,91 @@ class PageSetting
 
     // ตั้งค่า SideBar (อย่าลืมไปตั้ง Controller ที่ app/Controller/Controllers.php)
     public static $AppPage = array (
-        // Main Page ห้ามตั้งชื่อ key------------------------
-        "" => array( 
-            "isTreeView" => false,
+        "" => array (
             "title" => "หน้าหลัก",
-            "action" => "Dashboard",
             "view" => "../dashboard/view.php",
             "href" => "",
             "SideIcon" => "fa-chalkboard"
         ),
         "reservation" => array( 
-            "isTreeView" => false,
             "title" => "จองยานพาหนะ",
-            "action" => "Reservation",
             "view" => "../reservation/view.php",
             "href" => "reservation",
-            "SideIcon" => "fa-book"
+            "SideIcon" => "fa-book",
         ),
         "reservationList" => array( 
-            "isTreeView" => false,
             "title" => "รายการจองของฉัน",
-            "action" => "Reservation",
             "view" => "../reservationList/view.php",
             "href" => "reservationList",
             "SideIcon" => "fa-address-book"
         ),
+        "approve"=> array(
+            "title" => "การอนุมัติ",
+            "view" => "../approve/view.php",
+            "href" => "approve",
+            "SideIcon" => "fa-stamp"
+        ),
+        "reservationAll" => array (
+            "title" => "รายการจองทั้งหมด",
+            "view" => "../reservationAll/view.php",
+            "href" => "reservationAll",
+            "SideIcon" => "fa-car-side"
+        ),
+        "vehicleconfig" => array (
+            "title" => "ยานพาหนะ",
+            "view" => "../vehicleconfig/view.php",
+            "href" => "vehicleconfig",
+            "SideIcon" => "fa-car"
+        ),
+
+        // Main Page ห้ามตั้งชื่อ key------------------------
+        // "" => array( 
+        //     "isTreeView" => false,
+        //     "title" => "หน้าหลัก",
+        //     "action" => "Dashboard",
+        //     "view" => "../dashboard/view.php",
+        //     "href" => "",
+        //     "SideIcon" => "fa-chalkboard"
+        // ),
+        // "reservation" => array( 
+        //     "isTreeView" => false,
+        //     "title" => "จองยานพาหนะ",
+        //     "action" => "Reservation",
+        //     "view" => "../reservation/view.php",
+        //     "href" => "reservation",
+        //     "SideIcon" => "fa-book",
+        // ),
+        // "reservationList" => array( 
+        //     "isTreeView" => false,
+        //     "title" => "รายการจองของฉัน",
+        //     "action" => "Reservation",
+        //     "view" => "../reservationList/view.php",
+        //     "href" => "reservationList",
+        //     "SideIcon" => "fa-address-book"
+        // ),
+        // "Admin" => array(
+        //     "isTreeView" => true,
+        //     "menu-open" => true,
+        //     "TreeIcon" => "fa-users-cog",
+        //     "TreeTitle" => "ส่วนของผู้ดูแล",
+        //     "approve"=> array(
+        //         "isTreeView" => false,
+        //         "title" => "การอนุมัติ",
+        //         "action" => "approve",
+        //         "view" => "../approve/view.php",
+        //         "href" => "approve",
+        //         "SideIcon" => "fa-stamp"
+        //     ),
+            // "mileIn"=> array(
+            //     "isTreeView" => false,
+            //     "title" => "ไซต์งาน",
+            //     "action" => "mileIn",
+            //     "view" => "../mileIn/mileIn.php",
+            //     "href" => "mileIn",
+            //     "SideIcon" => "fa-caret-square-left"
+            // ),
+        //     "Class" => array(1, 5)
+        // ),
         // "mileIn" => array(
         //     "isTreeView" => false,
         //     "title" => "บันทึกเลขไมล์เข้า",
@@ -150,28 +210,28 @@ class PageSetting
         // ),
        
 
-        "Setting" => array(
-            "isTreeView" => true,
-            "menu-open" => true,
-            "TreeIcon" => "fa-cog",
-            "TreeTitle" => "จัดการระบบ",
-            "vehicleconfig"=> array(
-                "isTreeView" => false,
-                "title" => "ยานพาหนะ",
-                "action" => "vehicleconfig",
-                "view" => "../vehicleconfig/view.php",
-                "href" => "vehicleconfig",
-                "SideIcon" => "fa-car"
-            ),
-            "mileIn"=> array(
-                "isTreeView" => false,
-                "title" => "ไซต์งาน",
-                "action" => "mileIn",
-                "view" => "../mileIn/mileIn.php",
-                "href" => "mileIn",
-                "SideIcon" => "fa-caret-square-left"
-            ),
-        ),
+        // "Setting" => array(
+        //     "isTreeView" => true,
+        //     "menu-open" => true,
+        //     "TreeIcon" => "fa-cog",
+        //     "TreeTitle" => "จัดการระบบ",
+        //     "vehicleconfig"=> array(
+        //         "isTreeView" => false,
+        //         "title" => "ยานพาหนะ",
+        //         "action" => "vehicleconfig",
+        //         "view" => "../vehicleconfig/view.php",
+        //         "href" => "vehicleconfig",
+        //         "SideIcon" => "fa-car"
+        //     ),
+        //     "mileIn"=> array(
+        //         "isTreeView" => false,
+        //         "title" => "ไซต์งาน",
+        //         "action" => "mileIn",
+        //         "view" => "../mileIn/mileIn.php",
+        //         "href" => "mileIn",
+        //         "SideIcon" => "fa-caret-square-left"
+        //     ),
+        // ),
         // "Miles2" => array(
         //     "isTreeView" => true,
         //     "menu-open" => true,
