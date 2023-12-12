@@ -874,7 +874,7 @@ function ResStatusTable($idStatus){
     } else if ($idStatus == 1) {
         $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[1]."</span></h4>";
     } else if ($idStatus == 2) {
-        $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[2]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-danger'>".$status[2]."</span></h4>";
     } else if ($idStatus == 3) {
         $r = "<h4 class='text-center'><span class='badge badge-info'>".$status[3]."</span></h4>";
     } else if ($idStatus == 4) {
