@@ -10,6 +10,7 @@ class Setting
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $pass_mail = "Pcs@1234";
     public static $PathImg = "../../../../dist/temp_img";
+    public static $PathImgMile = "../../../../../dist/temp_img";
     public static $warning_text = array(
         0 => "คุณไม่มีสิทธิ์ใช้งานในส่วนนี้", 
         1 => "คุณไม่มีสิทธิ์เข้าดูข้อมูลส่วนนี้", 
@@ -17,7 +18,7 @@ class Setting
         3 => "กรุณาติดต่อแผนก IT/MIS เพื่อสอบถามข้อมูลเพิ่มเติม โทร. 1111"
     );	//ข้อความ เกี่ยวกับความปลอดภัย
 
-    public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"รอคืนรถ", 4=>"คืนรถ" , 5=>"ยกเลิก");
+    public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"กำลังใช้งาน", 4=>"คืนรถ" , 5=>"ยกเลิก", 6=>"คืนรถและส่งมอบแล้ว");
     public static $arr_day_of_week = array('','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์');
     public static $arr_day_of_weekEN = array('','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');	
     public static $arr_mouth = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');	
@@ -117,14 +118,52 @@ class PageSetting
             "title" => "รายการจองทั้งหมด",
             "view" => "../reservationAll/view.php",
             "href" => "reservationAll",
-            "SideIcon" => "fa-car-side"
+            "SideIcon" => "fa-car"
         ),
         "vehicleconfig" => array (
             "title" => "ยานพาหนะ",
             "view" => "../vehicleconfig/view.php",
             "href" => "vehicleconfig",
-            "SideIcon" => "fa-car"
+            "SideIcon" => "fa-car-side"
         ),
+        "logout" => array (
+            "title" => "ออกจากระบบ",
+            "view" => "../vehicleconfig/view.php",
+            "href" => "logout",
+            "SideIcon" => "fa-sign-out-alt"
+        ),
+    );
+
+    public static $MilePage = array (
+        "" => array (
+            "title" => "หน้าหลัก",
+            "view" => "../dashboard/view.php",
+            "href" => "",
+            "SideIcon" => "fa-chalkboard"
+        ),
+        "mileout" => array (
+            "title" => "บันทึกเลขไมล์ออกบริษัท",
+            "view" => "../mileout/view.php",
+            "href" => "mileout",
+            "SideIcon" => "fa-chalkboard"
+        ),
+        "milein" => array (
+            "title" => "บันทึกเลขไมล์เข้าบริษัท",
+            "view" => "../milein/view.php",
+            "href" => "milein",
+            "SideIcon" => "fa-chalkboard"
+        ),
+        "editMile" => array (
+            "title" => "แก้ไขการบันทึกเลขไมล์",
+            "view" => "../mileEdit/view.php",
+            "href" => "editMile",
+            "SideIcon" => "fa-chalkboard"
+        ),
+    );
+
+}
+
+
 
         // Main Page ห้ามตั้งชื่อ key------------------------
         // "" => array( 
@@ -292,7 +331,3 @@ class PageSetting
         //     "href" => "Test7",
         //     "SideIcon" => "fa-sign-out-alt"
         // ),
-
-    );
-
-}

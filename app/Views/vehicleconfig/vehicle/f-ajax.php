@@ -163,7 +163,7 @@ Class Vehicle {
                 $con = connect_database();
                 $obj = new CRUD($con);
                 
-                $PathImg = $this->getPathImg();
+                $PathImg = getPathImg(Setting::$PathImg);
                 $imageName = $obj->uploadPhoto($File, "../../dist/temp_img/". $PathImg . "/");
     
                 $value = [
@@ -193,30 +193,6 @@ Class Vehicle {
         $fileExtension = strtolower(end($fileNameCmps));
         return time().$fileExtension;
 
-    }
-
-    public function getPathImg(){
-        $path = Setting::$PathImg;
-        $folderName = date("Ymd");
-
-        $folderPath = $path . '/' . $folderName . '/';
-    
-        // Check if the folder exists
-        if (is_dir($folderPath)) {
-            // If the folder exists, return its name
-            return $folderName;
-        }
-        
-        // If the folder doesn't exist, create it
-        if (!mkdir($folderPath, 0777, true) && !is_dir($folderPath)) {
-            // Failed to create folder
-            return null;
-        }
-    
-        // Set folder permissions to 777
-        chmod($folderPath, 0777);
-    
-        return $folderName;
     }
 
     public function DoEditData($img_result) {

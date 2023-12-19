@@ -12,7 +12,7 @@ require_once __DIR__ . "/../../../../tools/function.tool.php";
 
 $action = $_POST['action'];
 
-// echo json_encode($s);
+// echo json_encode($_POST['remark']);
 // exit();
 
 switch ($action) {
@@ -37,7 +37,7 @@ Class Reservation_Cancel {
     private $remark;
     public function __construct($id, $remark){
         $this->id     = $id;
-        $this->remark = $remark;
+        $this->remark = $remark == "" ? false : $remark;
     }
 
     public function getData(){
@@ -45,13 +45,11 @@ Class Reservation_Cancel {
     }
 
     public function DoCancel(){
-        $id_cancel = $this->getCancelID();
-
-        if(is_numeric($id_cancel)){
-            $res = $this->updateRes();
-            return $res;
+        if($this->remark){
+            $this->getCancelID();
         }
-        return 0;
+        $res = $this->updateRes();
+        return $res;
     }
 
     public function getCancelID(){

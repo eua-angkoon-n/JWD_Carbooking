@@ -28,7 +28,7 @@
 
 <!-- fontface -->
 <link rel="stylesheet" href="dist/css/fontface.css">
-.
+
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 

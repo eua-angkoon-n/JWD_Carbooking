@@ -867,6 +867,42 @@ function convertDateRange($dateRange, &$formattedStart, &$formattedEnd) {
     // );
 }
 
+function convertDateDMY($dateRange) {
+    // Split the date range string into start and end parts
+    $dates = explode(' - ', $dateRange);
+
+    $start = DateTime::createFromFormat('d/m/Y H:i', $dates[0]);
+    $end = DateTime::createFromFormat('d/m/Y H:i', $dates[1]);
+
+    // Format the dates to 'Y-m-d H:i:s' format
+    $formattedStart = $start ? $start->format('Y-m-d H:i:s') : null;
+    $formattedEnd = $end ? $end->format('Y-m-d H:i:s') : null;
+
+    // Return an array with start and end keys
+    // return array(
+    //     'start' => $formattedStart,
+    //     'end' => $formattedEnd
+    // );
+}
+
+function convertDateRangeDMY($dateRange, &$formattedStart, &$formattedEnd) {
+    // Split the date range string into start and end parts
+    $dates = explode(' - ', $dateRange);
+
+    $start = DateTime::createFromFormat('d/m/Y H:i', $dates[0]);
+    $end = DateTime::createFromFormat('d/m/Y H:i', $dates[1]);
+
+    // Format the dates to 'Y-m-d H:i:s' format
+    $formattedStart = $start ? $start->format('Y-m-d H:i:s') : null;
+    $formattedEnd = $end ? $end->format('Y-m-d H:i:s') : null;
+
+    // Return an array with start and end keys
+    // return array(
+    //     'start' => $formattedStart,
+    //     'end' => $formattedEnd
+    // );
+}
+
 function ResStatusTable($idStatus){
     $status = Setting::$reservationStatus;
     if($idStatus == 0){
@@ -881,8 +917,170 @@ function ResStatusTable($idStatus){
         $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[4]."</span></h4>";
     } else if ($idStatus == 5) {
         $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[5]."</span></h4>";
+    } else if ($idStatus == 6) {
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[6]."</span></h4>";
     }
     return $r;
+}
+
+function getUserName($id) {
+    $sql      = "SELECT * FROM tb_user WHERE id_user=$id";
+
+    // return $sql;
+    try {
+        $con = connect_database('e-service');
+        $obj = new CRUD($con);
+
+        $fetchRow = $obj->customSelect($sql);
+
+        return $fetchRow['fullname'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    
+    } finally {
+        $con = null;
+    }
+}
+
+function updateReservationStatus($res_id, $status) {
+    $data = [
+       'reservation_status' => $status 
+    ];
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+
+        $u = $obj->update($data, "id_reservation=$res_id", 'tb_reservation');
+
+        return $u;
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    
+    } finally {
+        $con = null;
+    }
+}
+
+function getDateString($start, $end){
+    $dateStart = convertToThaiDate($start);
+    $dateEnd = convertToThaiDate($end);
+
+    // if($dateStart == $dateEnd){
+        $s  = DateTime::createFromFormat('Y-m-d H:i:s', $start);
+        $e  = DateTime::createFromFormat('Y-m-d H:i:s', $end);
+        $sd = $s->format('H:i');
+        $ed = $e->format('H:i');
+        $r  = "<div class='row'><div class='col-2 text-right'><strong>ออก:</strong></div><div class='col-2'>$dateStart $sd</div></div>";
+        $r .= "<div class='row'><div class='col-2 text-right'><strong>เข้า:</strong></div><div class='col-2'>$dateEnd $ed</div></div>";
+    // } else {
+    //     $r = "<h6 class='text-center'>$dateStart<br>ถึง<br>$dateEnd</h6>";
+    // }
+    return $r;
+}
+
+function getDateString2($start, $end){
+    $dateStart = convertToThaiDate($start);
+    $dateEnd = convertToThaiDate($end);
+
+    // if($dateStart == $dateEnd){
+        $s  = DateTime::createFromFormat('Y-m-d H:i:s', $start);
+        $e  = DateTime::createFromFormat('Y-m-d H:i:s', $end);
+        $sd = $s->format('H:i');
+        $ed = $e->format('H:i');
+        $r  = "$dateStart $sd น. ถึง $dateEnd $ed น.";
+    // } else {
+    //     $r = "<h6 class='text-center'>$dateStart<br>ถึง<br>$dateEnd</h6>";
+    // }
+    return $r;
+}
+
+function CustomDate($value, $from, $to){
+    $s  = DateTime::createFromFormat($from , $value);
+
+    if ($s) {
+        // Format the date according to the desired output format
+        $formattedDate = $s->format($to);
+        return $formattedDate;
+    } else {
+        return "Invalid date format provided!";
+    }
+}
+
+function getPathImg($PathDefault){
+    $path = $PathDefault;
+    $folderName = date("Ymd");
+
+    $folderPath = $path . '/' . $folderName . '/';
+
+    // Check if the folder exists
+    if (is_dir($folderPath)) {
+        // If the folder exists, return its name
+        return $folderName;
+    }
+    
+    // If the folder doesn't exist, create it
+    if (!mkdir($folderPath, 0777, true) && !is_dir($folderPath)) {
+        // Failed to create folder
+        return null;
+    }
+
+    // Set folder permissions to 777
+    chmod($folderPath, 0777);
+
+    return $folderName;
+}
+
+function getAcc($id) {
+    $sql  = "SELECT tb_accessories.acc_name  ";
+    $sql .= "FROM tb_accessories ";
+    $sql .= "LEFT JOIN tb_ref_accessories ON (tb_ref_accessories.ref_id_acc = tb_accessories.id_acc) ";
+    $sql .= "WHERE tb_ref_accessories.ref_id_reservation = $id ";
+    $sql .= "ORDER BY tb_accessories.id_acc ASC";
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+
+        $fetchRow = $obj->fetchRows($sql);
+
+        $names = array_column($fetchRow, 'acc_name');
+        $string = implode(', ', $names);
+
+        return $string;
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    
+    } finally {
+        $con = null;
+    }
+    return 0;
+}
+
+function separateArrayImg($fileArray) {
+    $result = [];
+    $keys = array_keys($fileArray); // ดึง key ทั้งหมด
+
+    // วนลูปตามจำนวนของข้อมูลในแต่ละ key
+    for ($i = 0; $i < count($fileArray[$keys[0]]); $i++) {
+        $temp = [];
+        
+        // วนลูปเพื่อสร้าง array ย่อยโดยใช้ข้อมูลจากทุก key ในตำแหน่งเดียวกัน
+        foreach ($keys as $key) {
+            $temp[$key] = $fileArray[$key][$i];
+        }
+        
+        $result[] = $temp; // เพิ่ม array ย่อยลงในผลลัพธ์
+    }
+    
+    return $result;
 }
 
 

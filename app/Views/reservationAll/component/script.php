@@ -23,46 +23,48 @@
             $('#reservation_table').DataTable().ajax.reload();
         });
 
-        $(document).off("click", ".CancelReservation").on("click", ".CancelReservation", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        $('#modal_date').daterangepicker({
+            startDate: startDate,
+            endDate: endDate,
+            locale: {
+                format: 'DD/MM/YYYY HH:mm:ss'
+            }
+        })
 
+        $(document).off("click", ".btn-approve").on("click", ".btn-approve", function (e) {
             var id = $(this).data('id');
-            var ac = $(this).data('action');
+            var ac = $(this).data('action');;
             swal({
-                    title: "ยกเลิกการจอง ?",
-                    text: "ต้องการยกเลิกการจองรถหรือไม่",
+                    title: "อนุมัติ ?",
+                    text: "ต้องการอนุมัติการจองรถหรือไม่",
                     type: "input",
                     showCancelButton: true,
                     closeOnConfirm: false,
                     confirmButtonText: "ตกลง",
                     cancelButtonText: "ไม่, ยกเลิก",
                     confirmButtonColor: "#DD6B55",
-                    inputPlaceholder: "เหตุผล..."
+                    inputPlaceholder: "หมายเหตุ(ถ้ามี)... "
                 },
                 function (inputValue) {
-                    if (inputValue===false) {
-                        return;
-                    } else {
-                        $.ajax({
-                        url: "app/Views/reservationList/functions/f-ajax.php",
+                    $.ajax({
+                        url: "app/Views/approve/functions/f-ajax.php",
                         type: "POST",
                         data: {
                             "id": id,
                             "remark": inputValue,
-                            "action": "cancel"
+                            "action": 'approve'
                         },
                         beforeSend: function () {},
                         success: function (data) {
                             // console.log(data);
                             // return false;
                             if (data == 0) {
-                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
+                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการอนุมัติได้", "error");
                                 return false;
                             } else {
                                 swal({
-                                        title: "ยกเลิกสำเร็จ !!",
-                                        text: "ทำการยกเลิกการจองเรียบร้อย",
+                                        title: "อมุมัติ !!",
+                                        text: "ทำการอนุมัติการจองเรียบร้อย",
                                         type: "success",
                                     },
                                     function () {
@@ -80,7 +82,60 @@
                             }
                         }
                     });
-                    }
+                });
+        });
+
+        $(document).off("click", ".btn-noApprove").on("click", ".btn-noApprove", function (e) {
+            var id = $(this).data('id');
+            var ac = $(this).data('action');;
+            swal({
+                    title: "ไม่อนุมัติ ?",
+                    text: "ต้องการไม่อนุมัติการจองรถหรือไม่",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "ตกลง",
+                    cancelButtonText: "ไม่, ยกเลิก",
+                    confirmButtonColor: "#DD6B55",
+                    inputPlaceholder: "หมายเหตุ(ถ้ามี)... "
+                },
+                function (inputValue) {
+                    $.ajax({
+                        url: "app/Views/approve/functions/f-ajax.php",
+                        type: "POST",
+                        data: {
+                            "id": id,
+                            "remark": inputValue,
+                            "action": 'noApprove'
+                        },
+                        beforeSend: function () {},
+                        success: function (data) {
+                            // console.log(data);
+                            // return false;
+                            if (data == 0) {
+                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
+                                return false;
+                            } else {
+                                swal({
+                                        title: "ไม่อนุมัติ !!",
+                                        text: "สำเร็จ",
+                                        type: "success",
+                                    },
+                                    function () {
+                                        if (ac == 'atShow') {
+                                            show_reservation(id);
+                                            $('#reservation_table').DataTable().ajax.reload();
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        } else {
+                                            $('#reservation_table').DataTable().ajax.reload();
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }
+                                    })
+                            }
+                        }
+                    });
                 });
         });
 
@@ -96,10 +151,46 @@
             $('.carousel').carousel('prev');
         });
 
+        $(document).off("click", ".btn-save-edit").on("click", ".btn-save-edit", function (e) {
+            var Data = $("#editForm").serialize();
+            var Vehicle = $("#modal_vehicle").find(":selected").text();
+            var id = $("#modal_id").val();
+            $.ajax({
+                url: "app/Views/reservationAll/functions/f-ajax.php",
+                type: "POST",
+                data: {
+                    "data": Data,
+                    "action": 'edit'
+                },
+                beforeSend: function () {},
+                success: function (data) {
+                    console.log(data);
+                    // return false;
+                    if (data.trim() === "dupTime") {
+                        sweetAlert("ไม่สามารถทำรายการได้!", Vehicle + " ได้มีการจองในช่วงเวลานี้ก่อนหน้าแล้ว", "error");
+                        return false;
+                    } else {
+                        swal({
+                                title: "แก้ไขสำเร็จ !!",
+                                text: "สำเร็จ",
+                                type: "success",
+                            },
+                            function () {
+                                show_reservation(id);
+                                $('#reservation_table').DataTable().ajax.reload();
+                                $('#modal-view').modal('hide');
+                                event.preventDefault();
+                                event.stopPropagation();
+                            })
+                    }
+                }
+            });
+        });
+
         //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
         function show_reservation(id) {
             $.ajax({
-                url: "app/Views/reservationList/functions/f-ajax.php",
+                url: "app/Views/reservationAll/functions/f-ajax.php",
                 type: "POST",
                 data: {
                     "id": id,
@@ -125,14 +216,39 @@
                     } else {
                         $('#map_olv').html("");
                     }
+                    
 
-                    if (js.status == '0' || js.status == '1') {
-                        var button = '<div class="col-6 text-right"><button type="button" class="btn btn-primary backPage text-center w-50 h-100" id="backPage" title="กลับ">กลับ</span></button></div><div class="col-6 text-left"><button type="button" class="btn btn-danger CancelReservation text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="CancelReservation" title="ยกเลิกการจอง"><span>ยกเลิกการจอง</span></button></div>';
-                        $("#show_button").html(button);
+                    if (js.status == '0') {
+                        var button = '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-success btn-approve text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-approve" title="อนุมัติ"><span>อนุมัติ</span></button></div><div class="col-12 text-center mb-1"><button type="button" class="btn btn-danger btn-noApprove text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-noApprove" title="ไม่อนุมัติ"><span>ไม่อนุมัติ</span></button></div><div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div><div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
+                        modal_form(js.res_id, button, js.vehicle_name, js.vehicle_select, js.start, js.end);
+                    } else if (js.status == '1') {
+                        var button = '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div><div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
+                        modal_form(js.res_id, button, js.vehicle_name, js.vehicle_select, js.start, js.end);
                     } else {
-                        var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-50 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
+                        var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
                         $("#show_button").html(button);
                     }
+                }
+            });
+        }
+
+        function modal_form(id, button, name, select, start, end) {
+            $("#show_button").html(button);
+            $("#modal_vehicle_name").text(name);
+            $("#modal_vehicle").html(select);
+            $("#modal_id").val(id);
+
+            var startDate = moment(start, 'YYYY-MM-DD HH:mm:ss'); 
+            var endDate = moment(end, 'YYYY-MM-DD HH:mm:ss');
+    
+            $('#modal_date').daterangepicker({
+                startDate: startDate,
+                endDate: endDate,
+                timePicker: true,
+                timePicker24Hour: true,
+                // minDate: moment(),
+                locale: {
+                    format: 'DD/MM/YYYY HH:mm'
                 }
             });
         }
@@ -197,7 +313,7 @@
         }
 
         function show_ribbon(status) {
-            $('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info');
+            $('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info bg-danger');
             var cls;
             var txt;
             switch (status) {

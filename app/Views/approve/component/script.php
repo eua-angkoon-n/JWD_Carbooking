@@ -24,6 +24,9 @@
         });
 
         $(document).off("click", ".btn-approve").on("click", ".btn-approve", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             var id = $(this).data('id');
             var ac = $(this).data('action');;
             swal({
@@ -38,46 +41,53 @@
                     inputPlaceholder: "หมายเหตุ(ถ้ามี)... "
                 },
                 function (inputValue) {
-                    $.ajax({
-                        url: "app/Views/approve/functions/f-ajax.php",
-                        type: "POST",
-                        data: {
-                            "id": id,
-                            "remark": inputValue,
-                            "action": 'approve'
-                        },
-                        beforeSend: function () {},
-                        success: function (data) {
-                            // console.log(data);
-                            // return false;
-                            if (data == 0) {
-                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการอนุมัติได้", "error");
-                                return false;
-                            } else {
-                                swal({
-                                        title: "อมุมัติ !!",
-                                        text: "ทำการอนุมัติการจองเรียบร้อย",
-                                        type: "success",
-                                    },
-                                    function () {
-                                        if (ac == 'atShow') {
-                                            show_reservation(id);
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        } else {
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        }
-                                    })
+                    if (inputValue===false) {
+                        return;
+                    } else {
+                        $.ajax({
+                            url: "app/Views/approve/functions/f-ajax.php",
+                            type: "POST",
+                            data: {
+                                "id": id,
+                                "remark": inputValue,
+                                "action": 'approve'
+                            },
+                            beforeSend: function () {},
+                            success: function (data) {
+                                // console.log(data);
+                                // return false;
+                                if (data == 0) {
+                                    sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการอนุมัติได้", "error");
+                                    return false;
+                                } else {
+                                    swal({
+                                            title: "อมุมัติ !!",
+                                            text: "ทำการอนุมัติการจองเรียบร้อย",
+                                            type: "success",
+                                        },
+                                        function () {
+                                            if (ac == 'atShow') {
+                                                show_reservation(id);
+                                                $('#reservation_table').DataTable().ajax.reload();
+                                                event.preventDefault();
+                                                event.stopPropagation();
+                                            } else {
+                                                $('#reservation_table').DataTable().ajax.reload();
+                                                event.preventDefault();
+                                                event.stopPropagation();
+                                            }
+                                        })
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 });
         });
 
         $(document).off("click", ".btn-noApprove").on("click", ".btn-noApprove", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             var id = $(this).data('id');
             var ac = $(this).data('action');;
             swal({
@@ -92,42 +102,46 @@
                     inputPlaceholder: "หมายเหตุ(ถ้ามี)... "
                 },
                 function (inputValue) {
-                    $.ajax({
-                        url: "app/Views/approve/functions/f-ajax.php",
-                        type: "POST",
-                        data: {
-                            "id": id,
-                            "remark": inputValue,
-                            "action": 'noApprove'
-                        },
-                        beforeSend: function () {},
-                        success: function (data) {
-                            // console.log(data);
-                            // return false;
-                            if (data == 0) {
-                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
-                                return false;
-                            } else {
-                                swal({
-                                        title: "ไม่อนุมัติ !!",
-                                        text: "สำเร็จ",
-                                        type: "success",
-                                    },
-                                    function () {
-                                        if (ac == 'atShow') {
-                                            show_reservation(id);
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        } else {
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        }
-                                    })
+                    if (inputValue===false) {
+                        return;
+                    } else {
+                        $.ajax({
+                            url: "app/Views/approve/functions/f-ajax.php",
+                            type: "POST",
+                            data: {
+                                "id": id,
+                                "remark": inputValue,
+                                "action": 'noApprove'
+                            },
+                            beforeSend: function () {},
+                            success: function (data) {
+                                // console.log(data);
+                                // return false;
+                                if (data == 0) {
+                                    sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
+                                    return false;
+                                } else {
+                                    swal({
+                                            title: "ไม่อนุมัติ !!",
+                                            text: "สำเร็จ",
+                                            type: "success",
+                                        },
+                                        function () {
+                                            if (ac == 'atShow') {
+                                                show_reservation(id);
+                                                $('#reservation_table').DataTable().ajax.reload();
+                                                event.preventDefault();
+                                                event.stopPropagation();
+                                            } else {
+                                                $('#reservation_table').DataTable().ajax.reload();
+                                                event.preventDefault();
+                                                event.stopPropagation();
+                                            }
+                                        })
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 });
         });
 
