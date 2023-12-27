@@ -4,3 +4,4 @@ plugins/mobiscroll/css/icons_mobiscroll.ttf
 plugins/mobiscroll/css/icons_mobiscroll.woff
 plugins/mobiscroll/css/mobiscroll.javascript.min.css
 plugins/mobiscroll/js/mobiscroll.javascript.min.js
+config/mysecret.php
