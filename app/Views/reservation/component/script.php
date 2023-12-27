@@ -276,7 +276,7 @@
                                 function () {
                                     event.preventDefault();
                                     event.stopPropagation();
-                                    window.location.href = '?app=reservation';
+                                    window.location.href = '?app=reservationList&id='+data;
                                 })
                         }
 

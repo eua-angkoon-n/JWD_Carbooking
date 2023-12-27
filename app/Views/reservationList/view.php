@@ -1,6 +1,7 @@
 <?php 
 include __DIR__ . "/component/style.php";
 // include __DIR__ . '/frame/v-modal-detail.php';
+isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
 ?>
 
 <section class="content">

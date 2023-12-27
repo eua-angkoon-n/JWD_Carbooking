@@ -15,10 +15,18 @@
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">
-                            <?PHP echo "Carbook"; ?></a>
+                            <?PHP echo $_SESSION['sess_fullname']; ?></a>
                         <span class="text-white">ระดับ:
-                            <?PHP echo 'User'; ?> /
-                            <?PHP echo 'IT'; ?></span>
+                            <?PHP echo Setting::$classArr[$_SESSION['sess_class_user']]; ?>
+                        </span>
+                        <br>
+                        <span class="text-white">
+                            ไซต์งาน: <?PHP echo $_SESSION['sess_site_initialname']; ?>
+                            แผนก: <?PHP echo $_SESSION['sess_dept_initialname']; ?>
+                        </span>
+                            
+                            </span>
+                            
                         <!-- <a href="?module=profile" class="d-block text-yellow">[แก้ไขข้อมูลส่วนตัว]</a> -->
                     </div>
                 </div>

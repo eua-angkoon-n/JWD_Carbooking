@@ -29,7 +29,7 @@
 
                 reader.readAsDataURL(file);
             }
-        }); 
+        });
 
         //input ต่างๆ////////////////////////////////////////////////////////////////
         $('.select2bs4').select2({
@@ -41,33 +41,33 @@
         var endDate = moment(currentDate).endOf('month');
 
         $('#datetimepicker').datetimepicker({
-            defaultDate:currentDate,
+            defaultDate: currentDate,
             format: 'DD/MM/YYYY'
         });
 
-        $('#datetimepicker').on('change.datetimepicker', function() {
+        $('#datetimepicker').on('change.datetimepicker', function () {
             $('#miles_table').DataTable().ajax.reload();
             // console.log($('#ListForm').serialize());
         });
 
-        $('#date_outPicker').datetimepicker({ 
-            icons: { time: 'far fa-clock' } ,
+        $('#date_outPicker').datetimepicker({
+            icons: {
+                time: 'far fa-clock'
+            },
             format: 'DD/MM/YYYY HH:mm',
-            defaultDate:currentDate,
+            defaultDate: currentDate,
         });
 
-        $('#ListForm').on('change', function() {
+        $('#ListForm').on('change', function () {
             $('#miles_table').DataTable().ajax.reload();
             // console.log($('#ListForm').serialize());
         });
-           
-           
-         $(document).off("click", ".modalMile").on("click", ".modalMile", function (e) {
-            var id       = $(this).data('id');
+
+        $(document).off("click", ".modalMile").on("click", ".modalMile", function (e) {
+            var id = $(this).data('id');
             var dateText = $(this).data('datetext');
-            var vehicle  = $(this).data('vehicle');
-            
-           
+            var vehicle = $(this).data('vehicle');
+
             $('#modal_vehicle').text(vehicle);
             $('#modal_date').text(dateText);
             $('#id_res').val(id);
@@ -77,12 +77,12 @@
 
             get_OutData(id);
         });
-           
+
         $(document).off("click", ".btn-saveMile").on("click", ".btn-saveMile", function (e) {
 
             var form = document.getElementById('needs-validation');
             var formData = new FormData(form);
-            
+
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -97,7 +97,7 @@
             input.value = ''; // ล้างไฟล์ที่ถูกเลือก
         }
 
-        function save_mile(){
+        function save_mile() {
             var formData = new FormData($('form#needs-validation')[0]);
             var files = $('#inputFile')[0].files;
 
@@ -132,9 +132,9 @@
                             },
                             function () {
                                 event.preventDefault();
-                                event.stopPropagation(); 
+                                event.stopPropagation();
                             })
-                    } else if (data.trim() === "errmile"){
+                    } else if (data.trim() === "errmile") {
                         sweetAlert("เกิดข้อผิดพลาด!", "เลขไมล์ไม่สามารถน้อยกว่าตอนออกบริษัทได้", "error");
                         return false;
 
@@ -147,7 +147,7 @@
             });
         }
 
-        function get_OutData(id){
+        function get_OutData(id) {
 
             $.ajax({
                 url: "app/Views/milein/functions/f-ajax.php",
@@ -163,6 +163,7 @@
                     $('#modal_date_out').text(js.date);
                     $('#modal_mile_out').text(js.mile);
                     $('#modal_save_out').text(js.save);
+                    $('#mile_out').val(js.mile);
                     return false;
                 }
             });

@@ -5,7 +5,7 @@ class Setting
     public static $DefaultProvinceTH = 'สมุทรสาคร';
     public static $DefaultProvince = 'Samut Sakhon';
     public static $SiteList = array('PCS', 'JPK', 'JPAC', 'PACM', 'PLP', 'PACS', 'PACA', 'PACT');
-    public static $classArr = array(0=> "ไม่พบข้อมูล", 1 => "ผู้ใช้ระบบ", 2 => "ช่างซ่อม", 3 => "หัวหน้าช่าง", 4=>"ผู้บริหาร", 5=>"ผู้จัดการระบบ");	
+    public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้จัดการระบบ");	
     public static $keygen = 'Pcs@'; //sha1+password
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $pass_mail = "Pcs@1234";
@@ -66,6 +66,19 @@ class Setting
         "#003C87",  // Navy Blue
         "#022a5c"
     );
+
+    public static $CalendarColor = array( // Color of Year 2024
+        '1' => "#C06A46", // Topaz 070
+        '2' => "#EFD99A", // Honeybee CSP-950
+        '3' => "#F4C3B2", // Teacup Rose 2170-50
+        '4' => "#364042",  // Regent Green 2136-20
+        '5' => "#CBDDE2", // Polar Sky 1674 
+        '6' => "#F0E0D1", // Pristine oc-75
+        '7' => "#5b6d92", // Blue Nova 825
+        '8' => "#F0EDE4", // White Dove OC-17
+        '9' => "#9B8E9C", // Hazy Lilac 2116-40
+        '10' => "#8C887A", // Antique Pewter 1560
+    );
     public static $SQLSET = "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
 
     public static $HundredColor = array (
@@ -107,6 +120,12 @@ class PageSetting
             "view" => "../reservationList/view.php",
             "href" => "reservationList",
             "SideIcon" => "fa-address-book"
+        ),
+        "handover" => array( 
+            "title" => "ส่งมอบยานพาหนะ",
+            "view" => "../handover/view.php",
+            "href" => "handover",
+            "SideIcon" => "fa-flag-checkered"
         ),
         "approve"=> array(
             "title" => "การอนุมัติ",

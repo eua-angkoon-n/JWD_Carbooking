@@ -229,7 +229,7 @@ Class Add_Reservation {
         $sql .= "AND ( ";
         $sql .= "tb_reservation.start_date < '$end' ";
         $sql .= "AND tb_reservation.end_date > '$start' ";
-        $sql .= "AND tb_reservation.reservation_status NOT IN (2, 4, 5) ";
+        $sql .= "AND tb_reservation.reservation_status NOT IN (2, 4, 5, 6) ";
         $sql .= ") ";
         $sql .= "WHERE id_vehicle = $id ";
         // return $sql;

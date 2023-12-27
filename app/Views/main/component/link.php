@@ -56,3 +56,9 @@
 <link rel="stylesheet" type="text/css" href="plugins/lightpick/css/lightpick.css">
 
 <link href="plugins/mobiscroll/css/mobiscroll.javascript.min.css" rel="stylesheet" />
+
+<!-- fullCalendar -->
+<link rel="stylesheet" href="plugins/fullcalendar/main.css">
+
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">

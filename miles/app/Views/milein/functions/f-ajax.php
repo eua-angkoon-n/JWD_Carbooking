@@ -149,9 +149,10 @@ Class Mile_Out {
             foreach ($img as $key => $value){
                 $imageName = $obj->uploadPhoto($img[$key], "../../../dist/temp_img/". $PathImg . "/");
                 $value = [
-                    'attachment'      => $imageName,
-                    'attachment_type' => 2,
-                    'date_uploaded'   => date("Y-m-d")
+                    'ref_id_reservation' => $this->id_res,
+                    'attachment'         => $imageName,
+                    'attachment_type'    => 2,
+                    'date_uploaded'      => date("Y-m-d")
                 ];
                 
                 $result = $obj->addRow($value, "tb_attachment");

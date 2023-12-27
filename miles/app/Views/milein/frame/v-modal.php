@@ -25,7 +25,7 @@
                                     </div>
                                     <div class="card-body p-3">
 
-                                    <div class="row text-primary text-center">
+                                        <div class="row text-primary text-center">
                                             <div class="col-sm-12 col-md-4">
                                                 <label>เวลาที่ออก:</label> <span id="modal_date_out"></span>
                                             </div>
@@ -42,8 +42,9 @@
                                                 <label>เวลาที่เข้าบริษัท</label>
                                                 <div class="input-group date" id="date_outPicker"
                                                     data-target-input="nearest">
-                                                    <input type="text" class="form-control datetimepicker-input" id="date_out" name="date_out"
-                                                        data-target="#date_outPicker" aria-describedby="inputGroupPrepend" required />
+                                                    <input type="text" class="form-control datetimepicker-input"
+                                                        id="date_out" name="date_out" data-target="#date_outPicker"
+                                                        aria-describedby="inputGroupPrepend" required />
                                                     <div class="input-group-append" data-target="#date_outPicker"
                                                         data-toggle="datetimepicker">
                                                         <div class="input-group-text"><i class="fa fa-calendar"></i>
@@ -54,7 +55,8 @@
                                             <div class="col-sm-12 col-md-6">
                                                 <label>จำนวนเลขไมล์ตอนเข้าบริษัท</label>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" id="mile_out" name="mile_out" aria-describedby="inputGroupPrepend" required />
+                                                    <input type="number" class="form-control" id="mile_out"
+                                                        name="mile_out" aria-describedby="inputGroupPrepend" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +65,8 @@
                                             <div class="col-12">
                                                 <label>ผู้บันทึก</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="save_out" name="save_out" aria-describedby="inputGroupPrepend" required/> 
+                                                    <input type="text" class="form-control" id="save_out"
+                                                        name="save_out" aria-describedby="inputGroupPrepend" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -72,7 +75,9 @@
                                             <div class="col-12">
                                                 <label>หมายเหตุ (ถ้ามี)</label>
                                                 <div class="form-group">
-                                                <textarea class="form-control" id="remark_out" name="remark_out" rows="3" placeholder="หมายเหตุ..."  aria-describedby="inputGroupPrepend"></textarea>
+                                                    <textarea class="form-control" id="remark_out" name="remark_out"
+                                                        rows="3" placeholder="หมายเหตุ..."
+                                                        aria-describedby="inputGroupPrepend"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -86,7 +91,9 @@
                                                             <!-- <input type="file" name="files[]" id="img_out"
                                                                 multiple="multiple"
                                                                 class="border p-1 with-preview w-auto" /> -->
-                                                            <input type="file" name="files[]" id="inputFile" class="border p-1 w-auto" multiple accept="image/*" aria-describedby="inputGroupPrepend">
+                                                            <input type="file" name="files[]" id="inputFile"
+                                                                class="border p-1 w-auto" multiple accept="image/*"
+                                                                aria-describedby="inputGroupPrepend">
                                                             <div id="fileErrorMsg" class="text-danger"></div>
                                                             <div class="row">
                                                                 <div id="imagePreview" class="col-12 img-thumbnail">
@@ -118,7 +125,7 @@
                                         </div> -->
                                         <!--row-4-->
 
-                                        
+
 
                                     </div>
                                     <!--card-body id_mt_type, name_mt_type, ref_id_dept, mt_type_remark, status_mt_type-->

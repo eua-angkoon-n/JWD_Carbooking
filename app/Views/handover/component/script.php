@@ -1,88 +1,22 @@
 <script>
     $(document).ready(function () {
 
+        getImg('condition_inFile', 'condition_inPreview', 'condition_inErrMsg', 3);
+        getImg('condition_outFile', 'condition_outPreview', 'condition_outErrMsg', 3);
+        getImg('fuelFile', 'fuelPreview', 'fuelErrMsg', 1);
+        getImg('expressFile', 'expressPreview', 'expressErrMsg', 1);
+
         //input ต่างๆ////////////////////////////////////////////////////////////////
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
 
-        var currentDate = moment();
-        var startDate = moment(currentDate).startOf('month');
-        var endDate = moment(currentDate).endOf('month');
-
-        $('#res_date').daterangepicker({
-            startDate: startDate,
-            endDate: endDate,
-            locale: {
-                format: 'DD/MM/YYYY'
-            }
-        })
 
         $('#res_status, #res_vehicle, #res_date').change(function () {
             // Reload the DataTable using AJAX
             $('#reservation_table').DataTable().ajax.reload();
         });
 
-        $(document).off("click", ".CancelReservation").on("click", ".CancelReservation", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var id = $(this).data('id');
-            var ac = $(this).data('action');
-            swal({
-                    title: "ยกเลิกการจอง ?",
-                    text: "ต้องการยกเลิกการจองรถหรือไม่",
-                    type: "input",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    confirmButtonText: "ตกลง",
-                    cancelButtonText: "ไม่, ยกเลิก",
-                    confirmButtonColor: "#DD6B55",
-                    inputPlaceholder: "เหตุผล..."
-                },
-                function (inputValue) {
-                    if (inputValue===false) {
-                        return;
-                    } else {
-                        $.ajax({
-                        url: "app/Views/reservationList/functions/f-ajax.php",
-                        type: "POST",
-                        data: {
-                            "id": id,
-                            "remark": inputValue,
-                            "action": "cancel"
-                        },
-                        beforeSend: function () {},
-                        success: function (data) {
-                            // console.log(data);
-                            // return false;
-                            if (data == 0) {
-                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
-                                return false;
-                            } else {
-                                swal({
-                                        title: "ยกเลิกสำเร็จ !!",
-                                        text: "ทำการยกเลิกการจองเรียบร้อย",
-                                        type: "success",
-                                    },
-                                    function () {
-                                        if (ac == 'atShow') {
-                                            show_reservation(id);
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        } else {
-                                            $('#reservation_table').DataTable().ajax.reload();
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                        }
-                                    })
-                            }
-                        }
-                    });
-                    }
-                });
-        });
 
         <?php if($id != ''){ ?>
             var id = <?php echo $id?>;
@@ -104,10 +38,13 @@
             $('.carousel').carousel('prev');
         });
 
-        //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
-        function show_reservation(id) {
+    });
+
+
+     //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
+     function show_reservation(id) {
             $.ajax({
-                url: "app/Views/reservationList/functions/f-ajax.php",
+                url: "app/Views/handover/functions/f-ajax.php",
                 type: "POST",
                 data: {
                     "id": id,
@@ -181,22 +118,6 @@
             $('#show_date').text(showDate);
         }
 
-        function show_companion(companion) {
-            var companions = companion.split(', ');
-
-            // Select the show_companion list
-            var $showCompanionList = $('#show_companion');
-
-            // Clear the existing list items
-            $showCompanionList.empty();
-
-            // Iterate through the companions array and add them as list items to the show_companion list
-            companions.forEach(function (companion) {
-                var $listItem = $('<li>').append($('<a>').text(companion));
-                $showCompanionList.append($listItem);
-            });
-        }
-
         function show_vehicle_img(img, date, ID) {
             if (img) {
                 var imageName = img;
@@ -258,5 +179,40 @@
             mapOlv.appendChild(img); // Append the image to the map_olv div
         }
 
-    });
+        function getImg(inputFile, previewFile, err, max) {
+            const input = document.getElementById(inputFile);
+            const preview = document.getElementById(previewFile);
+            const errMsg = document.getElementById(err);
+            var maxFiles = max;
+
+            input.addEventListener('change', function (e) {
+                preview.innerHTML = '';
+                const files = e.target.files;
+
+                if (files.length > maxFiles) {
+                    errMsg.innerHTML = 'คุณสามารถเลือกไฟล์ได้สูงสุด '+max+' ไฟล์เท่านั้น';
+                    clearInput(this); // ล้างไฟล์ที่เลือกถ้าเกินจำนวนที่กำหนด
+                    return false;
+                }
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        const img = document.createElement('img');
+                        img.classList.add('col-md-3', 'img-thumbnail');
+                        img.src = event.target.result;
+                        img.style.maxWidth = '100%';
+                        preview.appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function clearInput(input) {
+            input.value = ''; // ล้างไฟล์ที่ถูกเลือก
+        }
 </script>

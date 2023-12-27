@@ -18,6 +18,12 @@ function Show_Sidebar($hrefNow){
         PageSetting::$AppPage["reservationList"]["SideIcon"], 
         $hrefNow
     );
+    $r .= SideBar(  
+        PageSetting::$AppPage["handover"]["title"], 
+        PageSetting::$AppPage["handover"]["href"], 
+        PageSetting::$AppPage["handover"]["SideIcon"], 
+        $hrefNow
+    );
     if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-users-cog'></i>";

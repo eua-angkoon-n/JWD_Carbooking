@@ -23,6 +23,14 @@
             $('#reservation_table').DataTable().ajax.reload();
         });
 
+        <?php if($id != ''){ ?>
+            var id = <?php echo $id?>;
+            show_reservation(id);
+            $('#carouselPage').carousel('next');
+            window.scrollTo(0, 0);
+        <?php } ?>
+
+
         $(document).off("click", ".btn-approve").on("click", ".btn-approve", function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -171,6 +179,9 @@
                     var js = JSON.parse(data);
                     // console.log(js);
                     // return false;
+                    <?php if($_SESSION['sess_class_user'] != 1 && $_SESSION['sess_class_user'] != 2){ ?>
+                            window.location.href = './';
+                    <?php }?>
                     $('.show_vehicle').text(js.vehicle_name);
                     show_date(js.start, js.end);
                     $('#show_user').text(js.userName);

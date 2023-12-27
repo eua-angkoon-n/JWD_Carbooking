@@ -1,7 +1,3 @@
-<?php 
-
-?>
-
 <div class="row">
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -75,7 +71,7 @@
 
                                                     <div class="post p-0" style="color:#000000;">
                                                         <div>
-                                                            <h5 class="text-primary" id="show_traveler">ผู้เดินทาง 2 ท่าน</h5>
+                                                            <h5 class="text-primary" id="show_traveler">ผู้เดินทาง</h5>
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <ul class="list-unstyled" id="show_companion">

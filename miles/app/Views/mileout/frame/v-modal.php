@@ -119,6 +119,7 @@
                     </div>
                     <!--container-->
                     <input type="hidden" value="" name="id_res" id="id_res" />
+                    <input type="hidden" value="" name="lastMile" id="lastMile" />
                 </form>
                 <!--FORM 1-->
 

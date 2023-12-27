@@ -971,16 +971,13 @@ function getDateString($start, $end){
     $dateStart = convertToThaiDate($start);
     $dateEnd = convertToThaiDate($end);
 
-    // if($dateStart == $dateEnd){
         $s  = DateTime::createFromFormat('Y-m-d H:i:s', $start);
         $e  = DateTime::createFromFormat('Y-m-d H:i:s', $end);
         $sd = $s->format('H:i');
         $ed = $e->format('H:i');
         $r  = "<div class='row'><div class='col-2 text-right'><strong>ออก:</strong></div><div class='col-2'>$dateStart $sd</div></div>";
         $r .= "<div class='row'><div class='col-2 text-right'><strong>เข้า:</strong></div><div class='col-2'>$dateEnd $ed</div></div>";
-    // } else {
-    //     $r = "<h6 class='text-center'>$dateStart<br>ถึง<br>$dateEnd</h6>";
-    // }
+
     return $r;
 }
 

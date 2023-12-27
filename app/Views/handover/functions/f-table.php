@@ -3,29 +3,22 @@ ob_start();
 session_start();
 header('Content-Type: text/html; charset=utf-8');
 
-require_once __DIR__ . "/../../../../../config/connectDB.php";
-require_once __DIR__ . "/../../../../../config/setting.php";
+require_once __DIR__ . "/../../../../config/connectDB.php";
+require_once __DIR__ . "/../../../../config/setting.php";
 
-require_once __DIR__ . "/../../../../../tools/crud.tool.php";
-require_once __DIR__ . "/../../../../../tools/function.tool.php";
+require_once __DIR__ . "/../../../../tools/crud.tool.php";
+require_once __DIR__ . "/../../../../tools/function.tool.php";
 
-require_once __DIR__ . "/../../../../../app/Class/datatable_processing.php";
+require_once __DIR__ . "/../../../Class/datatable_processing.php";
 
 Class DataTable extends TableProcessing {
     public $start;
     public $end;
     public $vehicle;
-    // public $status;
+    public $status;
     
-    public function __construct($formData,$TableSET){
+    public function __construct($TableSET){
         parent::__construct($TableSET); //ส่งค่าไปที่ DataTable Class
-
-        parse_str($formData, $data);
-
-        $date = DateTime::createFromFormat('d/m/Y', $data['date_start']);
-        $this->start = $date ? $date->format('Y-m-d') : null;
-
-        $this->vehicle = $data['res_vehicle'];
     }   
     public function getTable(){
         // return $this->start;
@@ -61,9 +54,6 @@ Class DataTable extends TableProcessing {
 
     public function getSQL(bool $OrderBY){
 
-        // $status = $this->chkStatus();
-        $vehicle = $this->chkVehicle();
-        $date = $this->chkDate();
 
         if($OrderBY){
             $sql = "SELECT * ";
@@ -74,9 +64,8 @@ Class DataTable extends TableProcessing {
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
-        $sql .= "WHERE reservation_status=1 ";
-        $sql .= "$vehicle ";
-        $sql .= "$date ";
+        $sql .= "LEFT JOIN tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
+        $sql .= "WHERE reservation_status=4 ";
 
         $sql .= "$this->query_search ";
         if($OrderBY) {
@@ -87,22 +76,6 @@ Class DataTable extends TableProcessing {
         }
 
         return $sql;
-    }
-
-    public function chkVehicle(){
-        $r = "";
-        if(!IsNullOrEmptyString($this->vehicle)) {
-            $r = "AND ref_id_vehicle=$this->vehicle ";
-        }
-        return $r;
-    }
-    
-    public function chkDate(){
-        $r = "";
-        if(!IsNullOrEmptyString($this->start)) {
-            $r .= "AND DATE(start_date) = '$this->start' ";
-        }
-        return $r;
     }
 
     public function createArrayDataTable($fetchRow, $numRow){
@@ -125,22 +98,21 @@ Class DataTable extends TableProcessing {
                 // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
                 $date    = getDateString($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
                 $status  = ResStatusTable($fetchRow[$key]['reservation_status']);
-                $control = $this->getControl($fetchRow[$key]['id_reservation'], getDateString2($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']), $fetchRow[$key]['vehicle_name'], $fetchRow[$key]['id_vehicle']);
+                $control = $this->getControl($fetchRow[$key]['id_reservation'], $fetchRow[$key]['reservation_status']);
+
 
                 $dataRow = array();
                 $dataRow[] = "<h6 class='text-center'>$No.</h6>";
-                $dataRow[] = $control;
-                $dataRow[] = "<div class='text-center'><img src='../dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'></div>";
-                $dataRow[] = "<div class='text-center'>".($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name'])."</div>";
-                $dataRow[] = getUserName($fetchRow[$key]['ref_id_user']);
-                $dataRow[] = implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion']));
+                $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
+                $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
+                $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
+                $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : wordwrap($fetchRow[$key]['place_name'], 50, "<br>\n"));
                 $dataRow[] = $date;
-        
+                $dataRow[] = $status;
                 $dataRow[] = "<h6 class='text-center'>$control</h6>";
     
                 $arrData[] = $dataRow;
                 $No--;
-                
             }
         }
 
@@ -154,47 +126,15 @@ Class DataTable extends TableProcessing {
         return $output;
     }
 
-    public function getControl($id, $date, $vehicle, $id_vehicle){
-        if($this->chkStatus($id_vehicle)){
-            $result  = "<div class='text-center'><button type='button' class='btn btn-primary text-center modalMile' data-id='$id' data-datetext='$date' data-vehicle='$vehicle' data-idv='$id_vehicle' data-toggle='modal' data-target='#modal-mile' data-backdrop='static' data-keyboard='false' id='modalMile' title='บันทึกเลขไมล์'>";
-            $result .= "<i class='fa fa-save'></i><span> บันทึกเลขไมล์</span> ";
-            $result .= "</button></div>";
-        } else {
-            $result  = "<div class='text-center'><button type='button' class='btn btn-danger text-center disabled'>";
-            $result .= "<span> รอคืนยานพาหนะ</span> ";
-            $result .= "</button></div>";
-        }
+    public function getControl($id, $status){
 
+        $result  = "<button type='button' class='btn btn-success detailReservation text-center' data-id='$id'  id='detailReservation' title='ส่งมอบ'>";
+        $result .= "<i class='fa fa-flag-checkered'></i><span> ส่งมอบ</span>";
+        $result .= "</button>";
         return $result;
     }
 
-    public function chkStatus($id_vehicle){
-        $sql  = "SELECT id_reservation ";
-        $sql .= "FROM tb_reservation ";
-        $sql .= "WHERE reservation_status=3 ";
-        $sql .= "AND ref_id_vehicle=$id_vehicle ";
 
-        try {
-            $con = connect_database();
-            $obj = new CRUD($con);
-
-            $fetchRow = $obj->fetchRows($sql);
-
-            if(empty($fetchRow)){
-                return true;
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            return "Database connection failed: " . $e->getMessage();
-        
-        } catch (Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        
-        } finally {
-            $con = null;
-        }
-    }
     
 }
 
@@ -209,7 +149,7 @@ $draw   = $_POST["draw"];
 $action = $_POST['action'];
 
 $DataTableSearch = array(
-    'vehicle_name', 'traveling_companion', 'start_date'
+    'vehicle_name','start_date','end_date','place_name','traveling_companion'
 );
 
 switch($action){
@@ -217,12 +157,13 @@ switch($action){
         $DataTableCol = array( 
             0 => "tb_reservation.id_reservation",
             1 => "tb_reservation.id_reservation",
-            2 => "tb_reservation.id_reservation",
-            3 => "tb_vehicle.id_vehicle",
-            4 => "tb_vehicle.vehicle_name",
-            5 => "tb_reservation.ref_id_user",
-            6 => "tb_reservation.traveling_companion",
-            7 => "tb_reservation.start_date",
+            2 => "tb_vehicle.id_vehicle",
+            3 => "tb_vehicle.vehicle_name",
+            4 => "tb_reservation.traveling_companion",
+            5 => "tb_coordinates.place_name",
+            6 => "tb_reservation.start_date",
+            7 => "reservation_status",
+            8 => "reservation_status",
         );
     break;
 }
@@ -241,7 +182,7 @@ $dataGet = array(
 
 switch($action) {
     default:
-        $Call   = new DataTable($_POST['formData'],$dataGet);
+        $Call   = new DataTable($dataGet);
         $result = $Call->getTable(); 
     break;
 }

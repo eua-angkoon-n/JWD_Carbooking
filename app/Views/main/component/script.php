@@ -53,6 +53,8 @@
 <script src="plugins/lightpick/lightpick.js"></script>
 <script src="plugins/mobiscroll/js/mobiscroll.javascript.min.js"></script>
 
+<script src="plugins/fullcalendar/main.js"></script>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $('#pushmenu').click(function(){

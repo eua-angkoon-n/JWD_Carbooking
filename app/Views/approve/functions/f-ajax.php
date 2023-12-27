@@ -295,6 +295,7 @@ Class Reservation_Detail {
             'vehicle_name'    => $MD['vehicle_name'],
             'start'           => $MD['start_date'],
             'end'             => $MD['end_date'],
+            'id_user'         => $MD['ref_id_user'],
             'userName'        => $Name,
             'place_Name'      => $MD['place_name'],
             'lat'             => $MD['latitude'],

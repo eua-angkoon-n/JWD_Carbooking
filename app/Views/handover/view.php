@@ -1,8 +1,7 @@
 <?php 
-include __DIR__ . "/component/style.php";
+// include __DIR__ . "/component/style.php";
 // include __DIR__ . '/frame/v-modal-detail.php';
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
-
 ?>
 
 <section class="content">
@@ -25,10 +24,10 @@ isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
 
     <div id="carouselPage" class="carousel slide" data-ride="carousel" data-touch="false" data-interval="false">
       <div class="carousel-inner">
-        <div class="carousel-item active" data-slide-number="0" data-target="#carouselPage">
+        <div class="carousel-item " data-slide-number="0" data-target="#carouselPage">
            <?php include __DIR__ . "/frame/v-list.php";?>
         </div>
-        <div class="carousel-item " data-slide-number="1" data-target="#carouselPage">
+        <div class="carousel-item active" data-slide-number="1" data-target="#carouselPage">
           <?php include __DIR__ . "/frame/v-reservation_detail.php";?>
         </div>
         <!-- <div class="carousel-item " data-slide-number="2" data-target="#carouselPage">
@@ -43,7 +42,7 @@ isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
 
 <?php 
 include __DIR__ . '/component/script.php';
-//include __DIR__ . '/component/script_map.php';
+// include __DIR__ . '/component/script_map.php';
 include __DIR__ . '/component/script_dataTable.php';
 ?>
 
