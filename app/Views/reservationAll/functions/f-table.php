@@ -15,19 +15,19 @@ Class DataTable extends TableProcessing {
     public $start;
     public $end;
     public $vehicle;
-    // public $status;
+    public $status;
     
     public function __construct($formData,$TableSET){
         parent::__construct($TableSET); //ส่งค่าไปที่ DataTable Class
 
         parse_str($formData, $data);
        
-        convertDateRange($data['res_date'], $this->start, $this->end);
-        // $this->status = $data['res_status'];
+        convertDateDMY($data['res_date'], $this->start, $this->end);
+        // $this->status = $data['res_date'];
         $this->vehicle = $data['res_vehicle'];
     }   
     public function getTable(){
-        // return $this->start;
+        // return $this->end;
         return $this->SqlQuery();
     }
 

@@ -51,7 +51,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-12">
+                                                <div class="default-detail col-12">
                                                     <h4 class="text-primary"><strong>รายละเอียด</strong></h4>
                                                     <div class="post p-0" style="color:#000000;">
                                                         <div>
@@ -114,11 +114,12 @@
                                                             ไม่ต้องการ
                                                         </p>
                                                     </div>
-
-
-
+                                                </div>
+                                                <div class="miles">
                                                 </div>
                                             </div>
+
+                                            <div class="handover row"></div>
                                         </div>
                                         <div class="col-12 col-md-12 col-lg-4 order-2 order-md-2 order-lg-2 mb-1">
                                             <div class="card shadow-sm">

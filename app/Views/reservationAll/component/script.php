@@ -151,6 +151,11 @@
             $('.carousel').carousel('prev');
         });
 
+        $(document).off("click", ".modal-img").on("click", ".modal-img", function (e) {
+            var img = $(this).data('id');
+            $('#modalImg').attr('src', img);
+        });
+
         $(document).off("click", ".btn-save-edit").on("click", ".btn-save-edit", function (e) {
             var Data = $("#editForm").serialize();
             var Vehicle = $("#modal_vehicle").find(":selected").text();
@@ -190,7 +195,7 @@
         //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
         function show_reservation(id) {
             $.ajax({
-                url: "app/Views/reservationAll/functions/f-ajax.php",
+                url: "app/Views/reservationList/functions/f-ajax.php",
                 type: "POST",
                 data: {
                     "id": id,
@@ -227,6 +232,24 @@
                     } else {
                         var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
                         $("#show_button").html(button);
+                    }
+
+                    if(js.timeline != 0){
+                        $('.default-detail').addClass('col-md-6');
+                        $('.miles').addClass('col-sm-12 col-md-6');
+                        $('.miles').html(js.timeline);
+
+                    } else {
+                        $('.default-detail').removeClass('col-md-6');
+                        $('.miles').removeClass('col-sm-12 col-md-6');
+                        $('.miles').html('');
+                    }
+
+                    if(js.handover != 0){
+                        $('.handover').html(js.handover);
+
+                    } else {
+                        $('.handover').html('');
                     }
                 }
             });
@@ -340,6 +363,10 @@
                 case '5':
                     cls = "bg-secondary";
                     txt = "<?php echo Setting::$reservationStatus[5] ?>";
+                    break;
+                case '6':
+                    cls = "bg-success";
+                    txt = "<?php echo Setting::$reservationStatus[6] ?>";
                     break;
             }
             $('#Show_Ribbon').text(txt);

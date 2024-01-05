@@ -1,6 +1,6 @@
 <?php 
 include __DIR__ . "/component/style.php";
-// include __DIR__ . '/frame/v-modal-detail.php';
+include __DIR__ . '/frame/v-modal_img.php';
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
 ?>
 
