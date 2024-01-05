@@ -1,3 +1,10 @@
+<?php 
+include(__DIR__."/../functions/f-detail.php");
+
+$Call = new HandOver();
+$Expense = $Call->getExpense();
+?>
+
 <div class="row">
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -28,7 +35,7 @@
                                                     <div class="info-box bg-light">
                                                         <div class="info-box-content">
                                                             <h5 class="info-box-text text-center text-primary">ยานพาหนะ
-                                                                </h4>
+                                                                </h5>
                                                                 <h6 class="info-box-number text-center mb-0 show_vehicle">
                                                                 </h6>
                                                         </div>
@@ -38,7 +45,7 @@
                                                     <div class="info-box bg-light">
                                                         <div class="info-box-content">
                                                             <h5 class="info-box-text text-center text-primary">
-                                                                ช่วงเวลาการจอง</h4>
+                                                                ช่วงเวลาการจอง</h5>
                                                                 <h6 class="info-box-number text-center mb-0" id="show_date">14 ธันวาคม
                                                                     2566 08.00 น. ถึง 14 ธันวาคม 2566 09.00 น.
                                                             </h5>
@@ -58,16 +65,19 @@
                                                             <li>
                                                                 <div class="form-group clearfix">
                                                                     <div class="icheck-success d-inline mr-2">
-                                                                        <input type="radio" id="condition_in1" name="condition_in">
+                                                                        <input type="radio" id="condition_in1" name="condition_in" value="1" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="condition_in1">
                                                                             ดี
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-danger d-inline">
-                                                                        <input type="radio" id="condition_in2" name="condition_in">
+                                                                        <input type="radio" id="condition_in2" name="condition_in" value="2" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="condition_in2">
                                                                             ไม่ดี
                                                                         </label>
+                                                                    </div>
+                                                                    <div class="d-inline" id="conditionInWarning">
+                                                                        <code>**</code>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -105,16 +115,19 @@
                                                             <li>
                                                                 <div class="form-group clearfix">
                                                                     <div class="icheck-success d-inline mr-2">
-                                                                        <input type="radio" id="condition_out1" name="condition_out">
+                                                                        <input type="radio" id="condition_out1" name="condition_out" value="1" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="condition_out1">
                                                                             ดี
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-danger d-inline">
-                                                                        <input type="radio" id="condition_out2" name="condition_out">
+                                                                        <input type="radio" id="condition_out2" name="condition_out" value="2" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="condition_out2">
                                                                             ไม่ดี
                                                                         </label>
+                                                                    </div>
+                                                                    <div class="d-inline" id="conditionOutWarning">
+                                                                        <code>**</code>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -154,34 +167,37 @@
                                                             <li>
                                                                 <div class="form-group clearfix">
                                                                     <div class="icheck-success d-inline mr-2">
-                                                                        <input type="radio" id="fuel1" name="fuel">
+                                                                        <input type="radio" id="fuel1" name="fuel" value="1" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="fuel1">
                                                                             เต็ม
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-success d-inline mr-2">
-                                                                        <input type="radio" id="fuel2" name="fuel">
+                                                                        <input type="radio" id="fuel2" name="fuel" value="2" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="fuel2">
                                                                             เกือบเต็ม
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-warning d-inline mr-2">
-                                                                        <input type="radio" id="fuel3" name="fuel">
+                                                                        <input type="radio" id="fuel3" name="fuel" value="3" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="fuel3">
                                                                             ปานกลาง
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-warning d-inline mr-2">
-                                                                        <input type="radio" id="fuel4" name="fuel">
+                                                                        <input type="radio" id="fuel4" name="fuel" value="4" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="fuel4">
                                                                             ใกล้หมด
                                                                         </label>
                                                                     </div>
                                                                     <div class="icheck-danger d-inline">
-                                                                        <input type="radio" id="fuel5" name="fuel">
+                                                                        <input type="radio" id="fuel5" name="fuel" value="5" aria-describedby="inputGroupPrepend" required>
                                                                         <label for="fuel5">
                                                                             หมด
                                                                         </label>
+                                                                    </div>
+                                                                    <div class="d-inline" id="fuelWarning" >
+                                                                        <code>**</code>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -210,12 +226,55 @@
                                                         </ul>
                                                     </div>
 
-                                                    <div class="post p-0" style="color:#000000;">
+                                                    <div class="post p-0 div-expense" style="color:#000000;">
                                                         <div>
-                                                            <h5 class="text-primary">ค่าทางด่วน</h5>
+                                                            <h5 class="text-primary">ค่าใช้จ่าย</h5>
                                                         </div>
                                                         <!-- /.user-block -->
-                                                        <ul class="list-unstyled" id="show_companion">
+                                                        <div class="row expense-group">
+                                                            <div class="col-sm-12 col-md-2 order-2 order-md-1">
+                                                                <div class="form-group">
+                                                                    <select class="form-control select2bs4" id="expense" name="expense" style="width: 100%;">
+                                                                    <?php echo $Expense;?> 
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-12 col-md-3 order-3 order-md-2">
+                                                                <div class="form-group">
+                                                                        <input type="number" min="0" id="expenseAmount" name="expenseAmount" placeholder="จำนวน...(บาท)" class="form-control"/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-12 col-md-3 order-4 order-md-3">
+                                                                <div class="form-group">
+                                                                    <div class="row-fluid">
+                                                                        <div class="col-md-12">
+                                                                            <input type="file" name="expenseFile[]" id="expenseFile"
+                                                                                class="border p-1 w-100"
+                                                                                accept="image/*"
+                                                                                aria-describedby="inputGroupPrepend">
+                                                                            <!-- <div class="row">
+                                                                                <div id="expressPreview"
+                                                                                    class="col-12 img-thumbnail">
+                                                                              
+                                                                                 </div>
+                                                                            </div>  -->
+                                                                          
+                                                                       </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-12 col-md-3 order-1 order-md-4">
+                                                                &nbsp;
+                                                                <a class='btn btn-expense-add'><i class='nav-icon fas fa-plus-circle fa-lg' style="color:#4cae4c"></i></a>
+                                                                <a class='btn btn-expense-remove'><i class='nav-icon fas fa-minus-circle fa-lg' style="color:#d43f3a"></i></a>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- <ul class="list-unstyled" id="show_companion">
                                                             <li>
                                                                 <div class="row">
                                                                     <div class="col-2">
@@ -242,28 +301,30 @@
                                                                                 <div id="expressPreview"
                                                                                     class="col-12 img-thumbnail">
                                                                                     <!-- รูปตัวอย่างจะแสดงที่นี่ -->
-                                                                                </div>
-                                                                            </div>
+                                                                                <!-- </div>
+                                                                            </div> -->
                                                                           
-                                                                        </div>
+                                                                        <!-- </div>
                                                                     </div>
                                                                 </div>
                                                             </li>
-                                                        </ul>
+                                                        </ul> --> 
                                                     </div>
 
                                                     <div class="post p-0" style="color:#000000;">
                                                         <div class="row text left">
-                                                            <div class="col-lg-3 col-md-12">
+                                                            <div class="col-lg-2 col-md-12 mb-1">
                                                                 <input type="button"
-                                                                    class="btn btn-submit btn-success"
+                                                                    class="btn btn-submit btn-success w-100"
                                                                     value="บันทึก" />
                                                             </div>
-                                                            <div class="col-lg-3 col-md-12">
+                                                            <div class="col-lg-2 col-md-12">
                                                                 <input type="button"
-                                                                    class="btn btn-submit btn-success"
-                                                                    value="บันทึก" />
+                                                                    class="btn btn-cancel btn-danger w-100"
+                                                                    value="ยกเลิก" />
                                                             </div>
+                                                            <input type="hidden" id="id_res" name="id_res" />
+                                                            <input type="hidden" id="action" name="action" value="save" />
                                                         </div>
                                                     </div>
                                              
@@ -341,3 +402,5 @@
 
     </div>
 </div>
+
+<?php include(__DIR__ . "/../component/script_detail.php"); ?>

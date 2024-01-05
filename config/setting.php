@@ -18,7 +18,7 @@ class Setting
         3 => "กรุณาติดต่อแผนก IT/MIS เพื่อสอบถามข้อมูลเพิ่มเติม โทร. 1111"
     );	//ข้อความ เกี่ยวกับความปลอดภัย
 
-    public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"กำลังใช้งาน", 4=>"คืนรถ" , 5=>"ยกเลิก", 6=>"คืนรถและส่งมอบแล้ว");
+    public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"กำลังใช้งาน", 4=>"คืนรถ" , 5=>"ยกเลิก", 6=>"ส่งมอบ");
     public static $arr_day_of_week = array('','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์');
     public static $arr_day_of_weekEN = array('','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');	
     public static $arr_mouth = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');	
@@ -95,6 +95,19 @@ class Setting
         '#D8BFD8', '#DEB887', '#40E0D0', '#6A5ACD', '#00CED1', '#FF00FF', '#FF6A6A', '#00FFFF', '#20B2AA', '#E9967A'
     );
 
+    public static $condition = array(
+        1 => 'ดี',
+        2 => 'ไม่ดี'
+    );
+
+    public static $fuel = array(
+        1 => 'เต็ม',
+        2 => 'เกือบเต็ม',
+        3 => 'ปานกลาง',
+        4 => 'ใกล้หมด',
+        5 => 'หมด'
+    );
+
 }
 
 class PageSetting 
@@ -145,6 +158,18 @@ class PageSetting
             "href" => "vehicleconfig",
             "SideIcon" => "fa-car-side"
         ),
+        "user" => array (
+            "title" => "ผู้ใช้งาน",
+            "view" => "../users/view.php",
+            "href" => "user",
+            "SideIcon" => "fa-users"
+        ),
+        "sysconfig" => array (
+            "title" => "ตั้งค่าระบบ",
+            "view" => "../sysconfig/view.php",
+            "href" => "sysconfig",
+            "SideIcon" => "fa-cog"
+        ),
         "logout" => array (
             "title" => "ออกจากระบบ",
             "view" => "../vehicleconfig/view.php",
@@ -181,8 +206,6 @@ class PageSetting
     );
 
 }
-
-
 
         // Main Page ห้ามตั้งชื่อ key------------------------
         // "" => array( 

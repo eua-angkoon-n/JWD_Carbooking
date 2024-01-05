@@ -4,8 +4,10 @@
         getImg('condition_inFile', 'condition_inPreview', 'condition_inErrMsg', 3);
         getImg('condition_outFile', 'condition_outPreview', 'condition_outErrMsg', 3);
         getImg('fuelFile', 'fuelPreview', 'fuelErrMsg', 1);
-        getImg('expressFile', 'expressPreview', 'expressErrMsg', 1);
-
+        // getImg('expressFile', 'expressPreview', 'expressErrMsg', 1);
+        $('#conditionInWarning').hide();
+        $('#conditionOutWarning').hide();
+        $('#fuelWarning').hide();
         //input ต่างๆ////////////////////////////////////////////////////////////////
         $('.select2bs4').select2({
             theme: 'bootstrap4'
@@ -13,7 +15,6 @@
 
 
         $('#res_status, #res_vehicle, #res_date').change(function () {
-            // Reload the DataTable using AJAX
             $('#reservation_table').DataTable().ajax.reload();
         });
 
@@ -36,12 +37,143 @@
 
         $(document).off("click", ".backPage").on("click", ".backPage", function (e) {
             $('.carousel').carousel('prev');
+            $('#reservation_table').DataTable().ajax.reload();
+        });
+            
+        $(document).off("click", ".btn-cancel").on("click", ".btn-cancel", function (e) {
+            swal({
+                title: "ยกเลิก ?",
+                text: "ต้องการยกเลิกหรือไม่",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ไม่, ยกเลิก",
+                closeOnConfirm: true
+            }, function () {
+                $('.carousel').carousel('prev');
+                $('#reservation_table').DataTable().ajax.reload();
+                $('body').find('.was-validated').removeClass();
+                $('form').each(function () {
+                    this.reset()
+                });
+                $('#map_olv').html("");
+                $(".div-expense .expense-row").remove();
+                updateRemoveButtonVisibility()
+
+            });
+
+        });
+
+        $(document).off("click", ".btn-submit").on("click", ".btn-submit", function (e) {
+
+            var form = document.getElementById('showForm');
+            var formData = new FormData(form);
+
+            
+            if (form.checkValidity() === false) {
+                swal({
+                        title: "เกิดข้อผิดพลาด!",
+                        text: "กรอกรายละเอียดไม่ครบถ้วน",
+                        type: "warning",
+                        button: {
+                            text: "ตกลง",
+                        }
+                    },
+                    function () {
+                        event.preventDefault();
+                        event.stopPropagation(); 
+                    })
+            } else {
+                swal({
+                title: "ส่งมอบ ?",
+                text: "ต้องการส่งมอบรถหรือไม่",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ไม่, ยกเลิก",
+                closeOnConfirm: true
+                }, function () {
+                    save_handover();
+                });
+            }
+            form.classList.add('was-validated');
+            return false;
         });
 
     });
 
-
      //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
+     function save_handover(){
+        // var frmData = $('#showForm').serialize();
+
+        var formData = new FormData($('form#showForm')[0]);
+        
+        var expenseArr = expenses(formData);
+        var id = $('#id_res').val();
+
+        // เพิ่มข้อมูลจาก expenseArr ลงใน formData
+        expenseArr.forEach(function (item, index) {
+            formData.append('expenses[' + index + '][expense]', item.expense);
+            formData.append('expenses[' + index + '][expenseAmount]', item.expenseAmount);
+        });
+        
+        // console.log(files);
+        // return;
+        $.ajax({
+                url: "app/Views/handover/functions/f-ajax.php",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                beforeSend: function () {},
+                success: function (data) {
+                    var js = JSON.parse(data);
+                    console.log(js);
+                    // return;
+                    if(js.trim() === "success"){
+                        swal({
+                                    title: "บันทึกสำเร็จ!",
+                                    text: "ทำการส่งมอบเรียบร้อย",
+                                    type: "success",
+                                },
+                                function () {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    window.location.href = '?app=reservationList&id='+id;
+                                })
+                    } else {
+                        sweetAlert("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่างระหว่างบันทึกข้อมูล", "error");
+                        return false;
+                    }
+                   
+
+                   
+                }
+            });
+     }
+
+     function expenses(){
+        var expenseArr = [];
+
+        // สมมติว่าคุณมี wrapper สำหรับแต่ละกลุ่มอินพุต
+        $('.expense-group').each(function () {
+            var expense = $(this).find('select[name="expense"]').val();
+            var expenseAmount = $(this).find('input[name="expenseAmount"]').val();
+            var expenseFiles = $(this).find('input[name="expenseFile[]"]')[0].files;
+
+            // สร้างออบเจกต์และเพิ่มเข้าไปในอาร์เรย์
+            var expenseObj = {
+                expense: expense,
+                expenseAmount: expenseAmount,
+                expenseFile: expenseFiles
+            };
+            expenseArr.push(expenseObj);
+        });
+        return expenseArr;
+     }
+     
      function show_reservation(id) {
             $.ajax({
                 url: "app/Views/handover/functions/f-ajax.php",
@@ -53,7 +185,7 @@
                 beforeSend: function () {},
                 success: function (data) {
                     var js = JSON.parse(data);
-                    // console.log(js);
+                    console.log(js);
                     // return false;
                     <?php if($_SESSION['sess_class_user'] != 1 && $_SESSION['sess_class_user'] != 2){ ?>
                         if(js.id_user != <?php echo $_SESSION['sess_id_user']?>){
@@ -64,10 +196,6 @@
                     show_date(js.start, js.end);
                     $('#show_user').text(js.userName);
                     $('.show_place').text(js.place_Name);
-                    show_companion(js.companion);
-                    $('#show_reason').text(js.reason);
-                    $('#show_acc').text(js.acc);
-                    $('#show_driver').text(js.driver);
                     show_vehicle_img(js.attachment, js.date_attachment, 'show_img');
                     show_ribbon(js.status);
                     if (js.lat != '' && js.lat != null) {
@@ -75,14 +203,8 @@
                     } else {
                         $('#map_olv').html("");
                     }
-
-                    if (js.status == '0' || js.status == '1') {
-                        var button = '<div class="col-6 text-right"><button type="button" class="btn btn-primary backPage text-center w-50 h-100" id="backPage" title="กลับ">กลับ</span></button></div><div class="col-6 text-left"><button type="button" class="btn btn-danger CancelReservation text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="CancelReservation" title="ยกเลิกการจอง"><span>ยกเลิกการจอง</span></button></div>';
-                        $("#show_button").html(button);
-                    } else {
-                        var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-50 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
-                        $("#show_button").html(button);
-                    }
+                    $('#id_res').val(js.res_id);
+                   
                 }
             });
         }
