@@ -1,5 +1,7 @@
 <?php 
 function Show_Sidebar($hrefNow){
+    $Call = new CounterSide();
+    $c    = $Call->getCount();
     $r  = SideBar(
         PageSetting::$AppPage[""]["title"], 
         PageSetting::$AppPage[""]["href"], 
@@ -16,13 +18,15 @@ function Show_Sidebar($hrefNow){
         PageSetting::$AppPage["reservationList"]["title"], 
         PageSetting::$AppPage["reservationList"]["href"], 
         PageSetting::$AppPage["reservationList"]["SideIcon"], 
-        $hrefNow
+        $hrefNow,
+        $c['myRes']
     );
     $r .= SideBar(  
         PageSetting::$AppPage["handover"]["title"], 
         PageSetting::$AppPage["handover"]["href"], 
         PageSetting::$AppPage["handover"]["SideIcon"], 
-        $hrefNow
+        $hrefNow,
+        $c['myHand']
     );
     if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
@@ -33,26 +37,40 @@ function Show_Sidebar($hrefNow){
             PageSetting::$AppPage["approve"]["title"], 
             PageSetting::$AppPage["approve"]["href"], 
             PageSetting::$AppPage["approve"]["SideIcon"], 
-            $hrefNow
+            $hrefNow,
+            $c['Approve']
         );
         $r .= SideBar(
             PageSetting::$AppPage["reservationAll"]["title"], 
             PageSetting::$AppPage["reservationAll"]["href"], 
             PageSetting::$AppPage["reservationAll"]["SideIcon"], 
-            $hrefNow
+            $hrefNow,
+            $c['AllRes']
         );
         $r .= "</ul></li>";
     }
 
     if ($_SESSION['sess_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
-        $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-cog'></i>";
+        $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-cogs'></i>";
         $r .= "<p>จัดการระบบ<i class='right fas fa-angle-left'></i></p></a>";   
         $r .= "<ul class='nav nav-treeview ml-2'>";
         $r .= SideBar(
             PageSetting::$AppPage["vehicleconfig"]["title"], 
             PageSetting::$AppPage["vehicleconfig"]["href"], 
             PageSetting::$AppPage["vehicleconfig"]["SideIcon"],  
+            $hrefNow
+        );
+        $r .= SideBar(
+            PageSetting::$AppPage["user"]["title"], 
+            PageSetting::$AppPage["user"]["href"], 
+            PageSetting::$AppPage["user"]["SideIcon"], 
+            $hrefNow
+        );
+        $r .= SideBar(
+            PageSetting::$AppPage["sysconfig"]["title"], 
+            PageSetting::$AppPage["sysconfig"]["href"], 
+            PageSetting::$AppPage["sysconfig"]["SideIcon"], 
             $hrefNow
         );
         $r .= "</ul></li>";
@@ -68,7 +86,7 @@ function Show_Sidebar($hrefNow){
 }
 
 
-function Sidebar($title, $href, $Icon, $active){
+function Sidebar($title, $href, $Icon, $active, $count = 0){
     $prefix = PageSetting::$prefixController;
     $active == $href ? $a = "active" : $a = "";
     $href != "" ? $l = "?$prefix=$href" : $l = "./";
@@ -77,8 +95,120 @@ function Sidebar($title, $href, $Icon, $active){
     $r .= "<a href='$l' class='nav-link $a'>";
     $r .= "<i class='nav-icon fas $Icon'></i>";
     $r .= "<p>$title</p>";
+    if($count != 0){
+        $r .= "<span class='float-right badge' style='background-color:#f15c22;color:white'>$count</span>";
+    }
     $r .= "</a></li>"; 
     return $r;
+}
+
+Class CounterSide{
+    public function getCount(){
+        $myRes  = $this->myRes();
+        $myHand = $this->myHand();
+        $r = array(
+            'myRes' => $myRes,
+            'myHand'=> $myHand
+        );
+        if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
+            $Approve = $this->Approve();
+            $AllRes  = $this->AllRes();
+            $r['Approve'] = $Approve;
+            $r['AllRes'] = $AllRes;
+        }
+        return $r;
+    }
+
+    public function myRes(){
+        $sql  = "SELECT id_reservation ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE ref_id_user= ".$_SESSION['sess_id_user']." ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->countAll($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function myHand(){
+        $sql  = "SELECT id_reservation ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE ref_id_user= ".$_SESSION['sess_id_user']." ";
+        $sql .= "AND reservation_status = 4 ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->countAll($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function Approve(){
+        $sql  = "SELECT id_reservation ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE reservation_status = 0 ";
+        $sql .= "AND ref_id_site = ".$_SESSION['sess_ref_id_site']." ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->countAll($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function AllRes(){
+        $sql  = "SELECT id_reservation ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE ";
+        $sql .= "ref_id_site = ".$_SESSION['sess_ref_id_site']." ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->countAll($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
 }
 
 
