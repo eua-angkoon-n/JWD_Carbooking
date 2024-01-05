@@ -29,6 +29,9 @@ $_SESSION['sess_dept_initialname'] = 'IT';
 $_SESSION['sess_status_user'] = 1;
 $_SESSION['sess_popup_howto'] = 0;
 
+sysVersion($_SESSION['phase'], $_SESSION['version']);
+
+
 main();
 
 function main(){
@@ -36,4 +39,34 @@ function main(){
     $start = $Time->Start_Time();
     include("app/Controllers/Controller.php");
     include("app/Views/main/main.php");
+}
+
+function sysVersion(&$phase, &$version){
+    $sql  = "SELECT ( ";
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'sysPhase' ";
+    $sql .= "       ) AS phase, ";
+    $sql .= "       ( "; 
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'sysVersion' ";
+    $sql .= "       ) AS version ";
+    $sql .= "FROM tb_config ";
+    $sql .= "WHERE 1=1";
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $r = $obj->customSelect($sql);
+
+        $phase   = $r['phase'];
+        $version = $r['version'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
 }
