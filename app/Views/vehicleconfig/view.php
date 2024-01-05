@@ -32,6 +32,9 @@
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tab4" data-toggle="pill" href="#custom-tabs-4" role="tab" aria-controls="custom-tabs-4" aria-selected="false">อุปกรณ์เสริม</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tab5" data-toggle="pill" href="#custom-tabs-5" role="tab" aria-controls="custom-tabs-5" aria-selected="false">พนักงานขับรถ</a>
+                  </li>
                 </ul>
               </div>
               <div class="card-body">
@@ -47,6 +50,9 @@
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-4" role="tabpanel" aria-labelledby="custom-tabs-4">
                     ...TAB-4 Wait process
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-5" role="tabpanel" aria-labelledby="custom-tabs-5">
+                    ...TAB-5 Wait process
                   </div>
                 </div>
               </div>
