@@ -257,6 +257,9 @@ Class Add_Reservation {
     }
 
     public function DoAddData(){
+        $chkAllowed = reservationTimeDiff($this->date_start);
+        if(!$chkAllowed)
+            return 'notAllowed';
         $canAdd = $this->chkReservation(); // เช็คอีกทีว่า สามารถจองในเวลานี้ได้ไหม
         if(!$canAdd)
             return 'dupTime';

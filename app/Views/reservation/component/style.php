@@ -60,5 +60,11 @@
     height: auto; /* Set auto height */
     min-height: 500px; /* Set a minimum height */
     resize: vertical; /* Allow vertical resizing if needed */
-}
+  }
+
+  .toast,
+  .toast-header {
+    background-color: #f15c22;
+    color: white;
+  }
 </style>

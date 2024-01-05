@@ -6,6 +6,13 @@
             theme: 'bootstrap4'
         })
 
+        $(document).Toasts('create', {
+            title: 'แจ้งจากฝ่ายบุคคล',
+            autohide: true,
+            delay: 3000,
+            body: 'กรุณาจองรถก่อนใช้งาน <?php echo reservationTimeDiff("", true);?> ชั่วโมง ค่ะ'
+        })
+
         $('#time_start').datetimepicker({
             format: 'HH:mm',
             defaultDate: moment().add(1, 'hours'),
@@ -259,6 +266,9 @@
                             return false;
                         } else if (data.trim() === "dupTime") {
                             sweetAlert("เกิดข้อผิดพลาด!", "ช่วงเวลาดังกล่าวมีการจองไว้แล้ว", "error");
+                            return false;
+                        } else if (data.trim() === "notAllowed") {
+                            sweetAlert("เกิดข้อผิดพลาด!", "กรุณาจองรถก่อนใช้งาน <?php echo reservationTimeDiff("", true)?> ชั่วโมง", "error");
                             return false;
                         } else {
                             // sweetAlert("สำเร็จ...", "บันทึกข้อมูลเรียบร้อยแล้ว", "success"); //The error will display

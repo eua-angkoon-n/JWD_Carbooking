@@ -7,6 +7,6 @@
             echo print_mem();
             ?>
     <div class="float-right d-none d-sm-inline-block">
-        <b>Phase 2 / Version</b> Alpha 0.2
+        <b>Phase <?php echo $_SESSION['phase'];?> / Version</b> <?php echo $_SESSION['version'];?>
     </div>
 </footer>
