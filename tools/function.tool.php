@@ -747,10 +747,8 @@ function  reservationTimeDiff($date, $alert = false){
         }
     } catch (PDOException $e) {
         return "Database connection failed: " . $e->getMessage();
-    
     } catch (Exception $e) {
         return "An error occurred: " . $e->getMessage();
-    
     } finally {
         $con = null;
     }
@@ -762,7 +760,7 @@ function  reservationTimeDiff($date, $alert = false){
             $resDate  = new DateTime($date);
             $interval = $resDate->diff($nowDate);
             
-            $minutes = $interval->days * 24 * 60;     
+            $minutes  = $interval->days * 24 * 60;     
             $minutes += $interval->h * 60;            
             $minutes += $interval->i;
             if($minutes < $configTime){
@@ -776,6 +774,35 @@ function  reservationTimeDiff($date, $alert = false){
     }
 }
 
+function sysVersion(&$phase, &$version){
+    $sql  = "SELECT ( ";
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'sysPhase' ";
+    $sql .= "       ) AS phase, ";
+    $sql .= "       ( "; 
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'sysVersion' ";
+    $sql .= "       ) AS version ";
+    $sql .= "FROM tb_config ";
+    $sql .= "WHERE 1=1";
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $r = $obj->customSelect($sql);
+
+        $phase   = $r['phase'];
+        $version = $r['version'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
 
 class Processing{
 

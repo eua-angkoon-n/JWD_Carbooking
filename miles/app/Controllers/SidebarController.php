@@ -18,7 +18,7 @@ function Show_Sidebar($hrefNow){
         PageSetting::$AppPage["reservationList"]["SideIcon"], 
         $hrefNow
     );
-    if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
+    if ($_SESSION['car_class_user'] == 1 || $_SESSION['car_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-users-cog'></i>";
         $r .= "<p>ส่วนของผู้ดูแล<i class='right fas fa-angle-left'></i></p></a>";   
@@ -38,7 +38,7 @@ function Show_Sidebar($hrefNow){
         $r .= "</ul></li>";
     }
 
-    if ($_SESSION['sess_class_user'] == 2) {
+    if ($_SESSION['car_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-cog'></i>";
         $r .= "<p>จัดการระบบ<i class='right fas fa-angle-left'></i></p></a>";   
@@ -114,7 +114,7 @@ function Sidebar($title, $href, $Icon, $active){
 //             $result .= "</ul>";
 //             $result .= "</li>";
 //         }
-//         } elseif (in_array($_SESSION['sess_class_user'], $value['Class'])) {
+//         } elseif (in_array($_SESSION['car_class_user'], $value['Class'])) {
 //             if(!$value["isTreeView"]){ // ไม่เป็น TreeView เมนูย่อย 
 //                 $value['href'] == "" || empty($value['href']) ? $href = "./" : $href = "?$prefix=".$value['href'];
 //                 $page == $key ? $active = "active" : $active = "";

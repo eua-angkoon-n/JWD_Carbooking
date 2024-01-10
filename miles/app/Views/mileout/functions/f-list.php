@@ -23,7 +23,7 @@ Class List_Reservation {
             $con = connect_database();
             $obj = new CRUD($con);
         
-            $value = $obj->fetchRows("SELECT id_vehicle, vehicle_name FROM tb_vehicle WHERE ref_id_site=".$_SESSION['sess_ref_id_site']." AND vehicle_status=1");
+            $value = $obj->fetchRows("SELECT id_vehicle, vehicle_name FROM tb_vehicle WHERE ref_id_site=".$_SESSION['car_ref_id_site']." AND vehicle_status=1");
 
             $r = "<option value='' selected='selected'>ทั้งหมด</option>";
             foreach($value as $key => $value){

@@ -15,6 +15,8 @@ ini_set('display_errors', 1);
 header('Content-Type: text/html; charset=utf-8');
 date_default_timezone_set(Setting::$AppTimeZone);
 
+sysVersion($_SESSION['phase'], $_SESSION['version']);
+
 main();
 
 function main(){

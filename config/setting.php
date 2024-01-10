@@ -4,8 +4,9 @@ class Setting
     public static $AppTimeZone = 'Asia/Bangkok';
     public static $DefaultProvinceTH = 'สมุทรสาคร';
     public static $DefaultProvince = 'Samut Sakhon';
+    public static $title = "ระบบจองรถธุรการ";
     public static $SiteList = array('PCS', 'JPK', 'JPAC', 'PACM', 'PLP', 'PACS', 'PACA', 'PACT');
-    public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้จัดการระบบ");	
+    public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้ดูแลระบบ");	
     public static $keygen = 'Pcs@'; //sha1+password
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $pass_mail = "Pcs@1234";
@@ -122,6 +123,12 @@ class PageSetting
             "href" => "",
             "SideIcon" => "fa-chalkboard"
         ),
+        "manuals" => array( 
+            "title" => "คู่มือการใช้งาน",
+            "view" => "../manuals/view.php",
+            "href" => "manuals",
+            "SideIcon" => "fa-book",
+        ),
         "reservation" => array( 
             "title" => "จองยานพาหนะ",
             "view" => "../reservation/view.php",
@@ -184,6 +191,12 @@ class PageSetting
             "view" => "../dashboard/view.php",
             "href" => "",
             "SideIcon" => "fa-chalkboard"
+        ),
+        "manuals" => array( 
+            "title" => "คู่มือการใช้งาน",
+            "view" => "../manuals/view.php",
+            "href" => "manuals",
+            "SideIcon" => "fa-book",
         ),
         "mileout" => array (
             "title" => "บันทึกเลขไมล์ออกบริษัท",
