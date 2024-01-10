@@ -58,7 +58,7 @@ Class Do_Vehicle {
         $r = array(
             'vehicle'       => $Vehicle['vehicle_name'], 
             'id_vehicle'    => $Vehicle['id_vehicle'], 
-            'id_user'       => $_SESSION['sess_id_user'],
+            'id_user'       => $_SESSION['car_id_user'],
             'attachment'    => $Vehicle['attachment'],
             'date_uploaded' => $Vehicle['date_uploaded']
         );
@@ -281,7 +281,7 @@ Class Add_Reservation {
 
     public function getResData(){
         $r = [
-            'ref_id_site'        => $_SESSION['sess_ref_id_site'],
+            'ref_id_site'        => $_SESSION['car_ref_id_site'],
             'ref_id_vehicle'     => $this->id_vehicle,
             'ref_id_user'        => $this->id_user, 
             'traveler'           => $this->traveler, 

@@ -87,7 +87,7 @@ Class DataTable extends TableProcessing {
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
         $sql .= "LEFT JOIN tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
-        $sql .= "WHERE ref_id_user=".$_SESSION['sess_id_user']." ";
+        $sql .= "WHERE ref_id_user=".$_SESSION['car_id_user']." ";
         $sql .= "$status ";
         $sql .= "$vehicle ";
         $sql .= "$date ";

@@ -28,7 +28,7 @@ function Show_Sidebar($hrefNow){
         $hrefNow,
         $c['myHand']
     );
-    if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
+    if ($_SESSION['car_class_user'] == 1 || $_SESSION['car_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-users-cog'></i>";
         $r .= "<p>ส่วนของผู้ดูแล<i class='right fas fa-angle-left'></i></p></a>";   
@@ -50,7 +50,7 @@ function Show_Sidebar($hrefNow){
         $r .= "</ul></li>";
     }
 
-    if ($_SESSION['sess_class_user'] == 2) {
+    if ($_SESSION['car_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-cogs'></i>";
         $r .= "<p>จัดการระบบ<i class='right fas fa-angle-left'></i></p></a>";   
@@ -110,7 +110,7 @@ Class CounterSide{
             'myRes' => $myRes,
             'myHand'=> $myHand
         );
-        if ($_SESSION['sess_class_user'] == 1 || $_SESSION['sess_class_user'] == 2) {
+        if ($_SESSION['car_class_user'] == 1 || $_SESSION['car_class_user'] == 2) {
             $Approve = $this->Approve();
             $AllRes  = $this->AllRes();
             $r['Approve'] = $Approve;
@@ -122,7 +122,7 @@ Class CounterSide{
     public function myRes(){
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
-        $sql .= "WHERE ref_id_user= ".$_SESSION['sess_id_user']." ";
+        $sql .= "WHERE ref_id_user= ".$_SESSION['car_id_user']." ";
         try {
             $con = connect_database();
             $obj = new CRUD($con);
@@ -144,7 +144,7 @@ Class CounterSide{
     public function myHand(){
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
-        $sql .= "WHERE ref_id_user= ".$_SESSION['sess_id_user']." ";
+        $sql .= "WHERE ref_id_user= ".$_SESSION['car_id_user']." ";
         $sql .= "AND reservation_status = 4 ";
         try {
             $con = connect_database();
@@ -168,7 +168,7 @@ Class CounterSide{
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE reservation_status = 0 ";
-        $sql .= "AND ref_id_site = ".$_SESSION['sess_ref_id_site']." ";
+        $sql .= "AND ref_id_site = ".$_SESSION['car_ref_id_site']." ";
         try {
             $con = connect_database();
             $obj = new CRUD($con);
@@ -191,7 +191,7 @@ Class CounterSide{
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE ";
-        $sql .= "ref_id_site = ".$_SESSION['sess_ref_id_site']." ";
+        $sql .= "ref_id_site = ".$_SESSION['car_ref_id_site']." ";
         try {
             $con = connect_database();
             $obj = new CRUD($con);
@@ -250,7 +250,7 @@ Class CounterSide{
 //             $result .= "</ul>";
 //             $result .= "</li>";
 //         }
-//         } elseif (in_array($_SESSION['sess_class_user'], $value['Class'])) {
+//         } elseif (in_array($_SESSION['car_class_user'], $value['Class'])) {
 //             if(!$value["isTreeView"]){ // ไม่เป็น TreeView เมนูย่อย 
 //                 $value['href'] == "" || empty($value['href']) ? $href = "./" : $href = "?$prefix=".$value['href'];
 //                 $page == $key ? $active = "active" : $active = "";

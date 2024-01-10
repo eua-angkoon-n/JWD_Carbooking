@@ -136,7 +136,7 @@ Class DataTable extends TableProcessing {
                 $result .= "WHERE tb_vehicle.vehicle_status = 1 ";
                 break;
         }
-        $result .= "AND tb_vehicle.ref_id_site=".$_SESSION['sess_ref_id_site']." ";
+        $result .= "AND tb_vehicle.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         return $result;
     }
     

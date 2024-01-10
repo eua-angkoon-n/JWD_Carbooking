@@ -72,9 +72,9 @@ Class Calendar {
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "WHERE reservation_status <> 5 ";
-        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['sess_ref_id_site']." ";
+        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         if($this->mode == 'self'){
-            $sql .= "AND tb_reservation.ref_id_user=".$_SESSION['sess_id_user']." ";
+            $sql .= "AND tb_reservation.ref_id_user=".$_SESSION['car_id_user']." ";
         }
         return $sql;
     }
@@ -137,14 +137,14 @@ Class Side_Card {
     public function getSQL(){
         $this->justUser = false;
 
-        if($_SESSION['sess_class_user'] != 2 && $_SESSION['sess_class_user'] != 1){
+        if($_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 1){
             $this->justUser = true;
             $sql  = "SELECT * ";
             $sql .= "FROM tb_reservation ";
             $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle  = tb_reservation.ref_id_vehicle) ";
             $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
             $sql .= "WHERE reservation_status=1 "; 
-            $sql .= "AND ref_id_user = ".$_SESSION['sess_id_user'] ." ";
+            $sql .= "AND ref_id_user = ".$_SESSION['car_id_user'] ." ";
         } else {
             $sql  = "SELECT * ";
             $sql .= "FROM tb_reservation ";

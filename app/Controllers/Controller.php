@@ -1,5 +1,5 @@
 <?php 
-// if(empty($_SESSION['sess_id_user'])){ 
+// if(empty($_SESSION['car_id_user'])){ 
 //     $_SESSION = []; //empty array. 
 //     session_destroy(); 
 //     die(include('login.php')); 

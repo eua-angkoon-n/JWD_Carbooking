@@ -86,8 +86,8 @@ class Reservation{
     public function DoUser(){
         $sql  = "SELECT fullname, id_user ";
         $sql .= "FROM tb_user ";
-        $sql .= "WHERE ref_id_site=".$_SESSION['sess_ref_id_site']." ";
-        // $sql .= "AND ref_id_dept=".$_SESSION['sess_id_dept']." ";
+        $sql .= "WHERE ref_id_site=".$_SESSION['car_ref_id_site']." ";
+        // $sql .= "AND ref_id_dept=".$_SESSION['car_id_dept']." ";
 
         try {
             $con = connect_database('e-service');

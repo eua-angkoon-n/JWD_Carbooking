@@ -187,8 +187,8 @@
                     var js = JSON.parse(data);
                     console.log(js);
                     // return false;
-                    <?php if($_SESSION['sess_class_user'] != 1 && $_SESSION['sess_class_user'] != 2){ ?>
-                        if(js.id_user != <?php echo $_SESSION['sess_id_user']?>){
+                    <?php if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2){ ?>
+                        if(js.id_user != <?php echo $_SESSION['car_id_user']?>){
                             window.location.href = '?app=reservationList';
                         }
                     <?php }?>

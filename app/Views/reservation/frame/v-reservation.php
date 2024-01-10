@@ -187,7 +187,7 @@ $user = $r->getUser();
         <input type="hidden" value="" name="id_vehicle" id="id_vehicle" />
         <input type="hidden" value="" name="id_user" id="id_user" />
         <input type="hidden" value="" name="res_travel" id="res_travel" />
-        <input type="hidden" value="<?php echo $_SESSION['sess_ref_id_site'] ?>" name="site" id="site" />
+        <input type="hidden" value="<?php echo $_SESSION['car_ref_id_site'] ?>" name="site" id="site" />
         <input type="hidden" value="" name="map_place_id" id="map_place_id" />
         <input type="hidden" value="" name="map_lat" id="map_lat" />
         <input type="hidden" value="" name="map_lon" id="map_lon" />

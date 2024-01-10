@@ -154,8 +154,8 @@
             $('#res_date').data('daterangepicker').setEndDate(endDate);
 
 
-            $('#res_user').val('<?php echo $_SESSION['sess_fullname'] ?>');
-            $('#res_tel').val('<?php echo $_SESSION['sess_phone'] ?>');
+            $('#res_user').val('<?php echo $_SESSION['car_fullname'] ?>');
+            $('#res_tel').val('<?php echo $_SESSION['car_phone'] ?>');
 
             var id = $(this).data('id');
 

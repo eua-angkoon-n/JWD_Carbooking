@@ -179,7 +179,7 @@
                     var js = JSON.parse(data);
                     // console.log(js);
                     // return false;
-                    <?php if($_SESSION['sess_class_user'] != 1 && $_SESSION['sess_class_user'] != 2){ ?>
+                    <?php if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2){ ?>
                             window.location.href = './';
                     <?php }?>
                     $('.show_vehicle').text(js.vehicle_name);

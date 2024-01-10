@@ -15,14 +15,14 @@
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">
-                            <?PHP echo $_SESSION['sess_fullname']; ?></a>
+                            <?PHP echo $_SESSION['car_fullname']; ?></a>
                         <span class="text-white">ระดับ:
-                            <?PHP echo Setting::$classArr[$_SESSION['sess_class_user']]; ?>
+                            <?PHP echo Setting::$classArr[$_SESSION['car_class_user']]; ?>
                         </span>
                         <br>
                         <span class="text-white">
-                            ไซต์งาน: <?PHP echo $_SESSION['sess_site_initialname']; ?>
-                            แผนก: <?PHP echo $_SESSION['sess_dept_initialname']; ?>
+                            ไซต์งาน: <?PHP echo $_SESSION['car_site_initialname']; ?>
+                            แผนก: <?PHP echo $_SESSION['car_dept_initialname']; ?>
                         </span>
                             
                             </span>

@@ -300,7 +300,7 @@ Class Reservation_Detail {
     }
 
     public function getVehicle($id){
-        $sql = "SELECT * FROM tb_vehicle WHERE ref_id_site=".$_SESSION['sess_ref_id_site']." ";
+        $sql = "SELECT * FROM tb_vehicle WHERE ref_id_site=".$_SESSION['car_ref_id_site']." ";
 
         try {
             $con = connect_database();
@@ -436,7 +436,7 @@ Class Reservation_Edit {
             'ref_id_vehicle'     => $this->id_vehicle,
             'start_date'         => $this->start,
             'end_date'           => $this->end,
-            'ref_id_user_edited' => $_SESSION['sess_ref_id_site'],
+            'ref_id_user_edited' => $_SESSION['car_ref_id_site'],
             'date_edited'        => date("Y-m-d H:i:s")
         ];
         return $r;
