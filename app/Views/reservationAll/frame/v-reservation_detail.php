@@ -43,8 +43,7 @@
                                                         <div class="info-box-content">
                                                             <h5 class="info-box-text text-center text-primary">
                                                                 ช่วงเวลาการจอง</h4>
-                                                                <h6 class="info-box-number text-center mb-0" id="show_date">14 ธันวาคม
-                                                                    2566 08.00 น. ถึง 14 ธันวาคม 2566 09.00 น.
+                                                                <h6 class="info-box-number text-center mb-0" id="show_date">
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -59,7 +58,7 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p id="show_user">
-                                                            - นายทดสอบ ไว้ก่อน (00000000)
+                                                            - 
                                                         </p>
                                                     </div>
 
@@ -69,7 +68,7 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p class="show_place">
-                                                            PACS
+                                                            
                                                         </p>
                                                     </div>
 
@@ -80,10 +79,10 @@
                                                         <!-- /.user-block -->
                                                         <ul class="list-unstyled" id="show_companion">
                                                             <li>
-                                                                <a>เต้</a>
+                                                                <a></a>
                                                             </li>
                                                             <li>
-                                                                <a>เอื้ออังกูร</a>
+                                                                <a></a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -93,7 +92,7 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p id="show_reason">
-                                                            ไปศึกษางาน
+                                                            
                                                         </p>
                                                     </div>
                                                     <div class="post p-0" style="color:#000000;">
@@ -102,7 +101,7 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p id="show_acc">
-                                                            ไม่มี
+                                                            
                                                         </p>
                                                     </div>
                                                     <div class="post p-0" style="color:#000000;">
@@ -111,7 +110,7 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p id="show_driver">
-                                                            ไม่ต้องการ
+                                                            
                                                         </p>
                                                     </div>
                                                 </div>
@@ -143,7 +142,7 @@
                                                             class="img-fluid pad w-50 rounded mx-auto d-block mb-1" id="show_img">
                                                         <div class="ribbon-wrapper ribbon-lg">
                                                             <div class="ribbon text-lg" id="Show_Ribbon">
-                                                                Ribbon
+                                                                ไม่มีข้อมูล
                                                             </div>
                                                         </div>
                                                     </div>

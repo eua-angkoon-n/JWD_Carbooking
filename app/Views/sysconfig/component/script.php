@@ -63,6 +63,7 @@
                     },
                     beforeSend: function () {},
                     success: function (data) {
+                        // console.log(data);return;
                         if(data == 1){
                             swal({
                                     title: "บันทึกสำเร็จ !!",

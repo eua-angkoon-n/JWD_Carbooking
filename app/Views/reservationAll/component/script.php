@@ -212,7 +212,9 @@
                 success: function (data) {
                     var js = JSON.parse(data);
                     // console.log(js);
-                    // return false;
+                    if(js == true){
+                        window.location.href = '?app=res';
+                    }
                     <?php if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2){ ?>
                         if(js.id_user != <?php echo $_SESSION['car_id_user']?>){
                             window.location.href = '?app=reservationList';

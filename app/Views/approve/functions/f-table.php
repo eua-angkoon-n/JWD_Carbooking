@@ -76,6 +76,7 @@ Class DataTable extends TableProcessing {
         $sql .= "LEFT JOIN tb_driver ON (tb_driver.id_driver = tb_reservation.ref_id_driver) ";
         $sql .= "WHERE ";
         $sql .= "reservation_status = 0 ";
+        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         $sql .= "$vehicle ";
         $sql .= "$date ";
 

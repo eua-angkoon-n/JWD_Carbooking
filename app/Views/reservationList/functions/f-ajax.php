@@ -120,6 +120,8 @@ Class Reservation_Detail {
         $TimeLine = 0;
         $hand     = 0;
         $Res      = $this->getResData();
+        if(!$Res)
+            return true;
         if($Res['reservation_status'] == 4 || $Res['reservation_status'] == 6){
             $Mile    = $this->getMileData();
             $MileIMG = $this->getMileIMG();
@@ -151,6 +153,8 @@ Class Reservation_Detail {
             $obj = new CRUD($con);
         
             $result = $obj->customSelect($sql);
+            if(empty($result))
+                return false;
 
             return $result;
         } catch (PDOException $e) {

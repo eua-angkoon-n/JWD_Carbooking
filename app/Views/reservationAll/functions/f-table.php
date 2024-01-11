@@ -75,6 +75,7 @@ Class DataTable extends TableProcessing {
         $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
         $sql .= "LEFT JOIN tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
         $sql .= "WHERE 1=1 ";
+        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         $sql .= "$vehicle ";
         $sql .= "$date ";
 
