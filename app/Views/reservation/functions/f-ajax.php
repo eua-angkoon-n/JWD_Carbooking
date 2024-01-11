@@ -274,6 +274,7 @@ Class Add_Reservation {
             if(!IsNullOrEmptyString($this->phone)){
                $this->chkPhoneEService();
             }
+            $this->sendLineNotify($idRes);
             return $idRes;
         }
         return false;
@@ -390,6 +391,79 @@ Class Add_Reservation {
                 ];
                 $obj->update($p, "id_user=$this->id_user", "tb_user");
             } 
+            
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function sendLineNotify($idRes){
+
+        getLineConfig($token, $notify);
+        if(!$notify)
+            return;
+        $res     = $this->getReservationData($idRes);
+        $vehicle = $res['vehicle_name'];
+        $date    = getDateString2($res['start_date'], $res['end_date']);
+        $name    = $_SESSION['car_fullname'];
+        $dept    = $_SESSION['car_dept_initialname'];
+        $comp    = $res['traveling_companion'];
+        $driver  = $res['driver_name'];
+
+        $sToken    = $token;
+        $sMessage  = "\nจองยานพาหนะ: $vehicle\n";
+        $sMessage .= "วันที่: $date\n";
+        $sMessage .= "ชื่อผู้จอง: $name\n";
+        $sMessage .= "แผนกที่จอง: $dept\n";
+        $sMessage .= "ผู้ร่วมเดินทาง: $comp\n";
+        $sMessage .= "พนักงานขับรถ: $driver\n";
+        $sMessage .= "รายละเอียด/อนุมัติ: ebooking.cc.pcs-plp.com/carbooking/?".PageSetting::$prefixController."=res".urlencode('&id=').$idRes;
+    
+
+        $chOne = curl_init(); 
+        curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
+        curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+        curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+        curl_setopt( $chOne, CURLOPT_POST, 1); 
+        curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+        $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+        curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+        curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1); 
+    
+        try {
+            $result = curl_exec($chOne);
+            if ($result === false) {
+                throw new Exception(curl_error($chOne));
+            }
+        
+            $result_ = json_decode($result, true);
+            // echo "status : " . $result_['status'];
+            // echo "message : " . $result_['message'];
+        } catch (Exception $e) {
+            // echo 'Caught exception: ' . $e->getMessage();
+        } finally {
+            curl_close($chOne);
+        }
+    }
+
+    public function getReservationData($id){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "LEFT JOIN tb_driver ON (tb_driver.id_driver = tb_reservation.ref_id_driver) ";
+        $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
+        $sql .= "WHERE id_reservation=$id ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+
+            $fetchRow = $obj->customSelect($sql);
+            return $fetchRow;
             
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
