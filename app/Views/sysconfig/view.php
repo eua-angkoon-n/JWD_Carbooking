@@ -29,15 +29,15 @@ $List = new List_Config();
         <div class="row">
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
-              <h5 class="card-title">การจองยานพาหนะ</h5>
+              <h5 class="card-title"><i class="fas fa-book-open"></i> การจองยานพาหนะ</h5>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                   <div class="form-group">
                     <label for="reservation_t">ผู้ใช้งานจองรถก่อนใช้งานอย่างน้อย (ชั่วโมง):</label>
                     <div class="row">
-                      <div class="col-9">
+                      <div class="col-4">
                         <input type="number" class="form-control" id="reservation_t" name="reservation_t"
                           placeholder="นาที" value="<?php echo $List->getReservation_t() ?>"
                           aria-describedby="inputGroupPrepend" required>
@@ -63,22 +63,28 @@ $List = new List_Config();
           </div>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
-              <h5 class="card-title">การแจ้งเตือนผ่านไลน์</h5>
+              <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์</h5>
             </div>
             <div class="card-body">
             <div class="row">
-                <div class="col-sm-12 ">
-                  <div class="form-group">
-                    <label for="reservation_t">Line Access Token:</label>
-                    <div class="row">
-                      <div class="col-9">
-                        <input type="text" class="form-control" id="l_token" name="l_token"
+              <div class="col-sm-12 ">
+                <div class="form-group">
+                  <label for="reservation_t">Line Access Token:</label>
+                  <div class="row">
+                    <div class="col-9">
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="l_token" name="l_token"
                           placeholder="Line Access Token..." value="<?php echo $List->getLineToken() ?>"
                           aria-describedby="inputGroupPrepend">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary form-control" type="button" id="toggleVisibilityBtn">
+                            <i class="fa fa-eye-slash justify-content-center align-middle pb-2" id="eyeIcon"></i>
+                          </button>
+                        </div>
                       </div>
-
                     </div>
                   </div>
+                </div>
                 </div>
                 <div class="col-sm-12 ">
                   <div class="form-group">
@@ -97,7 +103,7 @@ $List = new List_Config();
         <div class="row">
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
-              <h5 class="card-title">เวอร์ชันของระบบ</h5>
+              <h5 class="card-title"><i class="fas fa-code-branch"></i> เวอร์ชันของระบบ</h5>
             </div>
             <div class="card-body">
 

@@ -466,7 +466,7 @@ Class Reservation_Detail {
         $r .= "                 <div class='card-body'>";
         if(!empty($data['handoverImg']['inside'])){
             foreach ($data['handoverImg']['inside'] as $v){
-                $r .= "             <img class='img-thumbnail modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
+                $r .= "             <img class='modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
             }
         } else {
             $r .= "                 <div class='text-center'>ไม่มีรูปภาพ</div>";
@@ -480,7 +480,7 @@ Class Reservation_Detail {
         $r .= "                 <div class='card-body'>";
         if(!empty($data['handoverImg']['outside'])){
             foreach ($data['handoverImg']['outside'] as $v){
-                $r .= "             <img class='img-thumbnail modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
+                $r .= "             <img class='modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
             }
         } else {
             $r .= "                 <div class='text-center'>ไม่มีรูปภาพ</div>";
@@ -494,7 +494,7 @@ Class Reservation_Detail {
         $r .= "                 <div class='card-body'>";
         if(!empty($data['handoverImg']['fuel'])){
             foreach ($data['handoverImg']['fuel'] as $v){
-                $r .= "             <img class='img-thumbnail modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
+                $r .= "             <img class='modal-img m-0 p-0' src='dist/temp_img/$v' data-id='dist/temp_img/$v' alt='Img'  data-toggle='modal' data-target='#modal-img'>";
             }
         } else {
             $r .= "                 <div class='text-center'>ไม่มีรูปภาพ</div>";
@@ -530,7 +530,7 @@ Class Reservation_Detail {
         foreach($data as $k => $v){
             $r .= "         <tr>";
             if($v['img'] != 0){
-                $r .= "             <td class='text-center'><img class='img-thumbnail modal-img m-0 p-0'src='dist/temp_img/".$v['img']."' data-id='dist/temp_img/".$v['img']."' alt='Img'  data-toggle='modal' data-target='#modal-img'></td>";
+                $r .= "             <td class='text-center'><img class='modal-img m-0 p-0'src='dist/temp_img/".$v['img']."' data-id='dist/temp_img/".$v['img']."' alt='Img'  data-toggle='modal' data-target='#modal-img'></td>";
             } else {
                 $r .= "             <td></td>";
             }

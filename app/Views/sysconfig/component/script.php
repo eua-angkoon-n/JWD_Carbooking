@@ -39,6 +39,24 @@
 
     });
 
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputPassword = document.getElementById("l_token");
+        var toggleVisibilityBtn = document.getElementById("toggleVisibilityBtn");
+        var eyeIcon = document.getElementById("eyeIcon");
+
+        toggleVisibilityBtn.addEventListener("click", function () {
+            if (inputPassword.type === "password") {
+                inputPassword.type = "text";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            } else {
+                inputPassword.type = "password";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            }
+        });
+    });
+
     //จบ ปุ่มต่างๆ///////////////////////////////////////////////////////////////////////
     //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
 
