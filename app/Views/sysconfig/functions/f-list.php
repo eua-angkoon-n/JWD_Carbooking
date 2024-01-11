@@ -105,4 +105,75 @@ Class List_Config {
             $con = null;
         }
     }
+
+    public function getLineToken(){
+        $sql  = "SELECT config_value ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_token' AND ref_id_site =".$_SESSION['car_ref_id_site']." ";
+        
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect($sql);
+
+            if(empty($r['config_value'])){
+                return "";
+            }
+            return $r['config_value'];
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getLineNotify(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='l_notify' AND ref_id_site =".$_SESSION['car_ref_id_site']." ");
+
+            if(empty($r['config_value'])){
+                $w1 = "";
+                $w2 = "checked"; 
+            } else {
+                switch($r['config_value']){
+                    case 1:
+                        $w1 = "checked";
+                        $w2 = "";
+                        break;
+                    case 2:
+                        $w1 = "";
+                        $w2 = "checked";
+                        break;
+                }
+            }
+            
+            $d = '<div class="icheck-success d-inline">
+                    <input type="radio" id="l_notify1" name="l_notify" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                         <label for="l_notify1">
+                            เปิดการแจ้งเตือน
+                        </label>
+                </div>
+                <div class="icheck-danger d-inline ">
+                    <input type="radio" id="l_notify2" name="l_notify" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                        <label for="l_notify2">
+                         ปิดการแจ้งเตือน
+                        </label>
+                </div>';
+
+            return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
 }

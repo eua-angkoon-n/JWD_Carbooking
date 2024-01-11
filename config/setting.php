@@ -9,6 +9,7 @@ class Setting
     public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้ดูแลระบบ");	
     public static $keygen = 'Pcs@'; //sha1+password
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
+    public static $domain = "ebooking.cc.pcs-plp.com/carbooking";
     public static $pass_mail = "Pcs@1234";
     public static $PathImg = "../../../../dist/temp_img";
     public static $PathImgMile = "../../../../../dist/temp_img";

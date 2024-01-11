@@ -423,7 +423,7 @@ Class Add_Reservation {
         $sMessage .= "แผนกที่จอง: $dept\n";
         $sMessage .= "ผู้ร่วมเดินทาง: $comp\n";
         $sMessage .= "พนักงานขับรถ: $driver\n";
-        $sMessage .= "รายละเอียด/อนุมัติ: ebooking.cc.pcs-plp.com/carbooking/?".PageSetting::$prefixController."=res".urlencode('&id=').$idRes;
+        $sMessage .= "รายละเอียด/อนุมัติ: ".Setting::$domain."/?".PageSetting::$prefixController."=res".urlencode('&id=').$idRes;
     
 
         $chOne = curl_init(); 
