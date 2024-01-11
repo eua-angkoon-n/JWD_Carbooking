@@ -31,6 +31,13 @@
             }
         })
 
+        <?php if($id != ''){ ?>
+            var id = <?php echo $id?>;
+            show_reservation(id);
+            $('#carouselPage').carousel('next');
+            window.scrollTo(0, 0);
+        <?php } ?>
+
         $(document).off("click", ".btn-approve").on("click", ".btn-approve", function (e) {
             var id = $(this).data('id');
             var ac = $(this).data('action');;
@@ -206,6 +213,13 @@
                     var js = JSON.parse(data);
                     // console.log(js);
                     // return false;
+                    <?php if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2){ ?>
+                        if(js.id_user != <?php echo $_SESSION['car_id_user']?>){
+                            window.location.href = '?app=reservationList';
+                        }else {
+                            window.location.href = '?app=reservationList&id='+js.id_user;
+                        }
+                    <?php }?>
                     $('.show_vehicle').text(js.vehicle_name);
                     show_date(js.start, js.end);
                     $('#show_user').text(js.userName);
@@ -278,7 +292,6 @@
 
 
         function show_date(start, end) {
-
             var months = [
                 "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
                 "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -289,17 +302,17 @@
 
             var startDay = startDate.getDate();
             var startMonth = months[startDate.getMonth()];
-            var startYear = startDate.getFullYear() + 543; // Convert to Buddhist Era
+            var startYear = startDate.getFullYear()
 
-            var startHours = startDate.getHours();
-            var startMinutes = startDate.getMinutes();
+            var startHours = startDate.getHours().toString().padStart(2, '0');
+            var startMinutes = startDate.getMinutes().toString().padStart(2, '0');
 
             var endDay = endDate.getDate();
             var endMonth = months[endDate.getMonth()];
-            var endYear = endDate.getFullYear() + 543; // Convert to Buddhist Era
+            var endYear = endDate.getFullYear()
 
-            var endHours = endDate.getHours();
-            var endMinutes = endDate.getMinutes();
+            var endHours = endDate.getHours().toString().padStart(2, '0');
+            var endMinutes = endDate.getMinutes().toString().padStart(2, '0');
 
             var showDate =
                 `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;

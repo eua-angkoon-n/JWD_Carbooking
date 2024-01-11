@@ -286,7 +286,7 @@
                                 function () {
                                     event.preventDefault();
                                     event.stopPropagation();
-                                    window.location.href = '?app=reservationList&id='+data;
+                                    window.location.href = '?<?php echo PageSetting::$prefixController?>=reservationList&id='+data;
                                 })
                         }
 
@@ -354,14 +354,14 @@
 
         var startDay = startDate.getDate();
         var startMonth = months[startDate.getMonth()];
-        var startYear = startDate.getFullYear() + 543; // Convert to Buddhist Era
+        var startYear = startDate.getFullYear()
 
         var startHours = startDate.getHours();
         var startMinutes = startDate.getMinutes();
 
         var endDay = endDate.getDate();
         var endMonth = months[endDate.getMonth()];
-        var endYear = endDate.getFullYear() + 543; // Convert to Buddhist Era
+        var endYear = endDate.getFullYear() 
 
         var endHours = endDate.getHours();
         var endMinutes = endDate.getMinutes();

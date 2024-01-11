@@ -41,9 +41,9 @@ function Show_Sidebar($hrefNow){
             $c['Approve']
         );
         $r .= SideBar(
-            PageSetting::$AppPage["reservationAll"]["title"], 
-            PageSetting::$AppPage["reservationAll"]["href"], 
-            PageSetting::$AppPage["reservationAll"]["SideIcon"], 
+            PageSetting::$AppPage["res"]["title"], 
+            PageSetting::$AppPage["res"]["href"], 
+            PageSetting::$AppPage["res"]["SideIcon"], 
             $hrefNow,
             $c['AllRes']
         );

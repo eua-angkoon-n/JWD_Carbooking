@@ -153,10 +153,10 @@ class PageSetting
             "href" => "approve",
             "SideIcon" => "fa-stamp"
         ),
-        "reservationAll" => array (
+        "res" => array (
             "title" => "รายการจองทั้งหมด",
             "view" => "../reservationAll/view.php",
-            "href" => "reservationAll",
+            "href" => "res",
             "SideIcon" => "fa-car"
         ),
         "vehicleconfig" => array (

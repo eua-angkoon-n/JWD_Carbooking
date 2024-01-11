@@ -134,32 +134,32 @@
 
    function show_date(start, end) {
 
-var months = [
-    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
-];
+     var months = [
+       "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+       "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+     ];
 
-var startDate = new Date(start);
-var endDate = new Date(end);
+     var startDate = new Date(start);
+     var endDate = new Date(end);
 
-var startDay = startDate.getDate();
-var startMonth = months[startDate.getMonth()];
-var startYear = startDate.getFullYear() + 543; // Convert to Buddhist Era
+     var startDay = startDate.getDate();
+     var startMonth = months[startDate.getMonth()];
+     var startYear = startDate.getFullYear()
 
-var startHours = startDate.getHours();
-var startMinutes = startDate.getMinutes();
+     var startHours = startDate.getHours();
+     var startMinutes = startDate.getMinutes();
 
-var endDay = endDate.getDate();
-var endMonth = months[endDate.getMonth()];
-var endYear = endDate.getFullYear() + 543; // Convert to Buddhist Era
+     var endDay = endDate.getDate();
+     var endMonth = months[endDate.getMonth()];
+     var endYear = endDate.getFullYear()
 
-var endHours = endDate.getHours();
-var endMinutes = endDate.getMinutes();
+     var endHours = endDate.getHours();
+     var endMinutes = endDate.getMinutes();
 
-var showDate =
-    `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;
+     var showDate =
+       `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;
 
-$('#show_date').text(showDate);
+     $('#show_date').text(showDate);
 }
 
 function show_companion(companion) {

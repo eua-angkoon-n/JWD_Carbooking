@@ -491,6 +491,7 @@ function convertToThaiDate($endDate) {
         ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
         $thaiDate
     );
+    
 
     return $thaiDate;
 }
@@ -633,15 +634,17 @@ function getDateString2($start, $end){
     $dateStart = convertToThaiDate($start);
     $dateEnd = convertToThaiDate($end);
 
-    // if($dateStart == $dateEnd){
-        $s  = DateTime::createFromFormat('Y-m-d H:i:s', $start);
-        $e  = DateTime::createFromFormat('Y-m-d H:i:s', $end);
-        $sd = $s->format('H:i');
-        $ed = $e->format('H:i');
-        $r  = "$dateStart $sd น. ถึง $dateEnd $ed น.";
-    // } else {
-    //     $r = "<h6 class='text-center'>$dateStart<br>ถึง<br>$dateEnd</h6>";
-    // }
+    $s  = DateTime::createFromFormat('Y-m-d H:i:s', $start);
+    $e  = DateTime::createFromFormat('Y-m-d H:i:s', $end);
+    $sd = sprintf('%02d:%02d', $s->format('H'), $s->format('i'));
+    $ed = sprintf('%02d:%02d', $e->format('H'), $e->format('i'));
+
+    // ลบเครื่องหมายทศนิยมตัวแรกที่เป็นศูนย์
+    $sd = ltrim($sd, '0');
+    $ed = ltrim($ed, '0');
+
+    $r  = "$dateStart $sd น. ถึง $dateEnd $ed น.";
+
     return $r;
 }
 
@@ -795,6 +798,57 @@ function sysVersion(&$phase, &$version){
 
         $phase   = $r['phase'];
         $version = $r['version'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
+
+function getLineConfig(&$token, &$notify){
+    $sql  = "SELECT ( ";
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'l_token' ";
+    $sql .= "               AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+    $sql .= "       ) AS l_token, ";
+    $sql .= "       ( "; 
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'l_notify' ";
+    $sql .= "               AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+    $sql .= "       ) AS l_notify ";
+    $sql .= "FROM tb_config ";
+    $sql .= "WHERE 1=1";
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $r = $obj->customSelect($sql);
+
+        if(empty($r['l_token']) || empty($r['l_notify'])){
+            $sql  = "SELECT ( ";
+            $sql .= "           SELECT config_value ";
+            $sql .= "           FROM tb_config ";
+            $sql .= "           WHERE config = 'l_token' ";
+            $sql .= "               AND ref_id_site=1";
+            $sql .= "       ) AS l_token, ";
+            $sql .= "       ( "; 
+            $sql .= "           SELECT config_value ";
+            $sql .= "           FROM tb_config ";
+            $sql .= "           WHERE config = 'l_notify' ";
+            $sql .= "               AND ref_id_site=1";
+            $sql .= "       ) AS l_notify ";
+            $sql .= "FROM tb_config ";
+            $sql .= "WHERE 1=1";
+
+            $r = $obj->customSelect($sql);
+        }
+
+        $token   = $r['l_token'];
+        $notify  = $r['l_notify'] == 1 ? true : false;
     } catch (PDOException $e) {
         return "Database connection failed: " . $e->getMessage();
     } catch (Exception $e) {

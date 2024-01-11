@@ -190,21 +190,6 @@ Class DataTable extends TableProcessing {
         return $result;
     }
 
-    public function getDateString($start, $end){
-        $dateStart = convertToThaiDate($start);
-        $dateEnd = convertToThaiDate($end);
-
-        if($dateStart == $dateEnd){
-            $s = DateTime::createFromFormat('Y-m-d H:i:s', $start);
-            $e = DateTime::createFromFormat('Y-m-d H:i:s', $end);
-            $sd = $s->format('H:i');
-            $ed = $e->format('H:i');
-            $r = "<h6 class='text-center'>$dateStart<br>$sd ถึง $ed น.</h6>";
-        } else {
-            $r = "<h6 class='text-center'>$dateStart<br>ถึง<br>$dateEnd</h6>";
-        }
-        return $r;
-    }
 
     public function Div($id, $div){
 

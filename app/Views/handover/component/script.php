@@ -211,7 +211,6 @@
 
 
         function show_date(start, end) {
-
             var months = [
                 "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
                 "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -222,17 +221,17 @@
 
             var startDay = startDate.getDate();
             var startMonth = months[startDate.getMonth()];
-            var startYear = startDate.getFullYear() + 543; // Convert to Buddhist Era
+            var startYear = startDate.getFullYear()
 
-            var startHours = startDate.getHours();
-            var startMinutes = startDate.getMinutes();
+            var startHours = startDate.getHours().toString().padStart(2, '0');
+            var startMinutes = startDate.getMinutes().toString().padStart(2, '0');
 
             var endDay = endDate.getDate();
             var endMonth = months[endDate.getMonth()];
-            var endYear = endDate.getFullYear() + 543; // Convert to Buddhist Era
+            var endYear = endDate.getFullYear()
 
-            var endHours = endDate.getHours();
-            var endMinutes = endDate.getMinutes();
+            var endHours = endDate.getHours().toString().padStart(2, '0');
+            var endMinutes = endDate.getMinutes().toString().padStart(2, '0');
 
             var showDate =
                 `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;
