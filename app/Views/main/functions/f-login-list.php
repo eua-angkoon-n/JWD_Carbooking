@@ -1,52 +1,78 @@
 <?php 
-ob_start();
-session_start();
-header('Content-Type: text/html; charset=utf-8');
-date_default_timezone_set('Asia/Bangkok');
+// ob_start();
+// session_start();
+// header('Content-Type: text/html; charset=utf-8');
+// date_default_timezone_set('Asia/Bangkok');
 
-require_once __DIR__ . "/../../../../config/connectDB.php";
-require_once __DIR__ . "/../../../../config/setting.php";
+// require_once __DIR__ . "/../../../../config/connectDB.php";
+// require_once __DIR__ . "/../../../../config/setting.php";
 
-require_once __DIR__ . "/../../../../tools/crud.tool.php";
-require_once __DIR__ . "/../../../../tools/function.tool.php";
+// require_once __DIR__ . "/../../../../tools/crud.tool.php";
+// require_once __DIR__ . "/../../../../tools/function.tool.php";
 
-$action = $_POST['action'];
 
-// echo json_encode($_POST);
-// exit();
+Class LoginList{
 
-switch ($action) {
-    case 'login' : //ยกเลิกการจอง
-        $Call   = new Login($_POST['data']);
-        $Data   = $Call->getLogin();
-        $Result = $Data;
-        break;
-    case 'regis': //ดูรายละเอียดการจอง
-        $Call = new Register($_POST['data']);
-        $Data   = $Call->getIDRegister();
-        $Result = ($Data);
-        break;
-}
-
-echo $Data;
-exit();
-
-Class Login{
-    private $email;
-    private $pass;
-    private $site;
-    public function __construct($data){
-        parse_str($data, $d);
-
-        $this->email = $d['email'];
-        $this->pass  = $d['password'];
-        $this->site  = $d['slt_manage_site'];
+    public function getSite(){
+        return $this->SQLSite();
     }
 
-    public function getLogin(){
-        $email = $this->email;
-        $pass  = $this->pass;
-        $slt_manage_site = $this->site;
+    public function getDept(){
+        return $this->SQLDept();
+    }
+
+    public function SQLSite(){
+        $sql  = "SELECT * ";  
+        $sql .= "FROM tb_site ";
+        $sql .= "WHERE site_status=1 ";
+        $sql .= "ORDER BY site_initialname DESC";
+
+        $conn = connect_database("login");
+        $obj  = new CRUD($conn);
+
+        try{
+            $fetchRow = $obj->fetchRows($sql);
+            $site = "";
+            if (count($fetchRow)>0) {
+                foreach($fetchRow as $key => $value) { 
+                    //$rowSite[$key]['id_site']==1 ? $selected='selected' : $selected='';
+                    $site .=  '<option  value="'.$fetchRow[$key]['id_site'].'">'.$fetchRow[$key]['site_initialname'].' - '.$fetchRow[$key]['site_name'].'</option>';
+                }
+            }
+            return $site;
+        } catch(Exception $e) {
+            return "Caught exception : <b>".$e->getMessage()."</b><br/>";
+        } finally {
+            $conn = null;
+        }
+    }
+
+    public function SQLDept(){
+        $sql  = "SELECT * ";  
+        $sql .= "FROM tb_dept ";
+        $sql .= "WHERE dept_status=1 ";
+        $sql .= "ORDER BY id_dept ASC";
+
+        $conn = connect_database("login");
+        $obj  = new CRUD($conn);
+
+        try{
+            $fetchRow = $obj->fetchRows($sql);
+            $site = "";
+            if (count($fetchRow)>0) {
+                foreach($fetchRow as $key => $value) { 
+                    $site .=  '<option  value="'.($key+1).'">'.$fetchRow[$key]['dept_name'].' - '.$fetchRow[$key]['dept_initialname'].'</option>';
+                }
+            }
+            return $site;
+        } catch(Exception $e) {
+            return "Caught exception : <b>".$e->getMessage()."</b><br/>";
+        } finally {
+            $conn = null;
+        }
+    }
+
+    public function getLogin($email,$pass,$slt_manage_site){
         if(isset($email) && isset($pass) ){
             $email = trim($email);
             $pass = trim($pass);
@@ -68,7 +94,7 @@ Class Login{
                 $Row = $obj->customSelect($query_login);  
 
                 if(empty($Row['id_user'])){
-                    return 0;
+                    return '<script>sweetAlert("ผิดพลาด...", "ไม่พบชื่อผู้ใช้งานตามที่ระบุ", "error");</script>';
                 }
 
                 if (((!empty($Row) && ($Row['chk_ref_id_site']!='' || $Row['ref_id_site']==$slt_manage_site)) || $Row['class_user']==5) && $Row['status_user']==1){
@@ -82,10 +108,9 @@ Class Login{
                     $_SESSION['car_class_user'] = $this->getClassUser($Row['id_user']);
                     $_SESSION['car_id_dept'] = $Row['ref_id_dept'];
                     $_SESSION['car_dept_name'] = $Row['dept_name'];
-                    $_SESSION['car_dept_initialname'] = $Row['dept_initialname'];    
-                    $_SESSION['car_phone'] = $Row['phone'];
+                    $_SESSION['car_dept_initialname'] = $Row['dept_initialname'];      
                     $_SESSION['car_status_user'] = $Row['status_user'];
-                    sysVersion($_SESSION['phase'], $_SESSION['version']);
+                    $_SESSION['car_popup_howto'] = 0;
                  
                     $fetchPermission= $obj->fetchRows("SELECT tb_permission.* FROM tb_permission WHERE ref_class_user=".$Row['class_user']."");
                     foreach($fetchPermission as $key=>$value){
@@ -116,7 +141,7 @@ Class Login{
         $sql .= "WHERE ref_id_user = $id ";
 
         try{
-            $conn = connect_database();
+            $conn = connect_database("login");
             $obj  = new CRUD($conn);
 
             $fetchRow = $obj->customSelect($sql);
@@ -217,5 +242,4 @@ Class Register{
         }
     }
 }
-
 ?>

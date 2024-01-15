@@ -22,7 +22,7 @@
                         <br>
                         <span class="text-white">
                             ไซต์งาน: <?PHP echo $_SESSION['car_site_initialname']; ?>
-                            แผนก: <?PHP echo $_SESSION['car_dept_initialname']; ?>
+                            แผนก: <?PHP echo $_SESSION['car_dept_initialname']?>
                         </span>
                             
                             </span>

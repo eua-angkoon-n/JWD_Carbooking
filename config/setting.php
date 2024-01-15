@@ -180,7 +180,7 @@ class PageSetting
         ),
         "logout" => array (
             "title" => "ออกจากระบบ",
-            "view" => "../vehicleconfig/view.php",
+            "view" => "../main/logout.php",
             "href" => "logout",
             "SideIcon" => "fa-sign-out-alt"
         ),
