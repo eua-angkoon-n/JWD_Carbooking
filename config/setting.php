@@ -5,8 +5,9 @@ class Setting
     public static $DefaultProvinceTH = 'สมุทรสาคร';
     public static $DefaultProvince = 'Samut Sakhon';
     public static $title = "ระบบจองรถธุรการ";
+    public static $titleMile = "ระบบบันทึกเลขไมล์ จองรถธุรการ";
     public static $SiteList = array('PCS', 'JPK', 'JPAC', 'PACM', 'PLP', 'PACS', 'PACA', 'PACT');
-    public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้ดูแลระบบ");	
+    public static $classArr = array(0=> "ผู้ใช้ระบบ", 1 => "ธุระการ", 2 => "ผู้ดูแลระบบ", 3 => "ผู้บันทึก");	
     public static $keygen = 'Pcs@'; //sha1+password
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $domain = "ebooking.cc.pcs-plp.com/carbooking";
@@ -216,6 +217,12 @@ class PageSetting
             "view" => "../mileEdit/view.php",
             "href" => "editMile",
             "SideIcon" => "fa-chalkboard"
+        ),
+        "logout" => array (
+            "title" => "ออกจากระบบ",
+            "view" => "../../../app/Views/main/logout.php",
+            "href" => "logout",
+            "SideIcon" => "fa-sign-out-alt"
         ),
     );
 

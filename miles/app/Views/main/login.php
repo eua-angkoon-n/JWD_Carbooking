@@ -12,14 +12,14 @@ $Dept = $Call->getDept();
  <?php include(__DIR__ . '/component/style-login.php'); ?>
 </head>
 
-<body class="hold-transition login-page" style="background:url(dist/img/bg-img.png) no-repeat; background-position: 50% center;">
+<body class="hold-transition login-page" style="background:url(../dist/img/bg-img.png) no-repeat; background-position: 50% center;">
 
 <section class="h-100">
     <div class="container h-100 col-md-12">
         <div class="row justify-content-md-center h-100">
             <div class="card-wrapper">
                 <div class="brand text-center">
-                    <img src="dist/img/SCGJWDLogo.png" alt="logo" class="logo img-responsive m-0">
+                    <img src="../dist/img/SCGJWDLogo.png" alt="logo" class="logo img-responsive m-0">
                 </div>
                 <div class="card fat">
                     <div class="card-body">
@@ -113,8 +113,8 @@ $Dept = $Call->getDept();
                             <div class="form-group m-0">
                                 <button type="submit" class="btn btn-primary btn-block" id="chk_login">เข้าระบบ</button>
                             </div>
-                            <div class="mt-4 text-center"><a href="#" class="btn-register text-pimary"><i
-                                        class="fas fa-user-plus"></i>คลิกที่นี่เพื่อลงทะเบียนใช้งาน</a></div>
+                            <!-- <div class="mt-4 text-center"><a href="#" class="btn-register text-pimary"><i
+                                        class="fas fa-user-plus"></i>คลิกที่นี่เพื่อลงทะเบียนใช้งาน</a></div> -->
                         </form>
                     </div>
                 </div>

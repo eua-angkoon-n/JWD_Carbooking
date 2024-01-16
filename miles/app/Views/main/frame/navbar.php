@@ -19,6 +19,9 @@
           <li class="nav-item">
                     <a href="<?php echo "?".PageSetting::$prefixController."=".PageSetting::$MilePage['manuals']['href']?>" class="nav-link" style="color:white"><strong><?php echo PageSetting::$MilePage['manuals']['title']?></strong></a>
                 </li>
+          <li class="nav-item">
+          <a href="<?php echo "?".PageSetting::$prefixController."=".PageSetting::$MilePage['logout']['href']?>" class="nav-link" style="color:white"><strong><?php echo PageSetting::$MilePage['logout']['title']?></strong></a>
+          </li>
         </ul>
 
 
