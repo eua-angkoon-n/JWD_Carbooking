@@ -61,6 +61,18 @@
             // console.log($('#ListForm').serialize());
         });
            
+        $('#date_start').prop('disabled', true);
+        
+        $('input[name="r1"]').on('change', function() {
+            var selectedValue = $('input[name="r1"]:checked').val();
+
+            // ถ้าเลือก rDate
+            if (selectedValue === '1') {
+                $('#date_start').prop('disabled', false);
+            } else {
+                $('#date_start').prop('disabled', true);
+            }
+        });
            
          $(document).off("click", ".modalMile").on("click", ".modalMile", function (e) {
             var id       = $(this).data('id');

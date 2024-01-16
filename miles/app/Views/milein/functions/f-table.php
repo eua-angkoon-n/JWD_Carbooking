@@ -15,6 +15,7 @@ Class DataTable extends TableProcessing {
     public $start;
     public $end;
     public $vehicle;
+    public $radio;
     // public $status;
     
     public function __construct($formData,$TableSET){
@@ -25,6 +26,7 @@ Class DataTable extends TableProcessing {
         $date = DateTime::createFromFormat('d/m/Y', $data['date_start']);
         $this->start = $date ? $date->format('Y-m-d') : null;
 
+        $this->radio = $data['r1'];
         $this->vehicle = $data['res_vehicle'];
     }   
     public function getTable(){
@@ -75,8 +77,11 @@ Class DataTable extends TableProcessing {
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
         $sql .= "WHERE reservation_status=3 ";
+        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         $sql .= "$vehicle ";
-        $sql .= "$date ";
+        if($this->radio == 1){
+            $sql .= "$date ";
+        }
 
         $sql .= "$this->query_search ";
         if($OrderBY) {
