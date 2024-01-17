@@ -22,7 +22,7 @@ class Setting
     );	//ข้อความ เกี่ยวกับความปลอดภัย
 
     public static $reservationStatus = array(0=>"รอตรวจสอบ", 1=>"อนุมัติ", 2=>"ไม่อนุมัติ", 3=>"กำลังใช้งาน", 4=>"คืนรถ" , 5=>"ยกเลิก", 6=>"ส่งมอบ");
-    public static $reservationUrgent = array(0=>"จองด่วน!");
+    public static $reservationUrgent = array(0=>"จองด่วน");
     public static $arr_day_of_week = array('','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์');
     public static $arr_day_of_weekEN = array('','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');	
     public static $arr_mouth = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');	

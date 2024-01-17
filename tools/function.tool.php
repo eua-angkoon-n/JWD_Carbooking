@@ -567,7 +567,7 @@ function ResStatusTable($idStatus, $urgent = 0){
     } else if ($idStatus == 6) {
         $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[6]."</span>";
     }
-    if($urgent == 1){
+    if($urgent == 1 && $idStatus != 6 && $idStatus != 4){
         $r .= "<span class='badge badge-danger ml-1 pt-1 pb-1'><i class='fas fa-exclamation fa-xs'></i></span>";
     }
     $r .= "</h4>";
