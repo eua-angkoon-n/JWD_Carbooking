@@ -53,6 +53,7 @@ Class DataTable extends TableProcessing {
             $con = connect_database();
             $obj = new CRUD($con);
 
+            $SET      = $obj->customSelect(Setting::$SQLSET);
             $fetchRow = $obj->fetchRows($sql);
             $numRow   = $obj->getCount($sqlCount);
             // return $fetchRow;
@@ -84,6 +85,7 @@ Class DataTable extends TableProcessing {
      
         
        $sql .= "$this->query_search ";
+       $sql .= "GROUP BY tb_vehicle.id_vehicle ";
        if($OrderBY) {
            $sql .= "ORDER BY ";
            $sql .= "$this->orderBY ";
