@@ -223,7 +223,7 @@
                         }
                     <?php }?>
                     $('.show_vehicle').text(js.vehicle_name);
-                    show_date(js.start, js.end);
+                    show_date(js.start, js.end, js.urgent);
                     $('#show_user').text(js.userName);
                     $('.show_place').text(js.place_Name);
                     show_companion(js.companion);
@@ -293,7 +293,7 @@
         }
 
 
-        function show_date(start, end) {
+        function show_date(start, end, urgent) {
             var months = [
                 "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
                 "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -319,7 +319,11 @@
             var showDate =
                 `${startDay} ${startMonth} ${startYear} ${startHours}.${startMinutes} น. ถึง ${endDay} ${endMonth} ${endYear} ${endHours}.${endMinutes} น.`;
 
-            $('#show_date').text(showDate);
+            if(urgent == 1){
+                $('#show_date').html(showDate + " <a class='text-red'><strong><?php echo Setting::$reservationUrgent[0]?></strong></a>"); 
+            } else {
+                $('#show_date').html(showDate);
+            }
         }
 
         function show_companion(companion) {

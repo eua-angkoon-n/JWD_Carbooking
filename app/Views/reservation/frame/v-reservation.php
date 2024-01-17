@@ -152,7 +152,19 @@ $user = $r->getUser();
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-2 col-md-2 ">
+                                            <div class="form-group clearfix">
+                                                <div class="icheck-danger ">
+                                                    <input type="checkbox" id="urgent" name="urgent" val="1">
+                                                    <label for="urgent">
+                                                        จองยานพาหนะด่วน
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row">

@@ -161,6 +161,7 @@ Class Add_Reservation {
     private $acc;
     private $haveAcc;
     private $driver; 
+    private $urgent;
     // private $test;
     public function __construct($frmData){
         parse_str($frmData, $data);
@@ -183,6 +184,7 @@ Class Add_Reservation {
         $this->reason     = $data['res_reason'];
         $this->chkAcc($data['res_acc']);
         $this->driver     = $data['res_driver'];
+        $this->urgent     = !empty($data['urgent']) ? true : false;
     }
 
     public function getData(){
@@ -257,12 +259,14 @@ Class Add_Reservation {
     }
 
     public function DoAddData(){
-        $chkAllowed = reservationTimeDiff($this->date_start);
-        if(!$chkAllowed)
-            return 'notAllowed';
-        $canAdd = $this->chkReservation(); // เช็คอีกทีว่า สามารถจองในเวลานี้ได้ไหม
-        if(!$canAdd)
-            return 'dupTime';
+        if(!$this->urgent){
+            $chkAllowed = reservationTimeDiff($this->date_start);
+            if(!$chkAllowed)
+                return 'notAllowed';
+            $canAdd = $this->chkReservation(); // เช็คอีกทีว่า สามารถจองในเวลานี้ได้ไหม
+            if(!$canAdd)
+                return 'dupTime';
+        }
         $ResData = $this->getResData(); // สร้างarr tb_reservation
         $idRes = $this->insertRes($ResData); // เพิ่ม tb_reservation
         if(is_numeric($idRes)){ // ถ้าได้ id_reservation
@@ -294,6 +298,7 @@ Class Add_Reservation {
             'ref_id_driver'      => $this->driver, 
             'reason'             => $this->reason, 
             'reservation_status' => 0, 
+            'urgent'             => ($this->urgent) ? 1 : 0,
             'date_created'       => date("Y-m-d H:i:s")
         ];
         return $r;

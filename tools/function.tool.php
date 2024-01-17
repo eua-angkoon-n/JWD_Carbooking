@@ -550,23 +550,27 @@ function convertDateRangeDMY($dateRange, &$formattedStart, &$formattedEnd) {
     // );
 }
 
-function ResStatusTable($idStatus){
+function ResStatusTable($idStatus, $urgent = 0){
     $status = Setting::$reservationStatus;
     if($idStatus == 0){
-        $r = "<h4 class='text-center'><span class='badge badge-warning'>".$status[0]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-warning'>".$status[0]."</span>";
     } else if ($idStatus == 1) {
-        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[1]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[1]."</span>";
     } else if ($idStatus == 2) {
-        $r = "<h4 class='text-center'><span class='badge badge-danger'>".$status[2]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-danger'>".$status[2]."</span>";
     } else if ($idStatus == 3) {
-        $r = "<h4 class='text-center'><span class='badge badge-info'>".$status[3]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-info'>".$status[3]."</span>";
     } else if ($idStatus == 4) {
-        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[4]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[4]."</span>";
     } else if ($idStatus == 5) {
-        $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[5]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-secondary'>".$status[5]."</span>";
     } else if ($idStatus == 6) {
-        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[6]."</span></h4>";
+        $r = "<h4 class='text-center'><span class='badge badge-success'>".$status[6]."</span>";
     }
+    if($urgent == 1){
+        $r .= "<span class='badge badge-danger ml-1 pt-1 pb-1'><i class='fas fa-exclamation fa-xs'></i></span>";
+    }
+    $r .= "</h4>";
     return $r;
 }
 
@@ -777,6 +781,22 @@ function  reservationTimeDiff($date, $alert = false){
     }
 }
 
+function  reservationAlertTxt(){   
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+        $row = $obj->customSelect("SELECT config_value FROM tb_config WHERE id_config=12 ");
+
+        return $row['config_value'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
+
 function sysVersion(&$phase, &$version){
     $sql  = "SELECT ( ";
     $sql .= "           SELECT config_value ";
@@ -807,7 +827,7 @@ function sysVersion(&$phase, &$version){
     }
 }
 
-function getLineConfig(&$token, &$notify){
+function getLineConfig1(&$token, &$notify){
     $sql  = "SELECT ( ";
     $sql .= "           SELECT config_value ";
     $sql .= "           FROM tb_config ";
@@ -849,6 +869,55 @@ function getLineConfig(&$token, &$notify){
 
         $token   = $r['l_token'];
         $notify  = $r['l_notify'] == 1 ? true : false;
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
+
+function getLineConfig(&$token, &$notify){
+    $sql  = "SELECT * ";
+    $sql .= "FROM tb_config ";
+    $sql .= "WHERE config = 'l_notify' ";
+    $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+   
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $r = $obj->customSelect($sql);
+
+        if(empty($r)){
+          $token = 0;
+          $notify = false;
+          return;
+        }
+        if($r['config_value'] == 1){
+            $notify = true;
+            $sql  = "SELECT * ";
+            $sql .= "FROM tb_config ";
+            $sql .= "WHERE config = 'l_token' ";
+            $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";   
+
+            $r = $obj->customSelect($sql);
+            if(empty($r) || IsNullOrEmptyString($r['config_value'])){
+                $sql  = "SELECT * ";
+                $sql .= "FROM tb_config ";
+                $sql .= "WHERE id_config =5 ";  
+
+                $r = $obj->customSelect($sql);
+            }
+            $token = $r['config_value'];
+            return;
+        } else {
+            $token = 0;
+            $notify = false;
+            return;
+        }
+
     } catch (PDOException $e) {
         return "Database connection failed: " . $e->getMessage();
     } catch (Exception $e) {

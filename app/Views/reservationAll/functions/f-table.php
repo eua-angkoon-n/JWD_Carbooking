@@ -126,7 +126,7 @@ Class DataTable extends TableProcessing {
                 
                 // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
                 $date    = getDateString($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
-                $status  = ResStatusTable($fetchRow[$key]['reservation_status']);
+                $status  = ResStatusTable($fetchRow[$key]['reservation_status'], $fetchRow[$key]['urgent']);
                 $control = $this->getControl($fetchRow[$key]['id_reservation']);
                 $fetchRow[$key]['accessories'] == 1 ? $acc = getAcc($fetchRow[$key]['id_reservation']) : $acc = "ไม่มี";
 
