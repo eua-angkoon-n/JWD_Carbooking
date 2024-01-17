@@ -107,7 +107,17 @@ $(document).ready(function () { //When the page has loaded
                 sweetAlert("ผิดพลาด...", "ไม่พบชื่อผู้ใช้งานตามที่ระบุ", "error");
                   return false;
               } 
-              window.location.href = "./";
+              swal({
+                    title: "แจ้งจากฝ่ายบุคคล",
+                    text: "<?php echo reservationAlertTxt()?>",
+                    type: "info",
+                },
+                function () {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    window.location.href = "./";
+                })
+              
 
           },
           error: function (response) {

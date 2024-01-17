@@ -25,6 +25,25 @@ Class List_Config {
         }
     }
 
+    public function getReservation_txt(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE id_config=12");
+
+            return $r['config_value'];
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
     public function getReservation_w(){
         try {
             $con = connect_database();

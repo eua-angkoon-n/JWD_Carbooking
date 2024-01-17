@@ -50,7 +50,7 @@ function Show_Sidebar($hrefNow){
         $r .= "</ul></li>";
     }
 
-    if ($_SESSION['car_class_user'] == 2) {
+    if ($_SESSION['car_class_user'] == 1 || $_SESSION['car_class_user'] == 2) {
         $r .= "<li class='nav-item menu-open'>";
         $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-cogs'></i>";
         $r .= "<p>จัดการระบบ<i class='right fas fa-angle-left'></i></p></a>";   
@@ -61,12 +61,14 @@ function Show_Sidebar($hrefNow){
             PageSetting::$AppPage["vehicleconfig"]["SideIcon"],  
             $hrefNow
         );
-        $r .= SideBar(
-            PageSetting::$AppPage["user"]["title"], 
-            PageSetting::$AppPage["user"]["href"], 
-            PageSetting::$AppPage["user"]["SideIcon"], 
-            $hrefNow
-        );
+        if ($_SESSION['car_class_user'] == 2) {
+            $r .= SideBar(
+                PageSetting::$AppPage["user"]["title"], 
+                PageSetting::$AppPage["user"]["href"], 
+                PageSetting::$AppPage["user"]["SideIcon"], 
+                $hrefNow
+            );
+        }
         $r .= SideBar(
             PageSetting::$AppPage["sysconfig"]["title"], 
             PageSetting::$AppPage["sysconfig"]["href"], 

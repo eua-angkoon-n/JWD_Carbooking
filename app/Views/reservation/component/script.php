@@ -10,7 +10,7 @@
             title: 'แจ้งจากฝ่ายบุคคล',
             autohide: true,
             delay: 3000,
-            body: 'กรุณาจองรถก่อนใช้งาน <?php echo reservationTimeDiff("", true);?> ชั่วโมง ค่ะ'
+            body: '<?php echo reservationAlertTxt()?>'
         })
 
         $('#time_start').datetimepicker({

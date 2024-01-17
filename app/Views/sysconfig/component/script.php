@@ -39,6 +39,7 @@
 
     });
 
+    <?php if ($_SESSION['car_class_user'] == 2) { ?>
     document.addEventListener("DOMContentLoaded", function () {
         var inputPassword = document.getElementById("l_token");
         var toggleVisibilityBtn = document.getElementById("toggleVisibilityBtn");
@@ -56,6 +57,7 @@
             }
         });
     });
+    <?php } ?>
 
     //จบ ปุ่มต่างๆ///////////////////////////////////////////////////////////////////////
     //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////

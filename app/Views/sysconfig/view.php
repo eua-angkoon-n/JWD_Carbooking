@@ -51,6 +51,18 @@ $List = new List_Config();
                 </div>
                 <div class="col-sm-12 ">
                   <div class="form-group">
+                    <label for="reservation_w">ข้อความแจ้งเตือน:</label>
+                    <div class="row">
+                      <div class="col-8">
+                        <input type="text" class="form-control" id="reservation_txt" name="reservation_txt"
+                          placeholder="ข้อความ..." value="<?php echo $List->getReservation_txt() ?>"
+                          aria-describedby="inputGroupPrepend" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 ">
+                  <div class="form-group">
                     <label for="reservation_w">การใช้งาน:</label>
                     <div class="form-group clearfix">
                       <?php echo $List->getReservation_w() ?>
@@ -61,6 +73,7 @@ $List = new List_Config();
 
             </div>
           </div>
+          <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
               <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์</h5>
@@ -98,9 +111,11 @@ $List = new List_Config();
             </div>
 
           </div>
+          <?php } ?>
         </div>
 
         <div class="row">
+        <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
               <h5 class="card-title"><i class="fas fa-code-branch"></i> เวอร์ชันของระบบ</h5>
@@ -137,6 +152,7 @@ $List = new List_Config();
 
             </div>
           </div>
+        <?php } ?>
         </div>
 
         <div class="row">
