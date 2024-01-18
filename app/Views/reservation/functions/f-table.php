@@ -53,7 +53,7 @@ Class DataTable extends TableProcessing {
             $con = connect_database();
             $obj = new CRUD($con);
 
-            $SET      = $obj->customSelect(Setting::$SQLSET);
+            // $SET      = $obj->customSelect(Setting::$SQLSET);
             $fetchRow = $obj->fetchRows($sql);
             $numRow   = $obj->getCount($sqlCount);
             // return $fetchRow;
@@ -85,7 +85,8 @@ Class DataTable extends TableProcessing {
      
         
        $sql .= "$this->query_search ";
-       $sql .= "GROUP BY tb_vehicle.id_vehicle ";
+        // ใช้ GROUP BY ไม่ได้ แก้ไขปัญหาด้วยการเช็ค row ซ้ำ จาก id ตอนสร้าง table ที่ fnc createArrayDataTable ด้วย idForCheck
+        // $sql .= "GROUP BY tb_vehicle.id_vehicle "; 
        if($OrderBY) {
            $sql .= "ORDER BY ";
            $sql .= "$this->orderBY ";
@@ -151,12 +152,17 @@ Class DataTable extends TableProcessing {
             "recordsFiltered" => intval(0),
             "data" => $arrData,
         );
-
+        $idForCheck = "";
         if (count($fetchRow) > 0) {
             $No = ($numRow - $this->pStart);
             foreach ($fetchRow as $key => $value) {
                 $folderDate = str_replace("-", "", $fetchRow[$key]['date_uploaded']);
                 $img =  $folderDate . "/" . $fetchRow[$key]['attachment'];
+                if($idForCheck == $fetchRow[$key]['id_vehicle']){
+                    continue;
+                } else {
+                    $idForCheck = $fetchRow[$key]['id_vehicle'];
+                }
 
                 // if(!empty($fetchRow[$key]['start_date']) && !empty($fetchRow[$key]['end_date'])){
                 //     $date = formatDates($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
@@ -436,7 +442,7 @@ switch($action) {
 // print_r(($_POST));
 // exit;
 ///////////////////////////////////////////////////////////////////////////////////
-
 echo json_encode($result);
+// print_r ($result);
 exit;
 ?>
