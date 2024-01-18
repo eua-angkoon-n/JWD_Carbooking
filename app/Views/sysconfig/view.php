@@ -29,7 +29,7 @@ $List = new List_Config();
         <div class="row">
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
-              <h5 class="card-title"><i class="fas fa-book-open"></i> การจองยานพาหนะ</h5>
+              <h5 class="card-title"><i class="fas fa-book-open"></i> การจองยานพาหนะ (ทุกไซต์งาน)</h5>
             </div>
             <div class="card-body">
               <div class="row">
@@ -39,7 +39,7 @@ $List = new List_Config();
                     <div class="row">
                       <div class="col-4">
                         <input type="number" class="form-control" id="reservation_t" name="reservation_t"
-                          placeholder="นาที" value="<?php echo $List->getReservation_t() ?>"
+                          placeholder="ชั่วโมง" value="<?php echo $List->getReservation_t() ?>"
                           aria-describedby="inputGroupPrepend" required>
                       </div>
 
@@ -76,13 +76,13 @@ $List = new List_Config();
           <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
-              <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์</h5>
+              <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์ <?php echo $_SESSION['car_site_initialname']?></h5>
             </div>
             <div class="card-body">
             <div class="row">
               <div class="col-sm-12 ">
                 <div class="form-group">
-                  <label for="reservation_t">Line Access Token:</label>
+                  <label for="reservation_t">Line Access Token: <?php if($_SESSION['car_ref_id_site'] != 1){?><code><?php echo Setting::$warning_text[4]?></code><?php }?></label>
                   <div class="row">
                     <div class="col-9">
                       <div class="input-group">
