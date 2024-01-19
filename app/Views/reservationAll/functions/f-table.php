@@ -23,7 +23,7 @@ Class DataTable extends TableProcessing {
         parse_str($formData, $data);
        
         convertDateDMY($data['res_date'], $this->start, $this->end);
-        // $this->status = $data['res_date'];
+        $this->status = $data['res_status'];
         $this->vehicle = $data['res_vehicle'];
     }   
     public function getTable(){
@@ -60,7 +60,7 @@ Class DataTable extends TableProcessing {
 
     public function getSQL(bool $OrderBY){
 
-        // $status = $this->chkStatus();
+        $status = $this->chkStatus();
         $vehicle = $this->chkVehicle();
         $date = $this->chkDate();
 
@@ -77,6 +77,7 @@ Class DataTable extends TableProcessing {
         $sql .= "WHERE 1=1 ";
         $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
         $sql .= "$vehicle ";
+        $sql .= "$status ";
         $sql .= "$date ";
 
         $sql .= "$this->query_search ";
@@ -88,6 +89,14 @@ Class DataTable extends TableProcessing {
         }
 
         return $sql;
+    }
+
+    public function chkStatus(){
+        $r = "";
+        if(!IsNullOrEmptyString($this->status)) {
+            $r = "AND reservation_status=$this->status ";
+        }
+        return $r;
     }
 
     public function chkVehicle(){

@@ -185,10 +185,8 @@ Class Reservation_Detail {
             return $r;
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
-        
         } catch (Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        
+            return "An error occurred: " . $e->getMessage();    
         } finally {
             $con = null;
         }
@@ -274,12 +272,12 @@ Class Reservation_Detail {
             $in = array();
             $out= array();
             foreach ($s as $k => $v) {
-                if($v['attachment_type'] == 1){
+                if($v['attachment_type'] == 2){
                     $in[] = array(
                         'attachment' => $v['attachment'],
                         'date_uploaded' => $v['date_uploaded']
                     );
-                } else if($v['attachment_type'] == 2){
+                } else if($v['attachment_type'] == 1){
                     $out[] = array(
                         'attachment' => $v['attachment'],
                         'date_uploaded' => $v['date_uploaded']

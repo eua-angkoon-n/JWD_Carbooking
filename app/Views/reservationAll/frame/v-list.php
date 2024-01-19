@@ -2,7 +2,7 @@
 include __DIR__ . "/../functions/f-list.php";
 
 $Call = new List_Reservation();
-// $status = $Call->getStatus();
+$status = $Call->getStatus();
 $vehicle = $Call->getVehicle();
 ?>
 
@@ -22,15 +22,15 @@ $vehicle = $Call->getVehicle();
                             <div class="row">
                                 <div class="col-12 col-md-12 col-lg-8 order-1 order-md-1 order-lg-1">
                                     <div class="row">
-                                        <!-- <div class="col-sm-12 col-md-2 ">
+                                        <div class="col-sm-12 col-md-2 ">
                                             <div class="form-group">
                                                 <label for="res_user">สถานะ</label>
                                                 <select class="form-control select2bs4" id="res_status"
                                                     name="res_status" style="width: 100%;">
-                                                    <?php //echo $status; ?>
+                                                    <?php echo $status; ?>
                                                 </select>
                                             </div>
-                                        </div> -->
+                                        </div>
                                         <div class="col-sm-12 col-md-3">
                                             <div class="form-group">
                                                 <label for="res_user">ยานพาหนะ</label>
