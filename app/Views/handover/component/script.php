@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
 
         getImg('condition_inFile', 'condition_inPreview', 'condition_inErrMsg', 3);
@@ -80,9 +80,11 @@
                             text: "ตกลง",
                         }
                     },
-                    function () {
-                        event.preventDefault();
-                        event.stopPropagation(); 
+                    function (isConfirmed) {
+                        if(isConfirmed){
+                            event.preventDefault();
+                            event.stopPropagation(); 
+                        }
                     })
             } else {
                 swal({
@@ -94,8 +96,10 @@
                 confirmButtonText: "ตกลง",
                 cancelButtonText: "ไม่, ยกเลิก",
                 closeOnConfirm: true
-                }, function () {
-                    save_handover();
+                }, function (isConfirmed) {
+                    if (isConfirmed) {
+                        save_handover(e); // Pass the event object to save_handover function
+                    }
                 });
             }
             form.classList.add('was-validated');
@@ -105,7 +109,7 @@
     });
 
      //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
-     function save_handover(){
+     function save_handover(event){
         // var frmData = $('#showForm').serialize();
 
         var formData = new FormData($('form#showForm')[0]);
@@ -131,18 +135,20 @@
                 success: function (data) {
                     var js = JSON.parse(data);
                     console.log(js);
+                    // alert(js);
                     // return;
                     if(js.trim() === "success"){
-                        swal({
-                                    title: "บันทึกสำเร็จ!",
-                                    text: "ทำการส่งมอบเรียบร้อย",
-                                    type: "success",
-                                },
-                                function () {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    window.location.href = '?app=reservationList&id='+id;
-                                })
+                        window.location.href = '?app=reservationList&id='+id;
+                        // swal({
+                        //             title: "บันทึกสำเร็จ!",
+                        //             text: "ทำการส่งมอบเรียบร้อย",
+                        //             type: "success",
+                        //         },
+                        //         function () {
+                        //             event.preventDefault();
+                        //             event.stopPropagation();
+                        //             window.location.href = '?app=reservationList&id='+id;
+                        //         })
                     } else {
                         sweetAlert("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่างระหว่างบันทึกข้อมูล", "error");
                         return false;
