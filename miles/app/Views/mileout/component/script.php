@@ -143,6 +143,7 @@
                         $('form#needs-validation').each(function () {
                             this.reset()
                         });
+                        $('#imagePreview').html('');
                         $('#miles_table').DataTable().ajax.reload();
 
                         swal({
