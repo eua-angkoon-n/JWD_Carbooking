@@ -15,7 +15,11 @@ ini_set('display_errors', 1);
 header('Content-Type: text/html; charset=utf-8');
 date_default_timezone_set(Setting::$AppTimeZone);
 
-if(empty($_SESSION['car_id_user']) || $_SESSION['car_id_user'] != 2 || $_SESSION['car_id_user'] != 3){ 
+if(empty($_SESSION['car_id_user'])){ 
+    $_SESSION = []; //empty array. 
+    session_destroy(); 
+    include("app/Views/main/login.php"); 
+} else if($_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 3){
     $_SESSION = []; //empty array. 
     session_destroy(); 
     include("app/Views/main/login.php"); 
