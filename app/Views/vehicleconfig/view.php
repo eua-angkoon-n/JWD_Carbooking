@@ -35,6 +35,9 @@
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tab5" data-toggle="pill" href="#custom-tabs-5" role="tab" aria-controls="custom-tabs-5" aria-selected="false">พนักงานขับรถ</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tab6" data-toggle="pill" href="#custom-tabs-6" role="tab" aria-controls="custom-tabs-6" aria-selected="false">ค่าใช้จ่าย</a>
+                  </li>
                 </ul>
               </div>
               <div class="card-body">
@@ -53,6 +56,9 @@
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-5" role="tabpanel" aria-labelledby="custom-tabs-5">
                     ...TAB-5 Wait process
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-6" role="tabpanel" aria-labelledby="custom-tabs-6">
+                    ...TAB-6 Wait process
                   </div>
                 </div>
               </div>

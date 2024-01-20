@@ -1,7 +1,7 @@
 <?php 
 // include __DIR__ . "/component/style.php";
 // include __DIR__ . '/../reservationList/frame/v-modal_img.php';
-// include __DIR__ . '/frame/v-modal-edit.php';
+include __DIR__ . '/frame/v-modal.php';
 ?>
 
 <section class="content">

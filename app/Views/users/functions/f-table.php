@@ -140,7 +140,7 @@ Class DataTable extends TableProcessing {
             $result .= "<label class='custom-control-label custom-control-label' for='customSwitch$id'></label>";
             $result .= "</div>";
         } else if ($div == 'control'){
-            $result  = "<button type='button' class='btn btn-warning btn-sm edit-vehicle_brand' data-id='$id' data-toggle='modal' data-target='#modal-vehicle_brand' id='edit-data' data-backdrop='static' data-keyboard='false' title='แก้ไขข้อมูล'>";
+            $result  = "<button type='button' class='btn btn-warning btn-sm edit-user' data-id='$id' data-toggle='modal' data-target='#modal-default' id='edit-data' data-backdrop='static' data-keyboard='false' title='แก้ไขข้อมูล'>";
             $result .= "<i class='fa fa-pencil-alt'></i>";
             $result .= "</button>";
         }
