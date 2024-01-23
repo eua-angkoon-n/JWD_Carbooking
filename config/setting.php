@@ -133,6 +133,12 @@ class PageSetting
             "href" => "manuals",
             "SideIcon" => "fa-book",
         ),
+        "login" => array( 
+            "title" => "เข้าสู่ระบบ",
+            "view" => "../login/view.php",
+            "href" => "login",
+            "SideIcon" => "fa-sign-in-alt",
+        ),
         "reservation" => array( 
             "title" => "จองยานพาหนะ",
             "view" => "../reservation/view.php",

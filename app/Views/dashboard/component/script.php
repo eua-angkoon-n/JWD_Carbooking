@@ -1,6 +1,8 @@
 <script>
    $(document).ready(function () {
+    <?php if (!empty($_SESSION['car_id_user'])) { ?>
      sendAjaxSide();
+     <?php } ?>
    });
 
    function sendAjaxSide() {

@@ -57,12 +57,14 @@
 
      var calendar = new Calendar(calendarEl, {
        customButtons: {
+        <?php if (!empty($_SESSION['car_id_user'])) { ?>
          self: {
            text: 'การจองของฉัน',
            click: function () {
              sendAjaxCalendar('self');
            }
          },
+         <?php } ?>
          all: {
            text: 'ทั้งหมด',
            click: function () {
@@ -71,7 +73,7 @@
          }
        },
        headerToolbar: {
-         left: 'prev,next all,self',
+         left: 'prev,next all<?php if (!empty($_SESSION['car_id_user'])) { ?>,self<?php }?>',
          center: 'title',
          right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
        },
@@ -163,79 +165,83 @@
 }
 
 function show_companion(companion) {
-var companions = companion.split(', ');
+  var companions = companion.split(', ');
 
-// Select the show_companion list
-var $showCompanionList = $('#show_companion');
+  // Select the show_companion list
+  var $showCompanionList = $('#show_companion');
 
-// Clear the existing list items
-$showCompanionList.empty();
+  // Clear the existing list items
+  $showCompanionList.empty();
 
-// Iterate through the companions array and add them as list items to the show_companion list
-companions.forEach(function (companion) {
-    var $listItem = $('<li>').append($('<a>').text(companion));
-    $showCompanionList.append($listItem);
-});
+  // Iterate through the companions array and add them as list items to the show_companion list
+  companions.forEach(function (companion) {
+      var $listItem = $('<li>').append($('<a>').text(companion));
+      $showCompanionList.append($listItem);
+  });
 }
 
 function show_vehicle_img(img, date, ID) {
-if (img) {
-    var imageName = img;
-    var imagePath = 'dist/temp_img/' + date.split('-').join("") + '/';
-    var ImageShow = imagePath + imageName;
-} else {
-    var ImageShow = 'dist/img/SCGJWDLogo.png';
-}
-var imagePreview = document.getElementById(ID);
-imagePreview.src = ImageShow;
+  if (img) {
+      var imageName = img;
+      var imagePath = 'dist/temp_img/' + date.split('-').join("") + '/';
+      var ImageShow = imagePath + imageName;
+  } else {
+      var ImageShow = 'dist/img/SCGJWDLogo.png';
+  }
+  var imagePreview = document.getElementById(ID);
+  imagePreview.src = ImageShow;
 }
 
 function show_ribbon(status) {
-$('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info');
-var cls;
-var txt;
-switch (status) {
-    case '0':
-        cls = "bg-warning";
-        txt = "<?php echo Setting::$reservationStatus[0] ?>";
-        break;
-    case '1':
-        cls = "bg-success";
-        txt = "<?php echo Setting::$reservationStatus[1] ?>";
-        break;
-    case '2':
-        cls = "bg-danger";
-        txt = "<?php echo Setting::$reservationStatus[2] ?>";
-        break;
-    case '3':
-        cls = "bg-info";
-        txt = "<?php echo Setting::$reservationStatus[3] ?>";
-        break;
-    case '4':
-        cls = "bg-success";
-        txt = "<?php echo Setting::$reservationStatus[4] ?>";
-        break;
-    case '5':
-        cls = "bg-secondary";
-        txt = "<?php echo Setting::$reservationStatus[5] ?>";
-        break;
-}
-$('#Show_Ribbon').text(txt);
-$('#Show_Ribbon').addClass(cls);
+  $('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info');
+  var cls;
+  var txt;
+  switch (status) {
+      case '0':
+          cls = "bg-warning";
+          txt = "<?php echo Setting::$reservationStatus[0] ?>";
+          break;
+      case '1':
+          cls = "bg-success";
+          txt = "<?php echo Setting::$reservationStatus[1] ?>";
+          break;
+      case '2':
+          cls = "bg-danger";
+          txt = "<?php echo Setting::$reservationStatus[2] ?>";
+          break;
+      case '3':
+          cls = "bg-info";
+          txt = "<?php echo Setting::$reservationStatus[3] ?>";
+          break;
+      case '4':
+          cls = "bg-success";
+          txt = "<?php echo Setting::$reservationStatus[4] ?>";
+          break;
+      case '5':
+          cls = "bg-secondary";
+          txt = "<?php echo Setting::$reservationStatus[5] ?>";
+          break;
+      case '6':
+          cls = "bg-success";
+          txt = "<?php echo Setting::$reservationStatus[6] ?>";
+          break;
+  }
+  $('#Show_Ribbon').text(txt);
+  $('#Show_Ribbon').addClass(cls);
 }
 
 function createStaticMap(lat, lng, zoom) {
-var mapOlv = document.getElementById('map_olv');
-var apiKey = 'AIzaSyD_3uR-M8yPx3Tv8DAgbenP2-vJfxzxSD8';
+  var mapOlv = document.getElementById('map_olv');
+  var apiKey = 'AIzaSyD_3uR-M8yPx3Tv8DAgbenP2-vJfxzxSD8';
 
-var imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=600x300&maptype=roadmap&markers=color:red%7C${lat},${lng}&key=${apiKey}`;
+  var imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=600x300&maptype=roadmap&markers=color:red%7C${lat},${lng}&key=${apiKey}`;
 
-var img = document.createElement('img');
-img.src = imageUrl;
-img.alt = 'Static Map';
-img.className = 'w-100 h-100';
+  var img = document.createElement('img');
+  img.src = imageUrl;
+  img.alt = 'Static Map';
+  img.className = 'w-100 h-100';
 
-mapOlv.innerHTML = ''; // Clear previous content
-mapOlv.appendChild(img); // Append the image to the map_olv div
+  mapOlv.innerHTML = ''; // Clear previous content
+  mapOlv.appendChild(img); // Append the image to the map_olv div
 }
 </script>

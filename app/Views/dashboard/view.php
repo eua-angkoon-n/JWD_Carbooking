@@ -49,50 +49,16 @@ include(__DIR__ . "/frame/v-modal.php");
                 </div>
                 <!-- /.info-box -->
               </div>
-
+              <?php if (!empty($_SESSION['car_id_user'])) { ?>
               <div id="side_card">
                 <div class="card text-center loading">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
               </div>
-
-
-              <!-- <div class="card card-warning">
-                <div class="card-header">
-                  <h3 class="card-title">รออนุมัติ</h3>
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-
-                  <div class="info-box m-0">
-                    <span class="info-box-icon">
-                      <img src='dist/temp_img/20231122/3b40e191122aaff08b8cc8f25b33a77b.jpg' alt='Vehicle Image'
-                        class='img-thumbnail rounded mx-auto d-block'>
-                    </span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-number">การจองยานพาหนะวันนี้</span>
-                      <span class="info-box-text">410</span>
-                      <span class="info-box-text">410</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  <!-- </div>
-                </div>
-              </div> -->
-
-
-            
-
-
-
+              <?php }?>
 
               <!-- /.card -->
             </div>
-
 
             <!-- /.col -->
           </div>

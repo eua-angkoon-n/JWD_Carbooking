@@ -9,6 +9,7 @@
             <!-- Sidebar -->
             <div class="sidebar"><br><br>
                 <!-- Sidebar user panel (optional) -->
+                <?php if (!empty($_SESSION['car_id_user'])) { ?>
                 <div class="user-panel mt-3 pb-1 mb-3 d-flex">
                     <div class="image">
                         <img src="dist/img/user2-160x160.png" class="img-circle elevation-2" alt="User Image">
@@ -30,6 +31,7 @@
                         <!-- <a href="?module=profile" class="d-block text-yellow">[แก้ไขข้อมูลส่วนตัว]</a> -->
                     </div>
                 </div>
+                <?php } ?>
 
                 <!-- Sidebar Menu active-->
                 <nav class="mt-3">
