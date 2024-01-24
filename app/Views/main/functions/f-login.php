@@ -86,6 +86,7 @@ Class Login{
                     $_SESSION['car_phone'] = $Row['phone'];
                     $_SESSION['car_status_user'] = $Row['status_user'];
                     sysVersion($_SESSION['phase'], $_SESSION['version']);
+                    sysCon($_SESSION['urgent'], $_SESSION['handover']);
                  
                     $fetchPermission= $obj->fetchRows("SELECT tb_permission.* FROM tb_permission WHERE ref_class_user=".$Row['class_user']."");
                     foreach($fetchPermission as $key=>$value){

@@ -31,13 +31,15 @@ function Show_Sidebar($hrefNow)
             $hrefNow,
             $c['myRes']
         );
-        $r .= SideBar(
-            PageSetting::$AppPage["handover"]["title"],
-            PageSetting::$AppPage["handover"]["href"],
-            PageSetting::$AppPage["handover"]["SideIcon"],
-            $hrefNow,
-            $c['myHand']
-        );
+        if($_SESSION['handover'] == 1){
+            $r .= SideBar(
+                PageSetting::$AppPage["handover"]["title"],
+                PageSetting::$AppPage["handover"]["href"],
+                PageSetting::$AppPage["handover"]["SideIcon"],
+                $hrefNow,
+                $c['myHand']
+            );
+        }
         if ($_SESSION['car_class_user'] == 1 || $_SESSION['car_class_user'] == 2) {
             $r .= "<li class='nav-item menu-open'>";
             $r .= "<a href='#' class='nav-link'><i class='nav-icon fas fa-users-cog'></i>";
@@ -69,6 +71,12 @@ function Show_Sidebar($hrefNow)
                 PageSetting::$AppPage["vehicleconfig"]["title"],
                 PageSetting::$AppPage["vehicleconfig"]["href"],
                 PageSetting::$AppPage["vehicleconfig"]["SideIcon"],
+                $hrefNow
+            );
+            $r .= SideBar(
+                PageSetting::$AppPage["officer"]["title"],
+                PageSetting::$AppPage["officer"]["href"],
+                PageSetting::$AppPage["officer"]["SideIcon"],
                 $hrefNow
             );
             if ($_SESSION['car_class_user'] == 2) {
@@ -121,7 +129,7 @@ class CounterSide
     public function getCount()
     {
         $myRes  = $this->myRes();
-        $myHand = $this->myHand();
+        $myHand = $_SESSION['handover'] == 1 ? $this->myHand() : 0;
         $r = array(
             'myRes' => $myRes,
             'myHand' => $myHand

@@ -73,7 +73,36 @@ $List = new List_Config();
 
             </div>
           </div>
-          <?php if ($_SESSION['car_class_user'] == 2) { ?>
+          <div class="card card-primary col-sm-12 col-md-6">
+            <div class="card-header">
+              <h5 class="card-title"><i class="fas fa-folder-minus"></i> ระบบการจอง (ทุกไซต์งาน)</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12 ">
+                  <div class="form-group">
+                    <label for="urgent_reservation">ระบบการจองยานพาหนะด่วน:</label>
+                    <div class="form-group clearfix">
+                      <?php echo $List->getUrgent_Reservation() ?>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 ">
+                  <div class="form-group">
+                    <label for="handover">ระบบการส่งมอบยานพาหนะหลังใช้งาน:</label>
+                    <div class="form-group clearfix">
+                      <?php echo $List->getHandOver() ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+        <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
               <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์ <?php echo $_SESSION['car_site_initialname']?></h5>
@@ -112,9 +141,6 @@ $List = new List_Config();
 
           </div>
           <?php } ?>
-        </div>
-
-        <div class="row">
         <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">

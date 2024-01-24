@@ -827,6 +827,36 @@ function sysVersion(&$phase, &$version){
     }
 }
 
+function sysCon(&$urgent, &$handover){
+    $sql  = "SELECT ( ";
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'urgent_reservation' ";
+    $sql .= "       ) AS urgent_reservation, ";
+    $sql .= "       ( "; 
+    $sql .= "           SELECT config_value ";
+    $sql .= "           FROM tb_config ";
+    $sql .= "           WHERE config = 'handover' ";
+    $sql .= "       ) AS handover ";
+    $sql .= "FROM tb_config ";
+    $sql .= "WHERE 1=1";
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $r = $obj->customSelect($sql);
+
+        $urgent   = $r['urgent_reservation'];
+        $handover = $r['handover'];
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
+
 function getLineConfig1(&$token, &$notify){
     $sql  = "SELECT ( ";
     $sql .= "           SELECT config_value ";

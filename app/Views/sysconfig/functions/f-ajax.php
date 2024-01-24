@@ -33,12 +33,16 @@ Class save_config {
     private $sysVersion;
     private $l_token;
     private $l_notify;
+    private $urgent_res;
+    private $handover;
     public function __construct($data){
         parse_str($data, $v);
 
         $this->reservation_t   = ['config_value' => $v['reservation_t']];
         $this->reservation_w   = ['config_value' => $v['reservation_w']];
         $this->reservation_txt = ['config_value' => $v['reservation_txt']];
+        $this->urgent_res      = ['config_value' => $v['urgent_reservation']];
+        $this->handover        = ['config_value' => $v['handover']];
         if ($_SESSION['car_class_user'] == 2) {
             $this->sysPhase   = ['config_value' => $v['sysPhase']];
             $this->sysVersion = ['config_value' => $v['sysVersion']];
@@ -55,6 +59,8 @@ Class save_config {
             $reservation_t   = $obj->update($this->reservation_t, 'id_config=1', 'tb_config');
             $reservation_w   = $obj->update($this->reservation_w, 'id_config=2', 'tb_config');
             $reservation_txt = $obj->update($this->reservation_txt, 'id_config=12', 'tb_config');
+            $urgent_res      = $obj->update($this->urgent_res, 'config="urgent_reservation"', 'tb_config');
+            $handover        = $obj->update($this->handover, 'config="handover"', 'tb_config');
 
             if ($_SESSION['car_class_user'] == 2) {
                 $sysPhase        = $obj->update($this->sysPhase, 'id_config=3', 'tb_config');
@@ -70,10 +76,11 @@ Class save_config {
                     $l_notify = $obj->update($this->l_notify, 'config="l_notify" AND ref_id_site='.$_SESSION['car_ref_id_site'], 'tb_config');
                 }
                 sysVersion($_SESSION['phase'], $_SESSION['version']);
+                sysCon($_SESSION['urgent'], $_SESSION['handover']);
                 return $this->chkSuccess($reservation_t, $reservation_w, $reservation_txt, $sysPhase, $sysVersion, $l_token, $l_notify);
             }
             
-            return $this->chkSuccess1($reservation_t, $reservation_w, $reservation_txt);
+            return $this->chkSuccess1($reservation_t, $reservation_w, $reservation_txt, $urgent_res, $handover);
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         
@@ -157,12 +164,12 @@ Class save_config {
         }
     }
 
-    public function chkSuccess1($a, $b, $c){
+    public function chkSuccess1($a, $b, $c, $d, $e){
 
-        if($a == 'Success' && $b == 'Success' && $c == 'Success'){
+        if($a == 'Success' && $b == 'Success' && $c == 'Success' && $d == 'Success' && $e == 'Success'){
             return true;
         }else {
-            $ch = array($a, $b, $c);
+            $ch = array($a, $b, $c, $d, $e);
             foreach($ch as $v){
                 if($v != 'Success'){
                     return $v;

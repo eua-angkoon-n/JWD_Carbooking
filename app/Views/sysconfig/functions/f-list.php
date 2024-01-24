@@ -195,4 +195,90 @@ Class List_Config {
             $con = null;
         }
     }
+
+    public function getUrgent_Reservation(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='urgent_reservation'");
+            
+            switch($r['config_value']){
+                case 1:
+                    $w1 = "checked";
+                    $w2 = "";
+                    break;
+                case 0:
+                    $w1 = "";
+                    $w2 = "checked";
+                    break;
+            }
+           
+            $d = '<div class="icheck-success d-inline">
+                    <input type="radio" id="urgent_reservation1" name="urgent_reservation" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                         <label for="urgent_reservation1">
+                            เปิดการใช้งาน
+                        </label>
+                </div>
+                <div class="icheck-danger d-inline ">
+                    <input type="radio" id="urgent_reservation2" name="urgent_reservation" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                        <label for="urgent_reservation2">
+                            ปิดการใช้งาน
+                        </label>
+                </div>';
+
+            return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getHandOver(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='handover'");
+            
+            switch($r['config_value']){
+                case 1:
+                    $w1 = "checked";
+                    $w2 = "";
+                    break;
+                case 0:
+                    $w1 = "";
+                    $w2 = "checked";
+                    break;
+            }
+           
+            $d = '<div class="icheck-success d-inline">
+                    <input type="radio" id="handover1" name="handover" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                         <label for="handover1">
+                            เปิดการใช้งาน
+                        </label>
+                </div>
+                <div class="icheck-danger d-inline ">
+                    <input type="radio" id="handover2" name="handover" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                        <label for="handover2">
+                            ปิดการใช้งาน
+                        </label>
+                </div>';
+
+            return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
 }

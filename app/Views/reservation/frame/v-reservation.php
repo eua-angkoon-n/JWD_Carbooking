@@ -153,7 +153,7 @@ $user = $r->getUser();
                                             </div>
                                         </div>
                                     </div>
-
+                                    <?php if($_SESSION['urgent'] == 1){?>
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-2 col-md-2 ">
                                             <div class="form-group clearfix">
@@ -166,7 +166,7 @@ $user = $r->getUser();
                                             </div>
                                         </div>
                                     </div>
-
+                                    <?php } ?>
                                     <div class="row">
                                         <div class="col-sm-6 col-md-2 col-lg-1">
                                             <div class="form-group">

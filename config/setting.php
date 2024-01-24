@@ -175,6 +175,12 @@ class PageSetting
             "href" => "vehicleconfig",
             "SideIcon" => "fa-car-side"
         ),
+        "officer" => array (
+            "title" => "เจ้าหน้าที่",
+            "view" => "../officer/view.php",
+            "href" => "officer",
+            "SideIcon" => "fa-user-tie"
+        ),
         "user" => array (
             "title" => "ผู้ใช้งาน",
             "view" => "../users/view.php",
