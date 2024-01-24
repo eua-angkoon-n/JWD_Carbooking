@@ -9,6 +9,10 @@ $prefixController = PageSetting::$prefixController;
 isset($_REQUEST[$prefixController]) ? $nowHref = $_REQUEST[$prefixController] : $nowHref = '';
 $AppPage = PageSetting::$AppPage;
 
+if(empty($_SESSION['car_id_user'])){ 
+    $nowHref = "";
+}
+
 setSideBarAndView($nowHref, $include_view, $title);
 
 function setSideBarAndView ($nowHref, &$include_view, &$title){
