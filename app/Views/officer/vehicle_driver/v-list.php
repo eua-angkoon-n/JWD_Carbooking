@@ -43,7 +43,7 @@
       ],
       ajax: {
         beforeSend: function () {},
-        url: 'app/Views/vehicleconfig/vehicle_driver/f-table.php',
+        url: 'app/Views/officer/vehicle_driver/f-table.php',
         type: 'POST',
         data: {
           "formData": 0,
@@ -105,7 +105,7 @@
             if (isConfirm) {
               $.ajax({
                 type: 'POST',
-                url: "app/Views/vehicleconfig/vehicle_driver/f-ajax.php",
+                url: "app/Views/officer/vehicle_driver/f-ajax.php",
                 data: {
                   action: "update-status",
                   chk_box_value: chk_box_value,
@@ -145,7 +145,7 @@
       var id_row = $(this).data("id");
       $.ajax({
         type: 'POST',
-        url: "app/Views/vehicleconfig/vehicle_driver/f-ajax.php",
+        url: "app/Views/officer/vehicle_driver/f-ajax.php",
         data: {
           action: "edit",
           id_row: id_row

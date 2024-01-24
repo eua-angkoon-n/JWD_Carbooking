@@ -81,7 +81,7 @@
     }else{
         //alert('Send Ajax'); return false;
         $.ajax({
-            url: "app/Views/vehicleconfig/vehicle_driver/f-ajax.php",
+            url: "app/Views/officer/vehicle_driver/f-ajax.php",
             type: "POST",
             data:{"data":frmData, "action":"addData"},
             beforeSend: function () {
@@ -90,7 +90,7 @@
             console.log(data);
             // return false;
             if(data==0){
-                sweetAlert("ผิดพลาด!", "ชื่อประเภทยานพาหนะ '"+$("#vehicle_driver").val()+"' ถูกใช้แล้ว", "error");
+                sweetAlert("ผิดพลาด!", "ชื่อพนักงาน '"+$("#vehicle_driver").val()+"' ถูกใช้แล้ว", "error");
                 return false;
             }else{
                 sweetAlert("สำเร็จ...", "บันทึกข้อมูลเรียบร้อยแล้ว", "success"); //The error will display
