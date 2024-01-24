@@ -30,9 +30,17 @@ date_default_timezone_set(Setting::$AppTimeZone);
 // $_SESSION['car_popup_howto'] = 0;
 
 if(empty($_SESSION['car_id_user'])){ 
+    
     $_SESSION = []; //empty array. 
     session_destroy(); 
-    include("app/Views/main/login.php"); 
+    $prefixController = PageSetting::$prefixController;
+    isset($_REQUEST[$prefixController]) ? $nowHref = $_REQUEST[$prefixController] : $nowHref = '';
+    $AppPage = PageSetting::$AppPage;
+    if($nowHref == 'login'){
+        include("app/Views/main/login.php"); 
+    } else {
+        main();
+    }
 } else {
     main();
 }
