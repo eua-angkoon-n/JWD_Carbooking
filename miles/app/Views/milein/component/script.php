@@ -64,7 +64,7 @@
             // console.log($('#ListForm').serialize());
         });
         
-        $('#date_start').prop('disabled', true);
+        $('#date_start').prop('disabled', false);
         
         $('input[name="r1"]').on('change', function() {
             var selectedValue = $('input[name="r1"]:checked').val();

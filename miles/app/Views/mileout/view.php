@@ -48,13 +48,13 @@ $vehicle = $call->getVehicle();
                                         <div class="col-sm-12 col-md-5  col-xl-3 pt-1">
                                             <div class="form-group clearfix">
                                                 <div class="icheck-primary d-inline mr-1">
-                                                    <input type="radio" id="rAll" value="0" name="r1" checked>
+                                                    <input type="radio" id="rAll" value="0" name="r1">
                                                     <label for="rAll">
                                                         ทั้งหมด
                                                     </label>
                                                 </div>
                                                 <div class="icheck-primary d-inline mr-1">
-                                                    <input type="radio" id="rDate" value="1" name="r1">
+                                                    <input type="radio" id="rDate" value="1" name="r1" checked>
                                                     <label for="rDate">
                                                         เลือกดู
                                                     </label>

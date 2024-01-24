@@ -49,7 +49,7 @@ $in  = $Call->getInCount();
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-body p-0 card-primary card-outline">
                         <a type="button" href="?<?php echo PageSetting::$prefixController ?>=editMile" class="btn btn-default btn-block btn-lg p-5" style="border-radius:0;">
                             <div class="row d-flex align-items-center ">
@@ -58,14 +58,14 @@ $in  = $Call->getInCount();
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-8 ">
                                     <h2 class="responsive-font text-primary"> แก้ไขเลขไมล์</h2>
-                                </div>
+                                </div> -->
                                 <!-- <div class="col-sm-12 col-md-6 col-lg-2  ">
                                     <span class="badge p-2" style="background-color:#F15C22;color:white;">65</span>
                                 </div> -->
-                            </div>
+                            <!-- </div>
                         </a>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="card card-primary card-outline">
                     <div class="card-body">

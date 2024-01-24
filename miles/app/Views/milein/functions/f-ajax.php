@@ -90,7 +90,7 @@ Class Mile_Out {
             $con = connect_database();
             $obj = new CRUD($con);
             $chk = $obj->customSelect("SELECT mile_out FROM tb_mile WHERE ref_id_reservation=$id_res");
-            if($chk['mile_out'] > $mile_out) {
+            if($chk['mile_out'] >= $mile_out) {
                 return 'errmile';
             }
         
