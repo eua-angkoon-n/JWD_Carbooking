@@ -63,10 +63,15 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <label>ผู้บันทึก</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="save_out"
-                                                        name="save_out" aria-describedby="inputGroupPrepend" required />
+                                                    <label for="save_out">ผู้บันทึก</label></code>
+                                                    <select class="select2bs4"
+                                                        id="save_out" name="save_out"
+                                                        data-placeholder="ค้นหาหรือระบุเอง..." style="width: 100%;"
+                                                        aria-describedby="inputGroupPrepend" required>
+                                                        <?php echo $save; ?>
+                                                    </select>
+                                                    <input type="text" class="form-control mt-1" placeholder="ระบุชื่อ..." id="save_out_txt" name="save_out_txt" style="display: none;" aria-describedby="inputGroupPrepend" />
                                                 </div>
                                             </div>
                                         </div>

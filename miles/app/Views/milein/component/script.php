@@ -36,6 +36,14 @@
             theme: 'bootstrap4'
         })
 
+        $('#save_out').change(function() {
+            if ($(this).val() == '0') {
+                $('#save_out_txt').show();
+            } else {
+                $('#save_out_txt').hide();
+            }
+        });
+
         var currentDate = moment();
         var startDate = moment(currentDate).startOf('month');
         var endDate = moment(currentDate).endOf('month');

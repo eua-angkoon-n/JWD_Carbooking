@@ -41,4 +41,29 @@ Class List_Reservation {
             $con = null;
         }
     }
+
+    public function getSave(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $value = $obj->fetchRows("SELECT * FROM tb_security WHERE ref_id_site=".$_SESSION['car_ref_id_site']." AND security_status=1");
+
+            $r  = "";
+            foreach($value as $key => $value){
+                $r .= "<option value='".$value['security_name']."'>".$value['security_name']."</option>";
+            }
+            $r .= "<option value='0'>ระบุเอง</option>";
+
+            return $r;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
 }

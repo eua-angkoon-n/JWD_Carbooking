@@ -36,6 +36,14 @@
             theme: 'bootstrap4'
         })
 
+        $('#save_out').change(function() {
+            if ($(this).val() == '0') {
+                $('#save_out_txt').show();
+            } else {
+                $('#save_out_txt').hide();
+            }
+        });
+
         var currentDate = moment();
         var startDate = moment(currentDate).startOf('month');
         var endDate = moment(currentDate).endOf('month');
@@ -88,6 +96,11 @@
             $('#date_out').val(currentDate);
 
             get_OutData(id, idv);
+
+            $('.select2bs4-modal').select2({
+                theme: 'bootstrap4',
+                width: '100%' // กำหนดความกว้างของ Select2
+            });
         });
            
         $(document).off("click", ".btn-saveMile").on("click", ".btn-saveMile", function (e) {
@@ -155,7 +168,15 @@
                                 event.preventDefault();
                                 event.stopPropagation(); 
                             })
-                    } else {
+                    } else if(data.trim() === "Diff") {
+                        sweetAlert("ไม่สามารถบันทึกได้!", "เวลาที่ออกจากบริษัทต้องไม่มากกว่าหรือน้อยกว่า 1 ชั่วโมงที่จองไว้", "error");
+                        return false;
+
+                    } else if(data.trim() === "no_save") {
+                        sweetAlert("ไม่สามารถบันทึกได้!", "กรุณาระบุชื่อผู้บันทึก", "error");
+                        return false;
+
+                    }else {
                         sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถบันทึกได้", "error");
                         return false;
 
@@ -165,7 +186,6 @@
         }
 
         function get_OutData(id, idv) {
-
             $.ajax({
                 url: "app/Views/mileout/functions/f-ajax.php",
                 type: "POST",

@@ -44,18 +44,36 @@ Class Mile_Out {
 
         $this->date_out   = $frmData['date_out'] != NULL ? CustomDate($frmData['date_out'], 'd/m/Y H:i', 'Y-m-d H:i:s')  : NULL;
         $this->mile_out   = $frmData['mile_out'];
-        $this->save_out   = $frmData['save_out'] != NULL ? $frmData['save_out'] : NULL;
+        $this->save_out   = $this->chkSave($frmData['save_out'], $frmData['save_out_txt']);
         $this->remark_out = $frmData['remark_out'] != NULL ? $frmData['remark_out'] : NULL;
         $this->id_res     = $frmData['id_res'];
         $this->img        = $img != NULL ? separateArrayImg($img) : NULL;
     }
 
     public function getData() {
+        // return $this->save_out;
         return $this->AddMileData();
     }
 
-    public function AddMileData() {
+    public function chkSave($select, $text){
+        if($select == '0') {
+            if(IsNullOrEmptyString($text)){
+                return NULL;
+            } else {
+                return $text;
+            }
+        } else {
+            return $select;
+        }
+    }
 
+    public function AddMileData() {
+        $canAdd = $this->chkTime();
+        // return $canAdd;
+        if(!$canAdd)
+            return "Diff";
+        if(IsNullOrEmptyString($this->save_out))
+            return "no_save";
         $Mile = $this->DoAddMile();
         if(is_numeric($Mile)){
             $this->remark_out != NULL ? $remark = $this->DoAddRemark() : '';
@@ -65,6 +83,35 @@ Class Mile_Out {
         }
 
        return 0;
+    }
+
+    public function chkTime(){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE id_reservation=$this->id_res ";
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->customSelect($sql);
+
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+
+        $diff = timeDifference($result['start_date'], $this->date_out);
+        if($diff > 90) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function DoAddMile(){

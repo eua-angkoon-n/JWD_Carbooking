@@ -1,10 +1,11 @@
 <?php 
 include(__DIR__ . "/component/style.php");
-include(__DIR__ . "/frame/v-modal.php");
 include(__DIR__ . "/functions/f-list.php");
 
 $call = new List_Reservation();
 $vehicle = $call->getVehicle();
+$save = $call->getSave();
+include(__DIR__ . "/frame/v-modal.php");
 ?>
 <!-- Main content -->
 <div class="content">

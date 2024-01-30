@@ -44,7 +44,7 @@ Class Mile_Out {
 
         $this->date_out   = $frmData['date_out'] != NULL ? CustomDate($frmData['date_out'], 'd/m/Y H:i', 'Y-m-d H:i:s')  : NULL;
         $this->mile_out   = $frmData['mile_out'];
-        $this->save_out   = $frmData['save_out'] != NULL ? $frmData['save_out'] : NULL;
+        $this->save_out   = $this->chkSave($frmData['save_out'], $frmData['save_out_txt']);
         $this->remark_out = $frmData['remark_out'] != NULL ? $frmData['remark_out'] : NULL;
         $this->id_res     = $frmData['id_res'];
         $this->img        = $img != NULL ? separateArrayImg($img) : NULL;
@@ -52,6 +52,18 @@ Class Mile_Out {
 
     public function getData() {
         return $this->AddMileData();
+    }
+
+    public function chkSave($select, $text){
+        if($select == '0') {
+            if(IsNullOrEmptyString($text)){
+                return NULL;
+            } else {
+                return $text;
+            }
+        } else {
+            return $select;
+        }
     }
 
     public function AddMileData() {

@@ -1,10 +1,11 @@
 <?php 
 include(__DIR__ . "/component/style.php");
-include(__DIR__ . "/frame/v-modal.php");
 include(__DIR__ . "/functions/f-list.php");
 
 $call = new List_Reservation();
 $vehicle = $call->getVehicle();
+$save = $call->getSave();
+include(__DIR__ . "/frame/v-modal.php");
 ?>
 
 <!-- Main content -->
@@ -40,6 +41,7 @@ $vehicle = $call->getVehicle();
                                     </select>
                                 </div>
                             </div>
+
 
                             <div class="col-sm-12 col-md-8">
                                 <div class="form-group">
