@@ -12,7 +12,7 @@ require_once __DIR__ . "/../../../../tools/function.tool.php";
 
 $action = $_POST['action'];
 
-// echo json_encode($_POST['remark']);
+// echo json_encode($_POST);
 // exit();
 
 switch ($action) {
@@ -30,7 +30,12 @@ switch ($action) {
         $Call   = new ModalCalendar($_POST['id']);
         $Data   = $Call->getData();
         $Result = json_encode($Data);
-        break;    
+        break;  
+    case 'show_vehicle' :
+        $Call   = new Show_Vehicle($_POST['id']);
+        $Data   = $Call->getData();
+        $Result = json_encode($Data);
+        break;  
 }
 print_r($Result);
 exit;
@@ -68,7 +73,7 @@ Class Calendar {
     }
 
     public function getSQL(){
-        $sql  = "SELECT id_reservation, ref_id_vehicle, reason, start_date, end_date ";
+        $sql  = "SELECT * ";
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "WHERE reservation_status <> 5 ";
@@ -85,15 +90,71 @@ Class Calendar {
     public function CreateArrCalendar($data){
         $arr = array();
         foreach($data as $k => $v) {
+            $start = explode(" ",$v['start_date']);
+            $end   = explode(" ",$v['end_date']);
+            if($start[0] == $end[0]){
+                $endDate = 0;
+            } else {
+                $endDate = $v['end_date'];
+            }
             $arr[] = array(
-                'name' => $v['reason'],
-                'color'=> Setting::$CalendarColor[$v['ref_id_vehicle']],
+                'name' => getUserName($v['ref_id_user']),
+                'color'=> $v['hex_color'],
                 'start'=> $v['start_date'],
-                'end'  => $v['end_date'],
+                'end'  => $endDate,
                 'id'   => $v['id_reservation']
             );
         }
-        return $arr;
+        return array(
+            'calendar' => $arr,
+            'list'     => $this->getListOVehicle()
+        );
+    }
+
+    public function getListOVehicle(){
+        $row = $this->getDataOfVehicle();
+        // return $row;
+        if(!$row)
+            return '';
+
+        $r = '';
+        foreach ($row as $k => $v){
+            $s = empty($_SESSION['car_id_user']) ? $v['site_initialname']." - " : "";
+
+            $r .= "<button type='button' class='btn mr-1 mb-1 show_list_vehicle' data-id='".$v['id_vehicle']."' data-toggle='modal' data-target='#modal-list' style='background-color:".$v['hex_color'].";color:white'>";
+            $r .= $s.$v['vehicle_name'];
+            $r .= "</button>";
+        }
+        return $r;
+    }
+
+    public function getDataOfVehicle(){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_vehicle ";
+        $sql .= "LEFT JOIN tb_site ON (tb_site.id_site = tb_vehicle.ref_id_site) ";
+        $sql .= "WHERE vehicle_status=1 ";
+        if (!empty($_SESSION['car_id_user'])) {
+            $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+        }
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->fetchRows($sql);
+
+            if(empty($result))
+                return false;
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
     }
 }
 
@@ -330,3 +391,49 @@ Class ModalCalendar {
 
 }
 
+Class Show_Vehicle{
+    public $id_row;
+
+    public function __construct($id_row){
+        $this->id_row = $id_row;
+    }
+
+    public function getData(){
+        return $this->DoGetData();
+    }
+
+    public function DoGetData(){
+        $sql = $this->getViewQuery();
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $result = $obj->fetchRows($sql);
+
+            return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+
+    }
+
+    public function getViewQuery(){
+        $id = $this->id_row;
+        
+        $sql  = "SELECT vehicle_name, vehicle_reg_date, vehicle_seat, vehicle_status, tb_vehicle.date_created, tb_vehicle.date_edited, vehicle_remark, vehicle_brand, vehicle_type, attachment, date_uploaded ";
+        $sql .= "FROM tb_vehicle ";
+        $sql .= "LEFT JOIN tb_vehicle_brand ON (tb_vehicle_brand.id_vehicle_brand = tb_vehicle.ref_id_vehicle_brand) ";
+        $sql .= "LEFT JOIN tb_vehicle_type ON (tb_vehicle_type.id_vehicle_type = tb_vehicle.ref_id_vehicle_type) ";
+        $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
+        $sql .= "WHERE id_vehicle=$id";
+
+        return $sql;
+    }
+}

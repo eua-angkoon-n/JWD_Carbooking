@@ -179,7 +179,7 @@ Class DataTable extends TableProcessing {
     public function getControl($id, $status){
 
         $result = "";
-        if($status == 0 || $status == 1){
+        if($status == 0 || $status == 1 || $status == 3){
             $result .= "<button type='button' class='btn btn-danger CancelReservation text-center' data-id='$id'  id='CancelReservation' title='ยกเลิกการจอง'>";
             $result .= "<i class='fa fa-window-close'></i><span> ยกเลิกการจอง</span>";
             $result .= "</button> ";    

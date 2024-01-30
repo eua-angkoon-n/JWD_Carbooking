@@ -79,6 +79,7 @@ Class Type_Vehicle {
             return 0;
 
         $value = [
+            'ref_id_site' => $_SESSION['car_ref_id_site'],
             'driver_name' => $vehicle_type,
             'driver_status'  => $type_status,
             'date_created' => $date_created

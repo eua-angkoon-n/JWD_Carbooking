@@ -5,6 +5,85 @@
      <?php } ?>
    });
 
+  $(document).off('click', '.show_list_vehicle').on('click', '.show_list_vehicle', function () {
+    $('#exampleModalLabel span').html("รายละเอียดยานพาหนะ");
+      var id_row = $(this).data("id");
+      $.ajax({
+        type: 'POST',
+        url: "app/Views/dashboard/functions/f-ajax.php",
+        data: {
+          action: "show_vehicle",
+          id: id_row
+        },
+        beforeSend: function (data) {
+        },
+        success: function (data) {
+          console.log(data);
+          // return;
+          if (data) {
+            var jsonParse = JSON.parse(data);
+            // console.log(jsonParse);
+
+            $('#vehicle_name_tb').text(jsonParse[0].vehicle_name);
+            $('#vehicle_type_tb').text(jsonParse[0].vehicle_type);
+            $('#vehicle_brand_tb').text(jsonParse[0].vehicle_brand);
+            $('#vehicle_seat_tb').text(jsonParse[0].vehicle_seat);       
+            
+            if(jsonParse[0].attachment) {
+              var imageName = jsonParse[0].attachment;
+              var imagePath = 'dist/temp_img/' + jsonParse[0].date_uploaded.split('-').join("") + '/';
+              var ImageShow = imagePath + imageName;
+            } else {
+              var ImageShow = 'dist/img/SCGJWDLogo.png';
+            }
+            var imagePreview = document.getElementById('img_tb');
+            imagePreview.src = ImageShow;
+
+            $('#exampleModalView span').html(jsonParse[0].vehicle_name);
+    
+          } else {
+            swal("ผิดพลาด!", "ไม่พบข้อมูลที่ระบุ", "error");
+          }
+        },
+        error: function (data) {
+          swal("ผิดพลาด!", "ไม่พบข้อมูลที่ระบุ.", "error");
+        }
+      });
+  });
+
+  function convertDateFormatView(inputDate) {
+      if (!inputDate) {
+        return ''; // Return empty string if inputDate is empty or null
+      }
+      var dateParts = inputDate.split(' ');
+      var date = dateParts[0].split('-');
+      var time = dateParts[1] ? dateParts[1].split(':') : [];
+
+      var year = parseInt(date[0]);
+      var month = parseInt(date[1]);
+      var day = parseInt(date[2]);
+
+      // Thai month names
+      var thaiMonths = [
+        'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+      ];
+
+      // Convert to Thai Buddhist Era (BE) year
+      var thaiYear = year + 543;
+
+      // Format the date
+      var formattedDate = day + ' ' + thaiMonths[month - 1] + ' ' + thaiYear;
+
+      if (time.length === 2) {
+        var hour = parseInt(time[0]);
+        var minute = parseInt(time[1]);
+        formattedDate += ' ' + ((hour < 10) ? '0' + hour : hour) + ':' + ((minute < 10) ? '0' + minute : minute);
+      }
+
+      return formattedDate;
+    }
+
    function sendAjaxSide() {
      $.ajax({
        url: "app/Views/dashboard/functions/f-ajax.php",

@@ -1,5 +1,12 @@
 <?php 
+include(__DIR__ . "/component/style.php");
 include(__DIR__ . "/frame/v-modal.php");
+include(__DIR__ . "/frame/v-modal_vehicle.php");
+if (!empty($_SESSION['car_id_user'])) {
+  $col = "col-lg-9";
+} else {
+  $col = "col-lg-12";
+}
 ?>
 
 <section class="content">
@@ -24,17 +31,26 @@ include(__DIR__ . "/frame/v-modal.php");
           <div class="row">
 
             <!-- /.col -->
-            <div class="col-md-12 col-lg-9 order-lg-1 order-md-2 order-sm-2">
+            <div class="col-md-12 <?php echo $col ?> order-lg-1 order-md-2 order-sm-2">
               <div class="card card-primary">
                 <div class="card-body p-0">
-                  <!-- THE CALENDAR -->
-                  <div id="calendar"></div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div id="calendar"></div>
+                      <!-- THE CALENDAR -->
+                    </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
               </div>
               <!-- /.card -->
+              <div class="row mt-1">
+                    <div class="col-12" id="list_car">
+                    
+                    </div>
+                  </div>
             </div>
-
+            <?php if (!empty($_SESSION['car_id_user'])) { ?>
             <div class="col-md-12 col-lg-3 order-lg-2 order-md-1 order-sm-1">
 
               <div class="card-body p-0 col-md-12 col-lg-12">
@@ -49,17 +65,17 @@ include(__DIR__ . "/frame/v-modal.php");
                 </div>
                 <!-- /.info-box -->
               </div>
-              <?php if (!empty($_SESSION['car_id_user'])) { ?>
+              
               <div id="side_card">
                 <div class="card text-center loading">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
               </div>
-              <?php }?>
+              
 
               <!-- /.card -->
             </div>
-
+            <?php }?>
             <!-- /.col -->
           </div>
           <!-- /.row -->

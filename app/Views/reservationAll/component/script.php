@@ -199,6 +199,68 @@
             });
         });
 
+        $(document).off("click", ".CancelReservation").on("click", ".CancelReservation", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var id = $(this).data('id');
+            var ac = $(this).data('action');
+            swal({
+                    title: "ยกเลิกการจอง ?",
+                    text: "ต้องการยกเลิกการจองรถหรือไม่",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "ตกลง",
+                    cancelButtonText: "ไม่, ยกเลิก",
+                    confirmButtonColor: "#DD6B55",
+                    inputPlaceholder: "เหตุผล..."
+                },
+                function (inputValue) {
+                    if (inputValue===false) {
+                        return;
+                    } else {
+                        $.ajax({
+                        url: "app/Views/reservationList/functions/f-ajax.php",
+                        type: "POST",
+                        data: {
+                            "id": id,
+                            "remark": inputValue,
+                            "action": "cancel"
+                        },
+                        beforeSend: function () {},
+                        success: function (data) {
+                            // console.log(data);
+                            // return false;
+                            if (data == 0) {
+                                sweetAlert("เกิดข้อผิดพลาด!", "ไม่สามารถทำการยกเลิกได้", "error");
+                                return false;
+                            } else {
+                                swal({
+                                        title: "ยกเลิกสำเร็จ !!",
+                                        text: "ทำการยกเลิกการจองเรียบร้อย",
+                                        type: "success",
+                                    },
+                                    function () {
+                                        if (ac == 'atShow') {
+                                            show_reservation(id);
+                                            $('#reservation_table').DataTable().ajax.reload();
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        } else {
+                                            $('#reservation_table').DataTable().ajax.reload();
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }
+                                    })
+                            }
+                        }
+                    });
+                    }
+                });
+        });
+
+
         //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
         function show_reservation(id) {
             $.ajax({

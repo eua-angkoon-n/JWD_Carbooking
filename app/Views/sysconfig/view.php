@@ -102,7 +102,6 @@ $List = new List_Config();
         </div>
 
         <div class="row">
-        <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
               <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์ <?php echo $_SESSION['car_site_initialname']?></h5>
@@ -111,7 +110,7 @@ $List = new List_Config();
             <div class="row">
               <div class="col-sm-12 ">
                 <div class="form-group">
-                  <label for="reservation_t">Line Access Token: <?php if($_SESSION['car_ref_id_site'] != 1){?><code><?php echo Setting::$warning_text[4]?></code><?php }?></label>
+                  <label for="reservation_t">Line Access Token กลุ่มที่กำหนด: <?php if($_SESSION['car_ref_id_site'] != 1){?><code><?php echo Setting::$warning_text[4]?></code><?php }?></label>
                   <div class="row">
                     <div class="col-9">
                       <div class="input-group">
@@ -140,7 +139,46 @@ $List = new List_Config();
             </div>
 
           </div>
-          <?php } ?>
+
+          <div class="card card-primary col-sm-12 col-md-6">
+            <div class="card-header">
+              <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์กลุ่มหลัก</h5>
+            </div>
+            <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12 ">
+                <div class="form-group">
+                  <label for="reservation_t">Line Access Token กลุ่มหลัก:</label>
+                  <div class="row">
+                    <div class="col-9">
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="l_token_main" name="l_token_main"
+                          placeholder="Line Access Token..." value="<?php echo $List->getLineTokenMain() ?>"
+                          aria-describedby="inputGroupPrepend">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary form-control" type="button" id="toggleVisibilityBtn2">
+                            <i class="fa fa-eye-slash justify-content-center align-middle pb-2" id="eyeIcon2"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="col-sm-12 ">
+                  <div class="form-group">
+                    <label for="reservation_w">การแจ้งเตือน:</label>
+                    <div class="form-group clearfix">
+                      <?php echo $List->getLineNotifyMain() ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
         <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">

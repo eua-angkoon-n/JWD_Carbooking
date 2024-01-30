@@ -52,6 +52,7 @@ class Reservation{
         $sql  = "SELECT id_driver, driver_name ";
         $sql .= "FROM tb_driver ";
         $sql .= "WHERE driver_status=1 ";
+        $sql .= "AND ref_id_site IN (".$_SESSION['car_ref_id_site'].",0) ";
 
         try {
             $con = connect_database();

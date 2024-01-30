@@ -136,7 +136,7 @@ Class DataTable extends TableProcessing {
                 // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
                 $date    = getDateString($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
                 $status  = ResStatusTable($fetchRow[$key]['reservation_status'], $fetchRow[$key]['urgent']);
-                $control = $this->getControl($fetchRow[$key]['id_reservation']);
+                $control = $this->getControl($fetchRow[$key]['id_reservation'], $fetchRow[$key]['reservation_status']);
                 $fetchRow[$key]['accessories'] == 1 ? $acc = getAcc($fetchRow[$key]['id_reservation']) : $acc = "ไม่มี";
 
                 $dataRow = array();
@@ -166,17 +166,16 @@ Class DataTable extends TableProcessing {
         return $output;
     }
 
-    public function getControl($id){
+    public function getControl($id, $status){
 
-        // $result  = "<div class='btn-group dropdown'>";
-        // $result .= "<button type='button' class='btn btn-success dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>จัดการ</button>";
-        // $result .= "<div class='dropdown-menu' style='margin-left:-4rem;'>";
-        // $result .= "<a class='dropdown-item ' data-id='$id' id='' title='อนุมัติ'><i class='fas fa-pencil-alt'></i> อนุมัติ</a>";
-        // $result .= "<a class='dropdown-item ' data-id='$id' id='' title='อนุมัติ'><i class='fas fa-pencil-alt'></i> อนุมัติ</a>";
-        // $result .= "</div></div>";
-
-        $result = "<button type='button' class='btn btn-info detailReservation text-center' data-id='$id'  id='detailReservation' title='รายละเอียด'>";
-        $result .= "<i class='fa fa-info-circle'></i><span> รายละเอียด</span> ";
+        $result = "";
+        if($status == 0 || $status == 1 || $status == 3){
+            $result .= "<button type='button' class='btn btn-danger CancelReservation text-center' data-id='$id'  id='CancelReservation' title='ยกเลิกการจอง'>";
+            $result .= "<i class='fa fa-window-close'></i><span> ยกเลิกการจอง</span>";
+            $result .= "</button> ";    
+        }
+        $result .= "<button type='button' class='btn btn-info detailReservation text-center' data-id='$id'  id='detailReservation' title='รายละเอียด'>";
+        $result .= "<i class='fa fa-info-circle'></i><span> รายละเอียด</span>";
         $result .= "</button>";
         return $result;
     }

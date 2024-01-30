@@ -59,6 +59,12 @@ function Show_Sidebar($hrefNow)
                 $hrefNow,
                 $c['AllRes']
             );
+            $r .= SideBar(
+                PageSetting::$AppPage["summary"]["title"],
+                PageSetting::$AppPage["summary"]["href"],
+                PageSetting::$AppPage["summary"]["SideIcon"],
+                $hrefNow
+            );
             $r .= "</ul></li>";
         }
 
@@ -148,6 +154,8 @@ class CounterSide
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE ref_id_user= " . $_SESSION['car_id_user'] . " ";
+        $sql .= "AND ref_id_site= " . $_SESSION['car_ref_id_site'] . " ";
+        $sql .= "AND reservation_status NOT IN (2,4,5,6) ";
         try {
             $con = connect_database();
             $obj = new CRUD($con);

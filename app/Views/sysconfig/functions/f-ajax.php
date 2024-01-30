@@ -33,21 +33,25 @@ Class save_config {
     private $sysVersion;
     private $l_token;
     private $l_notify;
+    private $l_token_main;
+    private $l_notify_main;
     private $urgent_res;
     private $handover;
     public function __construct($data){
         parse_str($data, $v);
 
-        $this->reservation_t   = ['config_value' => $v['reservation_t']];
-        $this->reservation_w   = ['config_value' => $v['reservation_w']];
-        $this->reservation_txt = ['config_value' => $v['reservation_txt']];
-        $this->urgent_res      = ['config_value' => $v['urgent_reservation']];
-        $this->handover        = ['config_value' => $v['handover']];
+        $this->reservation_t     = ['config_value' => $v['reservation_t']];
+        $this->reservation_w     = ['config_value' => $v['reservation_w']];
+        $this->reservation_txt   = ['config_value' => $v['reservation_txt']];
+        $this->urgent_res        = ['config_value' => $v['urgent_reservation']];
+        $this->handover          = ['config_value' => $v['handover']];
+        $this->l_token           = ['config_value' => $v['l_token']];
+        $this->l_notify          = ['config_value' => $v['l_notify']];
         if ($_SESSION['car_class_user'] == 2) {
-            $this->sysPhase   = ['config_value' => $v['sysPhase']];
-            $this->sysVersion = ['config_value' => $v['sysVersion']];
-            $this->l_token    = ['config_value' => $v['l_token']];
-            $this->l_notify   = ['config_value' => $v['l_notify']];
+            $this->l_token_main  = ['config_value' => $v['l_token_main']];
+            $this->l_notify_main = ['config_value' => $v['l_notify_main']];
+            $this->sysPhase      = ['config_value' => $v['sysPhase']];
+            $this->sysVersion    = ['config_value' => $v['sysVersion']];
         }
     }
 
@@ -61,26 +65,36 @@ Class save_config {
             $reservation_txt = $obj->update($this->reservation_txt, 'id_config=12', 'tb_config');
             $urgent_res      = $obj->update($this->urgent_res, 'config="urgent_reservation"', 'tb_config');
             $handover        = $obj->update($this->handover, 'config="handover"', 'tb_config');
+            if($this->chkEmptyRow('l_token', true)){
+                $l_token  = $this->insertNewConfig('l_token', $this->l_token['config_value'], true);
+            } else {
+                $l_token  = $obj->update($this->l_token, 'config="l_token" AND ref_id_site='.$_SESSION['car_ref_id_site'], 'tb_config');
+            }
+            if($this->chkEmptyRow('l_notify', true)){
+                $l_notify = $this->insertNewConfig('l_notify', $this->l_notify['config_value'], true);
+            } else {
+                $l_notify = $obj->update($this->l_notify, 'config="l_notify" AND ref_id_site='.$_SESSION['car_ref_id_site'], 'tb_config');
+            }
 
             if ($_SESSION['car_class_user'] == 2) {
+                if($this->chkEmptyRow('l_token_main')){
+                    $l_token_main  = $this->insertNewConfig('l_token', $this->l_token['config_value']);
+                } else {
+                    $l_token_main  = $obj->update($this->l_token_main, 'config="l_token_main"', 'tb_config');
+                }
+                if($this->chkEmptyRow('l_notify_main')){
+                    $l_notify_main = $this->insertNewConfig('l_notify', $this->l_notify['config_value']);
+                } else {
+                    $l_notify_main = $obj->update($this->l_notify_main, 'config="l_notify_main"', 'tb_config');
+                }
                 $sysPhase        = $obj->update($this->sysPhase, 'id_config=3', 'tb_config');
                 $sysVersion      = $obj->update($this->sysVersion, 'id_config=4', 'tb_config');
-                if($this->chkEmptyRow('l_token', true)){
-                    $l_token = $this->insertNewConfig('l_token', $this->l_token['config_value'], true);
-                } else {
-                    $l_token = $obj->update($this->l_token, 'config="l_token" AND ref_id_site='.$_SESSION['car_ref_id_site'], 'tb_config');
-                }
-                if($this->chkEmptyRow('l_notify', true)){
-                    $l_notify = $this->insertNewConfig('l_notify', $this->l_notify['config_value'], true);
-                } else {
-                    $l_notify = $obj->update($this->l_notify, 'config="l_notify" AND ref_id_site='.$_SESSION['car_ref_id_site'], 'tb_config');
-                }
                 sysVersion($_SESSION['phase'], $_SESSION['version']);
                 sysCon($_SESSION['urgent'], $_SESSION['handover']);
-                return $this->chkSuccess($reservation_t, $reservation_w, $reservation_txt, $sysPhase, $sysVersion, $l_token, $l_notify);
+                return $this->chkSuccess(array($reservation_t, $reservation_w, $reservation_txt, $sysPhase, $sysVersion, $l_token, $l_notify, $l_token_main, $l_notify_main));
             }
             
-            return $this->chkSuccess1($reservation_t, $reservation_w, $reservation_txt, $urgent_res, $handover);
+            return $this->chkSuccess(array($reservation_t, $reservation_w, $reservation_txt, $urgent_res, $handover, $l_token, $l_notify));
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         
@@ -150,33 +164,15 @@ Class save_config {
         }
     }
 
-    public function chkSuccess($a, $b, $c, $d, $e, $f, $g){
-
-        if($a == 'Success' && $b == 'Success' && $c == 'Success' && $d == 'Success' && $e == 'Success' && $f == 'Success' && $g == 'Success'){
-            return true;
-        }else {
-            $ch = array($a, $b, $c, $d, $e, $f, $g);
-            foreach($ch as $v){
-                if($v != 'Success'){
-                    return $v;
-                }
+    public function chkSuccess($ch){
+        foreach($ch as $v){
+            if($v != 'Success'){
+                return $v;
             }
         }
+        return true;
     }
 
-    public function chkSuccess1($a, $b, $c, $d, $e){
-
-        if($a == 'Success' && $b == 'Success' && $c == 'Success' && $d == 'Success' && $e == 'Success'){
-            return true;
-        }else {
-            $ch = array($a, $b, $c, $d, $e);
-            foreach($ch as $v){
-                if($v != 'Success'){
-                    return $v;
-                }
-            }
-        }
-    }
 }
 
 Class View_Vehicle {

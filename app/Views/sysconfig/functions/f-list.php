@@ -159,7 +159,120 @@ Class List_Config {
 
             if(empty($r['config_value'])){
                 $w1 = "";
-                $w2 = "checked"; 
+                $w2 = "";
+                $w3 = "";
+                $w4 = "checked";
+            } else {
+                switch($r['config_value']){
+                    case 1:
+                        $w1 = "checked";
+                        $w2 = "";
+                        $w3 = "";
+                        $w4 = "";
+                        break;
+                    case 2:
+                        $w1 = "";
+                        $w2 = "checked";
+                        $w3 = "";
+                        $w4 = "";
+                        break;
+                    case 3:
+                        $w1 = "";
+                        $w2 = "";
+                        $w3 = "checked";
+                        $w4 = "";
+                        break;
+                    case 4:
+                        $w1 = "";
+                        $w2 = "";
+                        $w3 = "";
+                        $w4 = "checked";
+                        break;
+                }
+            }
+            
+            $d = '<div class="row">
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-success d-inline">
+                            <input type="radio" id="l_notify1" name="l_notify" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify1">
+                                    แจ้งเตือนกลุ่มหลักจองรถธุรการ และ กลุ่มที่กำหนด
+                                </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-success d-inline ">
+                            <input type="radio" id="l_notify2" name="l_notify" value="2" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify2">
+                                แจ้งเตือนกลุ่มหลักจองรถธุรการ
+                                </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-success d-inline ">
+                            <input type="radio" id="l_notify3" name="l_notify" value="3" '.$w3.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify3">
+                                แจ้งเตือนกลุ่มที่กำหนด
+                                </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-danger d-inline ">
+                            <input type="radio" id="l_notify4" name="l_notify" value="4" '.$w4.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify4">
+                                 ปิดการแจ้งเตือน
+                                </label>
+                        </div>
+                    </div>
+                </div>';
+
+            return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getLineTokenMain(){
+        $sql  = "SELECT config_value ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_token_main' ";
+        
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect($sql);
+
+            if(empty($r['config_value'])){
+                return "";
+            }
+            return $r['config_value'];
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getLineNotifyMain(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='l_notify_main'");
+
+            if(empty($r['config_value'])){
+                $w1 = "";
+                $w2 = "";
             } else {
                 switch($r['config_value']){
                     case 1:
@@ -173,17 +286,23 @@ Class List_Config {
                 }
             }
             
-            $d = '<div class="icheck-success d-inline">
-                    <input type="radio" id="l_notify1" name="l_notify" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
-                         <label for="l_notify1">
-                            เปิดการแจ้งเตือน
-                        </label>
-                </div>
-                <div class="icheck-danger d-inline ">
-                    <input type="radio" id="l_notify2" name="l_notify" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
-                        <label for="l_notify2">
-                         ปิดการแจ้งเตือน
-                        </label>
+            $d = '<div class="row mb-2">
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-success d-inline">
+                            <input type="radio" id="l_notify_main1" name="l_notify_main" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify_main1">
+                                    เปิดแจ้งเตือน
+                                </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <div class="icheck-danger d-inline ">
+                            <input type="radio" id="l_notify_main2" name="l_notify_main" value="2" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                                <label for="l_notify_main2">
+                                    ปิดแจ้งเตือน
+                                </label>
+                        </div>
+                    </div>
                 </div>';
 
             return $d;
@@ -195,6 +314,7 @@ Class List_Config {
             $con = null;
         }
     }
+
 
     public function getUrgent_Reservation(){
         try {

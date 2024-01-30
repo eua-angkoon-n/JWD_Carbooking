@@ -278,7 +278,7 @@ Class Add_Reservation {
             if(!IsNullOrEmptyString($this->phone)){
                $this->chkPhoneEService();
             }
-            $this->sendLineNotify($idRes);
+            $this->CheckLineNotify($idRes);
             return $idRes;
         }
         return false;
@@ -408,11 +408,92 @@ Class Add_Reservation {
         }
     }
 
-    public function sendLineNotify($idRes){
+    public function CheckLineNotify($idRes){
 
         getLineConfig($token, $notify);
-        if(!$notify)
+        if(!$notify) // ผ่านเช็คแล้วผ่าน แสดงว่ามีส่งแน่นอน
             return;
+        
+        switch($notify){
+            case 1 :
+                $this->MainNotify($idRes);
+                $this->CustomNotify($idRes);
+                break;
+            case 2 :
+                $this->MainNotify($idRes);
+                break;
+            case 3 :
+                $this->CustomNotify($idRes);
+                break;
+            default:
+            case 4 :
+                break;
+        }
+        return;
+    }
+
+    public function MainNotify($idRes){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_notify_main' ";
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $ntf = $obj->customSelect($sql);
+    
+            if($ntf['config_value'] == 1) {
+                $tk = getMainLineToken();
+                if($tk){
+                    $this->sendLineNotify($idRes, $tk, 'Main');
+                }
+            }
+            
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function CustomNotify($idRes){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_token' ";
+        $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." "; 
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $tk = $obj->customSelect($sql);
+
+            if(empty($tk) || IsNullOrEmptyString($tk['config_value']))
+                return;
+                $this->sendLineNotify($idRes, $tk['config_value'], 'Custom');
+            return;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function sendLineNotify($idRes, $token, $from){
+        switch($from){
+            case 'Main':
+                $site = "\nไซต์: ".$_SESSION['car_site_initialname'];
+                break;
+            case 'Custom':
+                $site = "";
+                break;
+        }
+
         $res     = $this->getReservationData($idRes);
         $vehicle = $res['vehicle_name'];
         $date    = getDateString2($res['start_date'], $res['end_date']);
@@ -422,7 +503,8 @@ Class Add_Reservation {
         $driver  = $res['driver_name'];
 
         $sToken    = $token;
-        $sMessage  = "\nจองยานพาหนะ: $vehicle\n";
+        $sMessage  = $site;
+        $sMessage .= "\nจองยานพาหนะ: $vehicle\n";
         $sMessage .= "วันที่: $date\n";
         $sMessage .= "ชื่อผู้จอง: $name\n";
         $sMessage .= "แผนกที่จอง: $dept\n";

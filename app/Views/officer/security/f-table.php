@@ -52,7 +52,7 @@ Class DataTable extends TableProcessing {
            $sql  = "SELECT count(id_security) AS total_row ";
        $sql .= "FROM tb_security ";
        $sql .= "WHERE 1=1 ";
-       // $sql .= "ref_id_site = '".$_SESSION['site']."' "; 
+       $sql .= "AND ref_id_site = '".$_SESSION['car_ref_id_site']."' "; 
     
        $sql .= "$this->query_search ";
        if($OrderBY) {

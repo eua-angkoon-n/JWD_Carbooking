@@ -13,10 +13,11 @@
        },
        beforeSend: function () {},
        success: function (data) {
-          // console.log(data)
          //  return false;
          var jsonData = JSON.parse(data);
-         createCalendar(jsonData);
+        //  console.log(jsonData)
+         createCalendar(jsonData['calendar']);
+         $('#list_car').html(jsonData['list'])
          if (mode == 'all') {
            $('.fc-self-button').prop('disabled', false);
            $('.fc-all-button').prop('disabled', true);
@@ -32,17 +33,24 @@
 
      var events = data.map(function (event) {
       // console.log(event.id);
+      if(event.end == 0){
+        var isAllDay = true;
+      } else {
+        var isAllDay = false;
+      }
+
        return {
          title: event.name,
          start: new Date(event.start),
          end: new Date(event.end),
+        allDay: isAllDay,
          backgroundColor: event.color,
          borderColor: event.color,
          id: event.id
        };
      });
      // console.log(data);
-
+    //  console.log(events);
      var date = new Date()
      var d = date.getDate(),
        m = date.getMonth(),
@@ -73,9 +81,9 @@
          }
        },
        headerToolbar: {
-         left: 'prev,next all<?php if (!empty($_SESSION['car_id_user'])) { ?>,self<?php }?>',
+         left: 'all<?php if (!empty($_SESSION['car_id_user'])) { ?>,self<?php }?>',
          center: 'title',
-         right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
+         right: 'today,dayGridMonth,prev,next'
        },
        themeSystem: 'bootstrap',
        locale: 'en',

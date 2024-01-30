@@ -4,7 +4,7 @@
      $('#reservation_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "order": [0, 'asc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
+            "order": [6, 'desc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
             "aoColumnDefs": [{
                     "bSortable": false,
                     "aTargets": [0, 1, 4, 7]

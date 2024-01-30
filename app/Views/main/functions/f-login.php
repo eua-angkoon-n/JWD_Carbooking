@@ -121,6 +121,7 @@ Class Login{
             $obj  = new CRUD($conn);
 
             $fetchRow = $obj->customSelect($sql);
+            $chkStillNotApprove = $obj->update(['reservation_status' => 2], "reservation_status = 0 AND start_date < '".Date('Y-m-d H:i:s')."'", "tb_reservation");
             if(!empty($fetchRow['class_user'])){
                 return $fetchRow['class_user'];
             } else {
