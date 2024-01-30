@@ -84,6 +84,19 @@ class Setting
         '9' => "#9B8E9C", // Hazy Lilac 2116-40
         '10' => "#8C887A", // Antique Pewter 1560
     );
+
+    public static $CalendarColor1 = array(
+        '','#b42864','#ffa600','#03254c','#1167b1','#187bcd','#2a9df4'
+    );
+
+    //1 '#03254c','#1167b1','#187bcd','#2a9df4','#d0efff'
+    //2 '#ffa600','#ed9a00','#db8f00','#c98300','#b87800'
+    //3 '#045c4e','#49c09a','#c1ece1','#5a9175','#237560'
+    //4 '#e292b6','#cb83a4','#b57592','#9e667f','#88586d'
+    //5 '#b42864','#f08cb4','#f078a0','#ffa0c8','#dc3c8c'
+    //6 '#00283c','#006478','#28b4c8','#8cc8dc','#288ca0'
+    //7 '#0064ff','#00a0ff','#0078ff','#008cff','#00b4ff'
+    //8 '#dc6428','#dc5028','#c85028','#dc643c','#c8643c'
     public static $SQLSET = "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
 
     public static $HundredColor = array (
@@ -168,6 +181,12 @@ class PageSetting
             "view" => "../reservationAll/view.php",
             "href" => "res",
             "SideIcon" => "fa-car"
+        ),
+        "summary" => array (
+            "title" => "สรุปรายการจองยานพาหนะ",
+            "view" => "../reservationSum/view.php",
+            "href" => "summary",
+            "SideIcon" => "fa-file"
         ),
         "vehicleconfig" => array (
             "title" => "ยานพาหนะ",
