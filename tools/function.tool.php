@@ -909,45 +909,61 @@ function getLineConfig1(&$token, &$notify){
 }
 
 function getLineConfig(&$token, &$notify){
-    $sql  = "SELECT * ";
-    $sql .= "FROM tb_config ";
-    $sql .= "WHERE config = 'l_notify' ";
-    $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+    $sql_n  = "SELECT * ";
+    $sql_n .= "FROM tb_config ";
+    $sql_n .= "WHERE config = 'l_notify' ";
+    $sql_n .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";
+
+    $sql_t  = "SELECT * ";
+    $sql_t .= "FROM tb_config ";
+    $sql_t .= "WHERE config = 'l_token' ";
+    $sql_t .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." "; 
    
     try {
         $con = connect_database();
         $obj = new CRUD($con);
     
-        $r = $obj->customSelect($sql);
+        $ntf = $obj->customSelect($sql_n);
 
-        if(empty($r)){
-          $token = 0;
-          $notify = false;
-          return;
+        if(empty($ntf) || $ntf['config_value'] == 4){
+          $token = 0;$notify = false;return;
         }
-        if($r['config_value'] == 1){
-            $notify = true;
-            $sql  = "SELECT * ";
-            $sql .= "FROM tb_config ";
-            $sql .= "WHERE config = 'l_token' ";
-            $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." ";   
+        $notify = $ntf['config_value'];
 
-            $r = $obj->customSelect($sql);
-            if(empty($r) || IsNullOrEmptyString($r['config_value'])){
-                $sql  = "SELECT * ";
-                $sql .= "FROM tb_config ";
-                $sql .= "WHERE id_config =5 ";  
+        $tk  = $obj->customSelect($sql_t);
+        if(empty($tk) || ($notify == 3 && IsNullOrEmptyString($tk['config_value']))){
+            $token = 0;$notify = false;return;
+        }
+        $token = $tk['config_value'];
+        return;
+        
 
-                $r = $obj->customSelect($sql);
-            }
-            $token = $r['config_value'];
-            return;
-        } else {
-            $token = 0;
-            $notify = false;
-            return;
+    } catch (PDOException $e) {
+        return "Database connection failed: " . $e->getMessage();
+    } catch (Exception $e) {
+        return "An error occurred: " . $e->getMessage();
+    } finally {
+        $con = null;
+    }
+}
+
+function getMainLineToken(){
+    $sql_t  = "SELECT * ";
+    $sql_t .= "FROM tb_config ";
+    $sql_t .= "WHERE config = 'l_token_main' ";
+   
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+    
+        $tk = $obj->customSelect($sql_t);
+
+        if(IsNullOrEmptyString($tk['config_value'])) {
+            return false;
         }
 
+        return $tk['config_value'];
+        
     } catch (PDOException $e) {
         return "Database connection failed: " . $e->getMessage();
     } catch (Exception $e) {
