@@ -128,7 +128,7 @@ Class DataTable extends TableProcessing {
 
                 
                 // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
-                $date    = getDateString($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
+                $date    = $this->getDateString($fetchRow[$key]['end_date']);
                 $status  = ResStatusTable($fetchRow[$key]['reservation_status']);
                 $control = $this->getControl($fetchRow[$key]['id_reservation'], getDateString2($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']), $fetchRow[$key]['vehicle_name']);
 
@@ -159,6 +159,19 @@ Class DataTable extends TableProcessing {
         return $output;
     }
 
+    public function getDateString($date){
+        $txtdate = convertToThaiDate($date);
+        $s  = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        $sd = $s->format('H:i');
+
+        if (strtotime($sd) >= strtotime('00:00') && strtotime($sd) < strtotime('12:00')) {
+            $r = "<span class='badge badge-warning' style='font-size:100%'>$txtdate<br>$sd น.</span>";
+        } else {
+            $r = "<span class='badge badge-success' style='font-size:100%'>$txtdate<br>$sd น.</span>";
+        }
+        return $r;
+    }
+
     public function getControl($id, $date, $vehicle){
         $result = "<div class='text-center'><button type='button' style='background-color:#F15C22;color:#EEEEEE' class='btn text-center modalMile' data-id='$id' data-datetext='$date' data-vehicle='$vehicle' data-toggle='modal' data-target='#modal-mile' data-backdrop='static' data-keyboard='false' id='modalMile' title='บันทึกเลขไมล์'>";
         $result .= "<i class='fa fa-save'></i><span> บันทึกเลขไมล์</span> ";
@@ -179,7 +192,7 @@ $draw   = $_POST["draw"];
 $action = $_POST['action'];
 
 $DataTableSearch = array(
-    'vehicle_name', 'traveling_companion', 'start_date'
+    'vehicle_name', 'traveling_companion', 'end_date'
 );
 
 switch($action){
@@ -192,7 +205,7 @@ switch($action){
             4 => "tb_vehicle.vehicle_name",
             5 => "tb_reservation.ref_id_user",
             6 => "tb_reservation.traveling_companion",
-            7 => "tb_reservation.start_date",
+            7 => "tb_reservation.end_date",
         );
     break;
 }

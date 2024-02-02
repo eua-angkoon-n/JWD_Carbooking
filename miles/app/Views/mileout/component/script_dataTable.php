@@ -4,7 +4,7 @@
      $('#miles_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "order": [0, 'asc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
+            "order": [6, 'asc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
             "aoColumnDefs": [{
                     "bSortable": false,
                     "aTargets": [0]
@@ -41,6 +41,8 @@
             "scrollX": true,
             // "responsive": true,
         });
+
+        $('#miles_table_length').append('<div class="col-10 d-inline"><span class="badge badge-warning mr-2" style="font-size:100%">ช่วงเช้า</span><span class="badge badge-success" style="font-size:100%">ช่วงบ่าย</span></div>');
 
     });
 </script>

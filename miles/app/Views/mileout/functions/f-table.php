@@ -128,7 +128,7 @@ Class DataTable extends TableProcessing {
 
                 
                 // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
-                $date    = getDateString($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
+                $date    = $this->getDateString($fetchRow[$key]['start_date']);
                 $status  = ResStatusTable($fetchRow[$key]['reservation_status']);
                 $control = $this->getControl($fetchRow[$key]['id_reservation'], getDateString2($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']), $fetchRow[$key]['vehicle_name'], $fetchRow[$key]['id_vehicle']);
 
@@ -158,6 +158,20 @@ Class DataTable extends TableProcessing {
 
         return $output;
     }
+
+    public function getDateString($date){
+        $txtdate = convertToThaiDate($date);
+        $s  = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        $sd = $s->format('H:i');
+
+        if (strtotime($sd) >= strtotime('00:00') && strtotime($sd) < strtotime('12:00')) {
+            $r = "<span class='badge badge-warning' style='font-size:100%'>$txtdate<br>$sd น.</span>";
+        } else {
+            $r = "<span class='badge badge-success' style='font-size:100%'>$txtdate<br>$sd น.</span>";
+        }
+        return $r;
+    }
+    
 
     public function getControl($id, $date, $vehicle, $id_vehicle){
         if($this->chkStatus($id_vehicle)){
