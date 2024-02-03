@@ -164,12 +164,17 @@ Class Side_Card {
     public function getData(){
         $q = $this->getQuery();
         if(empty($q)){
-            return 0;
+            $q = 0;
         }
-        if($this->justUser){
-            $c = $this->getCardUser($q);
+        // return $q;
+        if($q != 0){
+            if($this->justUser){
+                $c = $this->getCardUser($q);
+            } else {
+                $c = $this->getCardAdmin($q);
+            }
         } else {
-            $c = $this->getCardAdmin($q);
+            $c = 0;
         }
         return array(
             'info' => $this->getTodayRes(),
@@ -274,9 +279,8 @@ Class Side_Card {
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE DATE(start_date) = '".DATE('Y-m-d')."' ";
-        if (!empty($_SESSION['car_id_user'])) {
-            $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
-        }
+        $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
+
         // return $sql;
 
         try {

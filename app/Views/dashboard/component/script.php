@@ -93,13 +93,14 @@
        },
        beforeSend: function () {},
        success: function (data) {
-        if(data == 0){
-          $('#side_card').html('');
-          return;
-        }
          var jsonData = JSON.parse(data);
          $('#today_res').text(jsonData.info);
-        //  console.log(data)
+         
+        //  console.log(data);
+         if(jsonData.card == 0){
+           $('#side_card').html('');
+           return;
+          }
          renderCards(jsonData.card);
        }
      });

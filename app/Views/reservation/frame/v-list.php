@@ -77,7 +77,7 @@
                     <div class="input-group-text"><i class="far fa-clock"></i></div>
                   </div>
                   <input type="text" class="form-control datetimepicker-input" id="time_start" name="time_start"
-                    data-target="#time_start" />
+                    data-target="#time_start" data-toggle="datetimepicker" />
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@
                     <div class="input-group-text"><i class="far fa-clock"></i></div>
                   </div>
                   <input type="text" class="form-control datetimepicker-input" id="time_end" name="time_end"
-                    data-target="#time_end" />
+                    data-target="#time_end" data-toggle="datetimepicker" />
                 </div>
               </div>
             </div>
