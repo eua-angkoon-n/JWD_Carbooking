@@ -7,7 +7,7 @@
             "order": [6, 'desc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
             "aoColumnDefs": [{
                     "bSortable": false,
-                    "aTargets": [0, 1, 4, 7]
+                    "aTargets": [0, 1, 5, 9]
                 }, //คอลัมน์ที่จะไม่ให้ฟังก์ชั่นเรียง
                 {
                     "bSearchable": false,
@@ -39,8 +39,17 @@
             "info": true,
             "autoWidth": false,
             "scrollX": true,
+            "buttons": [
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:eq(1))' // ไม่รวม Column แรก
+                    }
+                },'colvis'
+        
+            ]
             // "responsive": true,
-        });
+        }).buttons().container().appendTo('#reservation_table_wrapper .col-md-6:eq(0)');
 
     });
 </script>

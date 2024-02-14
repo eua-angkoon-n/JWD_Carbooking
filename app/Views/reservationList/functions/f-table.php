@@ -16,13 +16,14 @@ Class DataTable extends TableProcessing {
     public $end;
     public $vehicle;
     public $status;
+    public $radio;
     
     public function __construct($formData,$TableSET){
         parent::__construct($TableSET); //ส่งค่าไปที่ DataTable Class
 
         parse_str($formData, $data);
-       
-        $this->convertDateRangeToTimestamps($data['res_date'], $this->start, $this->end);
+
+        convertDateDMY($data['res_date'], $this->start, $this->end);
         $this->status = $data['res_status'];
         $this->vehicle = $data['res_vehicle'];
     }   
@@ -125,6 +126,7 @@ Class DataTable extends TableProcessing {
             $r .= "AND start_date < '$this->end' ";
             $r .= "AND end_date > '$this->start' ";
         }
+
         return $r;
     }
 

@@ -157,6 +157,7 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
                 $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
+                $dataRow[] = getUserName($value['ref_id_user']);
                 $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
                 $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : wordwrap($fetchRow[$key]['place_name'], 15, "<br>\n"));
                 $dataRow[] = implode("<br>", explode(", ", $acc));
@@ -217,12 +218,13 @@ switch($action){
             1 => "tb_reservation.id_reservation",
             2 => "tb_vehicle.id_vehicle",
             3 => "tb_vehicle.vehicle_name",
-            4 => "tb_reservation.traveling_companion",
-            5 => "tb_coordinates.place_name",
-            6 => "tb_reservation.accessories",
-            7 => "tb_reservation.start_date",
-            8 => "reservation_status",
+            4 => "tb_reservation.ref_id_user",
+            5 => "tb_reservation.traveling_companion",
+            6 => "tb_coordinates.place_name",
+            7 => "tb_reservation.accessories",
+            8 => "tb_reservation.start_date",
             9 => "reservation_status",
+            10 => "reservation_status",
         );
     break;
 }

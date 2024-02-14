@@ -22,7 +22,7 @@ Class DataTable extends TableProcessing {
 
         parse_str($formData, $data);
        
-        convertDateRange($data['res_date'], $this->start, $this->end);
+        convertDateDMY($data['res_date'], $this->start, $this->end);
         $this->vehicle = $data['res_vehicle'];
     }   
     public function getTable(){

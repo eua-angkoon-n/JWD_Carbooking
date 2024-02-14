@@ -18,7 +18,7 @@
             }
         })
 
-        $('#res_status, #res_vehicle, #res_date').change(function () {
+        $('#ListForm').change(function () {
             // Reload the DataTable using AJAX
             $('#reservation_table').DataTable().ajax.reload();
         });
@@ -30,6 +30,19 @@
                 format: 'DD/MM/YYYY HH:mm:ss'
             }
         })
+
+        $('#res_date').prop('disabled', true);
+
+        $('input[name="r1"]').on('change', function() {
+            var selectedValue = $('input[name="r1"]:checked').val();
+
+            // ถ้าเลือก rDate
+            if (selectedValue === '1') {
+                $('#res_date').prop('disabled', false);
+            } else {
+                $('#res_date').prop('disabled', true);
+            }
+        });
 
         <?php if($id != ''){ ?>
             var id = <?php echo $id?>;

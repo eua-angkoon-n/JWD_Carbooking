@@ -13,7 +13,12 @@ Class List_Reservation {
         $arrStatus = Setting::$reservationStatus;
         $r = "<option value='' selected='selected'>ทั้งหมด</option>";
         foreach($arrStatus as $key => $status){
-            $r .= "<option value='$key'>$status</option>";
+            if($key == 1){
+                $s = "selected='selected'";
+            } else {
+                $s = "";
+            }
+            $r .= "<option value='$key' $s>$status</option>";
         }
         return $r;
     }
@@ -33,10 +38,8 @@ Class List_Reservation {
             return $r;
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
-        
         } catch (Exception $e) {
             return "An error occurred: " . $e->getMessage();
-        
         } finally {
             $con = null;
         }

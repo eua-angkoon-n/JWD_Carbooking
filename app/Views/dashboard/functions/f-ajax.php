@@ -159,20 +159,15 @@ Class Calendar {
 }
 
 Class Side_Card {
-
-    private $justUser;
     public function getData(){
         $q = $this->getQuery();
+        // return $q;
         if(empty($q)){
             $q = 0;
         }
-        // return $q;
         if($q != 0){
-            if($this->justUser){
-                $c = $this->getCardUser($q);
-            } else {
-                $c = $this->getCardAdmin($q);
-            }
+            $c = $this->getCard($q);
+            // return $c;
         } else {
             $c = 0;
         }
@@ -204,51 +199,85 @@ Class Side_Card {
     }
 
     public function getSQL(){
-        $this->justUser = false;
 
         if($_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 1){
-            $this->justUser = true;
             $sql  = "SELECT * ";
             $sql .= "FROM tb_reservation ";
             $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle  = tb_reservation.ref_id_vehicle) ";
             $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
-            $sql .= "WHERE reservation_status=1 "; 
+            $sql .= "WHERE reservation_status NOT IN (2,5) "; 
             $sql .= "AND ref_id_user = ".$_SESSION['car_id_user'] ." ";
+            $sql .= "ORDER BY id_reservation DESC ";
+            $sql .= "LIMIT 3 ";
         } else {
             $sql  = "SELECT * ";
             $sql .= "FROM tb_reservation ";
             $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle  = tb_reservation.ref_id_vehicle) ";
             $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
-            $sql .= "WHERE reservation_status=0 ";
+            $sql .= "WHERE reservation_status NOT IN (2,5) ";
             $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
-            $sql .= "ORDER BY start_date ASC ";
-            $sql .= "LIMIT 5 "; 
+            $sql .= "ORDER BY id_reservation DESC ";
+            $sql .= "LIMIT 3 "; 
         }
 
         return $sql;
        
     }
 
-    public function getCardUser($q){
-        $r = array();
+    public function getCard($q){
+        // $r = array();
         $prefix = PageSetting::$prefixController;
+        $r = "<div class='card card-success'>
+                <div class='card-header'>
+                    <h3 class='card-title'>3 รายการจองล่าสุด</h3>
+                    <div class='card-tools'>
+                        <button type='button' class='btn btn-tool' data-card-widget='collapse'>
+                            <i class='fas fa-minus'></i>
+                        </button>
+                    </div>
+                </div>";
         foreach($q as $k => $v){
             $id         = $v['id_reservation'];
+            
             $folderDate = str_replace("-", "", $v['date_uploaded']);
-            $img        =  $folderDate . "/" . $v['attachment'];
+            $img        = $folderDate . "/" . $v['attachment'];
+            
             $name       = $v['vehicle_name'];
             $date       = getDateString2($v['start_date'], $v['end_date']);
+            $reason     = $v['reason'];
 
-            $r[] = array(
-                'class'  => 'user',
-                'prefix' => $prefix,
-                'id'     => $id,
-                'img'    => $img,
-                'name'   => $name,
-                'date'   => $date,
-                'reason' => $v['reason']
-            );
+            $ResStatus  = ResStatus($v['reservation_status']);
+            $color      = $ResStatus['color'];
+            $status     = $ResStatus['status'];
+
+            $r .= "<div class='card-body p-0'>
+            <a type='button' href='?$prefix=reservationList&id=$id' class='btn btn-default btn-block p-0' style='border-radius:0;'>     
+              <div class='card card-main p-0 col-md-12 col-lg-12 position-relative p-3 m-0'>
+                <div class='ribbon-wrapper ribbon-lg'>
+                  <div class='ribbon bg-$color text-lg'>
+                    $status
+                  </div>
+                </div>
+                <div class='box-profile'>
+                  <img src='dist/temp_img/$img' alt='Vehicle Image' class='img-thumbnail rounded mx-auto d-block'>
+                  <h4 class='profile-username text-center'>$name</h4>
+                  <ul class='list-group list-group-unbordered mb-1'>
+                    <li class='list-group-item text-center'>
+                      <b>$date</b>
+                    </li>";
+            if($_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 1){
+                $r .= "<li class='list-group-item text-center'>
+                  <span>$reason</span>
+                </li>";
+            } else {
+                $user = getUserName($v['ref_id_user']);
+                $r .= "<li class='list-group-item text-center'>
+                  <span>$user</span>
+                </li>";
+            }
+            $r .= "</ul></div></div></a></div>";
         }
+        $r .= "</div>";
         return $r;
     }
 

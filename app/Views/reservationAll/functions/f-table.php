@@ -21,7 +21,7 @@ Class DataTable extends TableProcessing {
         parent::__construct($TableSET); //ส่งค่าไปที่ DataTable Class
 
         parse_str($formData, $data);
-       
+      
         convertDateDMY($data['res_date'], $this->start, $this->end);
         $this->status = $data['res_status'];
         $this->vehicle = $data['res_vehicle'];

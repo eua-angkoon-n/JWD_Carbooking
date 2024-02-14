@@ -40,16 +40,36 @@ $vehicle = $Call->getVehicle();
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-3">
+                                        <div class="col-sm-12 col-md-7 col-xl-5 pt-1">
                                             <div class="form-group">
-                                                <label for="res_user">วันที่ทำการจอง</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i
-                                                                class="far fa-clock"></i></span>
+                                                <label for="res_user" class="m-0">วันที่ทำการจอง</label>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-5 mt-1">
+                                                        <div class="form-group clearfix">
+                                                            <div class="icheck-primary d-inline mr-1">
+                                                                <input type="radio" id="rAll" value="0" name="r1" checked>
+                                                                <label for="rAll">
+                                                                    ทั้งหมด
+                                                                </label>
+                                                            </div>
+                                                            <div class="icheck-primary d-inline mr-1">
+                                                                <input type="radio" id="rDate" value="1" name="r1">
+                                                                <label for="rDate">
+                                                                    เลือกดู
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <input type="text" class="form-control float-right" id="res_date"
-                                                        name="res_date">
+                                                    <div class="col-sm-12 col-md-7">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="far fa-clock"></i></span>
+                                                            </div>
+                                                            <input type="text" class="form-control float-right" id="res_date"
+                                                                name="res_date">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +95,7 @@ $vehicle = $Call->getVehicle();
                                                 <th scope="col" style="width:4%">ผู้ที่ทำการจอง</th>
                                                 <th scope="col" style="width:5%">ผู้เดินทาง</th>
                                                 <th scope="col" style="width:5%">พนักงานขับรถ</th>
-                                                <th scope="col" style="width:8%">วันที่จอง</th>
+                                                <th scope="col" style="width:8%">วันที่เดินทาง</th>
                                                 <th scope="col" style="width:2%">สถานะ</th>
                                                 <th scope="col" style="width:8%">จัดการ</th>
                                             </tr>

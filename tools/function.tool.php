@@ -574,6 +574,28 @@ function ResStatusTable($idStatus, $urgent = 0){
     return $r;
 }
 
+function ResStatus($idStatus){
+    $status = Setting::$reservationStatus;
+    if($idStatus == 0){
+        $r  = array("color" => "warning", "status" => $status[0]);
+    } else if ($idStatus == 1) {
+        $r  = array("color" => "success", "status" => $status[1]);
+    } else if ($idStatus == 2) {
+        $r  = array("color" => "danger", "status" => $status[2]);
+    } else if ($idStatus == 3) {
+        $r  = array("color" => "info", "status" => $status[3]);
+    } else if ($idStatus == 4) {
+        $r  = array("color" => "success", "status" => $status[4]);
+    } else if ($idStatus == 5) {
+        $r  = array("color" => "secondary", "status" => $status[5]);
+    } else if ($idStatus == 6) {
+        $r  = array("color" => "success", "status" => $status[6]);
+    } else {
+        $r = "";
+    }
+    return $r;
+}
+
 function getUserName($id) {
     $sql      = "SELECT * FROM tb_user WHERE id_user=$id";
 
