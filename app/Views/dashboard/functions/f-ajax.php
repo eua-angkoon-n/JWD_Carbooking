@@ -76,7 +76,7 @@ Class Calendar {
         $sql  = "SELECT * ";
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
-        $sql .= "WHERE reservation_status <> 5 ";
+        $sql .= "WHERE reservation_status NOT IN (2, 5) ";
         if (!empty($_SESSION['car_id_user'])) {
             if($this->mode == 'self'){
                 $sql .= "AND tb_reservation.ref_id_user=".$_SESSION['car_id_user']." ";

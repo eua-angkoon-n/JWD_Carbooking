@@ -139,7 +139,7 @@ $List = new List_Config();
             </div>
 
           </div>
-
+          <?php if ($_SESSION['car_class_user'] == 2) { ?>
           <div class="card card-primary col-sm-12 col-md-6">
             <div class="card-header">
               <h5 class="card-title"><i class="fab fa-line"></i> การแจ้งเตือนผ่านไลน์กลุ่มหลัก</h5>
@@ -175,8 +175,8 @@ $List = new List_Config();
                 </div>
               </div>
             </div>
-
           </div>
+            <?php }?>
         </div>
         <div class="row">
         <?php if ($_SESSION['car_class_user'] == 2) { ?>

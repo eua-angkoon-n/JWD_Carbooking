@@ -157,6 +157,7 @@ isset($_SESSION['car_class_user']) ? $class = $_SESSION['car_class_user'] : $cla
         <li><strong class="mt-2 mb-2">เมนูรายการจองของฉัน</strong> สามารถตรวจสอบรายการจองทั้งหมดของตัวเอง หรือทำการยกเลิกการจองยานพาหนะก่อนใช้งานได้</li>
       </ul>
     </div>
+    <?php if($_SESSION['handover'] == 1) { ?>
     <div class="row text-center">
       <div class="col-12">
         <a class="modal-img" data-id="dist/img/manuals/user6.png" data-toggle='modal' data-target='#modal-img'>
@@ -188,7 +189,7 @@ isset($_SESSION['car_class_user']) ? $class = $_SESSION['car_class_user'] : $cla
         </ul>
       </ul>
     </div>
-
+  <?php } ?>
   </div><!-- /.card-body -->
 </div><!-- /.card collapsed-card -->
 <!-- End Howto 2 -->
@@ -244,6 +245,58 @@ isset($_SESSION['car_class_user']) ? $class = $_SESSION['car_class_user'] : $cla
     <div class="row">
       <ul class="howto-style-none">
          <li><strong class="mt-2 mb-2">รายการจองทั้งหมด </strong> แสดงบันทึกรายการจองยานพาหนะที่มีทั้งหมดภายในระบบ</li>
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-12">
+        <a class="modal-img" data-id="dist/img/manuals/hr4.png" data-toggle='modal' data-target='#modal-img'>
+          <img src="dist/img/manuals/hr4.png" class="w-50 mb-1" />
+          <p class="pointer">คลิกเพื่อดูรูปขนาดใหญ่</p>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="howto-style-none">
+         <li><strong class="mt-2 mb-2">หน้าสรุปรายการจองยานพาหนะ </strong> แสดงสรุปบันทึกรายการจองยานพาหนะ</li>
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-12">
+        <a class="modal-img" data-id="dist/img/manuals/hr5.png" data-toggle='modal' data-target='#modal-img'>
+          <img src="dist/img/manuals/hr5.png" class="w-50 mb-1" />
+          <p class="pointer">คลิกเพื่อดูรูปขนาดใหญ่</p>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="howto-style-none">
+         <li><strong class="mt-2 mb-2">จัดการระบบ ยานพาหนะ </strong> สำหรับจัดการเพิ่ม, ลบ, แก้ไข รายการที่เกี่ยวกับยานพาหนะและอุปกรณ์เสริม</li>
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-12">
+        <a class="modal-img" data-id="dist/img/manuals/hr6.png" data-toggle='modal' data-target='#modal-img'>
+          <img src="dist/img/manuals/hr6.png" class="w-50 mb-1" />
+          <p class="pointer">คลิกเพื่อดูรูปขนาดใหญ่</p>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="howto-style-none">
+         <li><strong class="mt-2 mb-2">จัดการระบบ เจ้าที่หน้า </strong> สำหรับจัดการเพิ่ม, ลบ, แก้ไข รายชื่อเจ้าหน้า และพนักงานขับรถ</li>
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-12">
+        <a class="modal-img" data-id="dist/img/manuals/hr7.png" data-toggle='modal' data-target='#modal-img'>
+          <img src="dist/img/manuals/hr7.png" class="w-50 mb-1" />
+          <p class="pointer">คลิกเพื่อดูรูปขนาดใหญ่</p>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="howto-style-none">
+         <li><strong class="mt-2 mb-2">จัดการระบบ ตั้งค่าระบบ </strong> สำหรับตั้งค่าการใช้งานภายในระบบ ฟังก์ชันต่างๆ และการแจ้งเตือนผ่านไลน์</li>
       </ul>
     </div>
 
@@ -303,4 +356,3 @@ isset($_SESSION['car_class_user']) ? $class = $_SESSION['car_class_user'] : $cla
 <?php 
 include __DIR__ . '/component/script.php';
 ?>
-

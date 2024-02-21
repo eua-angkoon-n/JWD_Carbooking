@@ -201,9 +201,10 @@ function show_vehicle_img(img, date, ID) {
 }
 
 function show_ribbon(status) {
-  $('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info');
+  $('#Show_Ribbon').removeClass('bg-warning bg-success bg-secondary bg-info bg-danger');
   var cls;
   var txt;
+
   switch (status) {
       case '0':
           cls = "bg-warning";
