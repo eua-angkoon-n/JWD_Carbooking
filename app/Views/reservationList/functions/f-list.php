@@ -13,12 +13,8 @@ Class List_Reservation {
         $arrStatus = Setting::$reservationStatus;
         $r = "<option value='' selected='selected'>ทั้งหมด</option>";
         foreach($arrStatus as $key => $status){
-            if($key == 1){
-                $s = "selected='selected'";
-            } else {
-                $s = "";
-            }
-            $r .= "<option value='$key' $s>$status</option>";
+
+            $r .= "<option value='$key'>$status</option>";
         }
         return $r;
     }

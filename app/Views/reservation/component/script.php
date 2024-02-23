@@ -15,17 +15,18 @@
 
         $('#time_start').datetimepicker({
             format: 'HH:mm',
-            defaultDate: moment().add(1, 'hours'),
+            defaultDate: moment().add(7, 'hours'),
         });
 
         $('#time_end').datetimepicker({
             format: 'HH:mm',
-            defaultDate: moment().add(2, 'hours'),
+            defaultDate: moment().add(8, 'hours'),
         });
 
         $('#date_start').datetimepicker({
             format: 'L',
             minDate: moment(), // Prevent selecting past dates
+            maxDate: moment().add(1, 'months').add(15, 'days'),
             inline: true,
             opens: 'center',
         })
@@ -33,6 +34,7 @@
         $('#date_end').datetimepicker({
             format: 'L',
             minDate: moment(), // Prevent selecting past dates
+            maxDate: moment().add(1, 'months').add(15, 'days'),
             inline: true,
             opens: 'center',
         })
@@ -59,6 +61,25 @@
                 }
             }
         });
+
+        $('#date_start, #date_end,#time_start, #time_end').on('change.datetimepicker', function (e) {
+    // Get selected dates from date_start and date_end
+    var dateStart = $('#date_start').datetimepicker('viewDate');
+    var dateEnd = $('#date_end').datetimepicker('viewDate');
+
+    // Get selected times from time_start and time_end
+    var timeStart = moment($('#time_start').datetimepicker('viewDate'));
+    var timeEnd = moment($('#time_end').datetimepicker('viewDate'));
+
+    // Check if date_start and date_end are the same day
+    if (dateStart.isSame(dateEnd, 'day')) {
+        // Ensure time_end is not less than or equal to time_start
+        if (timeEnd.isSameOrBefore(timeStart)) {
+            $('#time_end').datetimepicker('date', timeStart.clone().add(1, 'minute'));
+        }
+    } 
+});
+
 
         $('#res_companion').select2({
             theme: 'bootstrap4',
@@ -280,7 +301,7 @@
 
                             swal({
                                     title: "ทำการจองสำเร็จ!",
-                                    text: "กรุณาการอนุมัติ จากฝ่ายบุคคล",
+                                    text: "กรุณารอการอนุมัติ จากฝ่ายบุคคล",
                                     type: "success",
                                 },
                                 function () {
