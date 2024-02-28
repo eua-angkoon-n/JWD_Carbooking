@@ -1,6 +1,27 @@
 <script>
     $(document).ready(function () {
 
+        checkDriverSelection();
+
+        $('#res_driver_self').on('change', function(e) {
+            if ($(this).val() && $(this).val().length > 1) {
+                $(this).val($(this).val().slice(-1));
+            }
+        });
+
+        $('#SelfDrive').click(function(){
+        // แสดง driver_self และซ่อน driver_need
+        $('.driver_self').show();
+        $('.driver_need').hide();
+    });
+
+        // เมื่อคลิกที่ radio button พนักงานขับรถ (NeedDrive)
+        $('#NeedDrive').click(function(){
+            // แสดง driver_need และซ่อน driver_self
+            $('.driver_need').show();
+            $('.driver_self').hide();
+        });
+
         //input ต่างๆ////////////////////////////////////////////////////////////////
         $('.select2bs4').select2({
             theme: 'bootstrap4'
@@ -63,25 +84,25 @@
         });
 
         $('#date_start, #date_end,#time_start, #time_end').on('change.datetimepicker', function (e) {
-    // Get selected dates from date_start and date_end
-    var dateStart = $('#date_start').datetimepicker('viewDate');
-    var dateEnd = $('#date_end').datetimepicker('viewDate');
+            // Get selected dates from date_start and date_end
+            var dateStart = $('#date_start').datetimepicker('viewDate');
+            var dateEnd = $('#date_end').datetimepicker('viewDate');
 
-    // Get selected times from time_start and time_end
-    var timeStart = moment($('#time_start').datetimepicker('viewDate'));
-    var timeEnd = moment($('#time_end').datetimepicker('viewDate'));
+            // Get selected times from time_start and time_end
+            var timeStart = moment($('#time_start').datetimepicker('viewDate'));
+            var timeEnd = moment($('#time_end').datetimepicker('viewDate'));
 
-    // Check if date_start and date_end are the same day
-    if (dateStart.isSame(dateEnd, 'day')) {
-        // Ensure time_end is not less than or equal to time_start
-        if (timeEnd.isSameOrBefore(timeStart)) {
-            $('#time_end').datetimepicker('date', timeStart.clone().add(1, 'minute'));
-        }
-    } 
-});
+            // Check if date_start and date_end are the same day
+            if (dateStart.isSame(dateEnd, 'day')) {
+                // Ensure time_end is not less than or equal to time_start
+                if (timeEnd.isSameOrBefore(timeStart)) {
+                    $('#time_end').datetimepicker('date', timeStart.clone().add(1, 'minute'));
+                }
+            }
+        });
 
 
-        $('#res_companion').select2({
+        $('#res_companion, #res_driver_self').select2({
             theme: 'bootstrap4',
             tags: true,
             createTag: function (params) {
@@ -98,6 +119,7 @@
                 };
             }
         }).on('select2:select', function (e) {
+            
             if (e.params.data.newTag) {
                 // Handle the addition of a new tag here (if needed)
                 console.log('New tag selected:', e.params.data);
@@ -105,7 +127,7 @@
         });
 
         $('#res_companion').on('change', function () {
-            var selectedCompanions = $(this).find('option:selected').length;
+            var selectedCompanions = $(this).find('option:selected').length + 1;
             $('#count_travel').val(selectedCompanions);
             $('#res_travel').val(selectedCompanions);
         });
@@ -167,8 +189,6 @@
         });
         
         $(document).off("click", ".doReservation").on("click", ".doReservation", function (e) {
-            $('.carousel').carousel('next');
-            window.scrollTo(0,0);
             var startDate = moment($('#date_start').val() + " " + $('#time_start').val(), "MM/DD/YYYY HH:mm");
             var endDate = moment($('#date_end').val() + " " + $('#time_end').val(), "MM/DD/YYYY HH:mm");
             $('#res_date').data('daterangepicker').setStartDate(startDate);
@@ -191,6 +211,28 @@
                 success: function (data) {
                     var jsonParse = JSON.parse(data);
                     // console.log(jsonParse);
+                    if ($.isNumeric(jsonParse)) {
+                        cancelAll();
+                        $('form#sendForm').each(function () {
+                            this.reset()
+                        });
+                        swal({
+                            title: "ไม่สามารถทำการจองได้!?",
+                            text: "คุณมีรายการส่งมอบยานพาหนะค้างอยู่ "+jsonParse+" รายการ",
+                            type: "error",
+                            showCancelButton: true,
+                            confirmButtonColor: "#28a745",
+                            confirmButtonText: "ไปยังหน้าส่งมอบ",
+                            cancelButtonColor: "#DD6B55",
+                            cancelButtonText: "ตกลง",
+                            closeOnConfirm: false
+                        }, function () {
+                            window.location.href = '?<?php echo PageSetting::$prefixController?>=handover';
+                        });
+                        return;
+                    }
+                    $('.carousel').carousel('next');
+                    window.scrollTo(0,0);
                     show_vehicle_img(jsonParse.attachment, jsonParse.date_uploaded, 'show_img')
                     $('#res_vehicle').val(jsonParse.vehicle);
                     $('#id_vehicle').val(jsonParse.id_vehicle);
@@ -230,21 +272,7 @@
                 closeOnConfirm: true
             }, function () {
                 $('.carousel').carousel('prev');
-                $("#map_lat").val('');
-                $("#map_lon").val('');
-                $("#map_zoom").val('');
-                $("#map_place").val('');
-                $("#res_travel").val('');
-                $("#res_reason").val('');
-                $('#res_vehicle').val('');
-                $('#id_vehicle').val('');
-                $('#id_user').val('');
-
-                $('#res_companion').val([]).trigger('change');
-                $('#res_acc').val([]).trigger('change');
-                $('#res_driver').val('1').trigger('change');
-
-                $('body').find('.was-validated').removeClass();
+                cancelAll();
                 $('form#sendForm').each(function () {
                     this.reset()
                 });
@@ -400,6 +428,8 @@
             selectedCompanions.forEach(function (companion) {
                 $('#show_companion').append('<li><a>' + companion + '</a></li>');
             });
+        } else {
+            $('#show_companion').append('<li><a>ไม่มี</a></li>');
         }
     }
 
@@ -418,7 +448,11 @@
 }
 
     function show_driver() {
-        var selectedDriverText = $('#res_driver option:selected').text();
+        if ($('#SelfDrive').is(':checked')) {
+            var selectedDriverText = $('#res_driver_self option:selected').text();    
+        } else if ($('#NeedDrive').is(':checked')) {
+            var selectedDriverText = $('#res_driver_need option:selected').text();    
+        }
         $('#show_driver').text(selectedDriverText);
     }
 
@@ -432,5 +466,38 @@
         }
         var imagePreview = document.getElementById(ID);
         imagePreview.src = ImageShow;
+    }
+
+    function checkDriverSelection() {
+        if ($('#SelfDrive').is(':checked')) {
+            // ถ้าเลือกขับเอง ให้แสดง driver_self และซ่อน driver_need
+            $('.driver_self').show();
+            $('.driver_need').hide();
+        } else if ($('#NeedDrive').is(':checked')) {
+            // ถ้าเลือกพนักงานขับรถ ให้แสดง driver_need และซ่อน driver_self
+            $('.driver_need').show();
+            $('.driver_self').hide();
+        }
+    }
+
+    function cancelAll(){
+        $("#map_lat").val('');
+            $("#map_lon").val('');
+            $("#map_zoom").val('');
+            $("#map_place").val('');
+            $("#res_travel").val('');
+            $("#res_reason").val('');
+            $('#res_vehicle').val('');
+            $('#id_vehicle').val('');
+            $('#id_user').val('');
+
+            $('#res_companion').val([]).trigger('change');
+            $('#res_acc').val([]).trigger('change');
+            $('#res_driver').val('1').trigger('change');
+
+            $('.driver_self').show();
+            $('.driver_need').hide();
+
+            $('body').find('.was-validated').removeClass();
     }
 </script>

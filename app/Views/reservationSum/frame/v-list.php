@@ -131,10 +131,12 @@ $user = $Call->getUser();
                                                 <th scope="col" style="width:2%">รูปภาพ</th>
                                                 <th scope="col" style="width:2%">ยานพาหนะ</th>
                                                 <th scope="col" style="width:4%">ผู้จอง</th>
-                                                <th scope="col" style="width:4%">ผู้เดินทาง</th>
+                                                <th scope="col" style="width:4%">ผู้ขับรถ</th>
+                                                <th scope="col" style="width:4%">ผู้ร่วมเดินทาง</th>
                                                 <th scope="col" style="width:5%">จุดหมายปลายทาง</th>
                                                 <th scope="col" style="width:5%">อุปกรณ์เสริม</th>
                                                 <th scope="col" style="width:5%">วันที่เดินทาง</th>
+                                                <th scope="col" style="width:5%">เลขไมล์</th>
                                                 <th scope="col" style="width:2%">สถานะ</th>
                                                 <th scope="col" style="width:8%">จัดการ</th>
                                             </tr>

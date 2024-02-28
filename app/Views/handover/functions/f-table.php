@@ -106,9 +106,11 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
                 $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
+                $dataRow[] = ($fetchRow[$key]['ref_id_driver'] == '' ? '-' : $fetchRow[$key]['ref_id_driver']);
                 $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
                 $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : wordwrap($fetchRow[$key]['place_name'], 50, "<br>\n"));
                 $dataRow[] = $date;
+                $dataRow[] = $this->chkMile($value['id_reservation']);
                 $dataRow[] = $status;
                 $dataRow[] = "<h6 class='text-center'>$control</h6>";
     
@@ -125,6 +127,38 @@ Class DataTable extends TableProcessing {
         );
 
         return $output;
+    }
+
+    protected function chkMile($id){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_mile ";
+        $sql .= "WHERE ref_id_reservation=$id ";
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+
+            $Row = $obj->customSelect($sql);
+            
+            if(empty($Row)) return "-";
+
+           
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+        $out = IsNullOrEmptyString($Row['mile_out']) ? "-" : $Row['mile_out']; 
+        $in = IsNullOrEmptyString($Row['mile_in']) ? "-" : $Row['mile_in']; 
+
+        $r = "<b>ออก</b>&nbsp;: $out<br>";
+        $r .="<b>เข้า</b> &nbsp;: $in";
+
+        return $r;
     }
 
     public function getControl($id, $status){

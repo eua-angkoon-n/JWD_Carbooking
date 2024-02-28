@@ -87,11 +87,36 @@ $List = new List_Config();
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-12 ">
+                <div class="col-sm-12 col-md-6">
                   <div class="form-group">
                     <label for="handover">ระบบการส่งมอบยานพาหนะหลังใช้งาน:</label>
                     <div class="form-group clearfix">
                       <?php echo $List->getHandOver() ?>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <div class="form-group">
+                    <label for="handover_f">บังคับการส่งมอบยานพาหนะ:</label>
+                    <div class="form-group clearfix">
+                      <?php echo $List->getHandover_Field() ?>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label for="handover_l">ผู้ใช้งานไม่สามารถทำการจองได้หากยังไม่ได้ส่งมอบยานพาหนะเกิน:</label>
+                    <div class="row">
+                      <div class="col-2">
+                        <input type="number" class="form-control" id="handover_l" name="handover_l"
+                          placeholder="ชั่วโมง" value="<?php echo $List->getHandover_l() ?>"
+                          aria-describedby="inputGroupPrepend" required>
+                      </div>
+
+                      <div class="col-3 align-content-center">
+                        <h6 class="m-0 mt-1"><b>รายการ</b></h6>
+                      </div>
+                      
                     </div>
                   </div>
                 </div>

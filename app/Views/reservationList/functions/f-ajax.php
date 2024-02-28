@@ -122,7 +122,7 @@ Class Reservation_Detail {
         $Res      = $this->getResData();
         if(!$Res)
             return true;
-        if($Res['reservation_status'] == 4 || $Res['reservation_status'] == 6){
+        if($Res['reservation_status'] == 3 || $Res['reservation_status'] == 4 || $Res['reservation_status'] == 6){
             $Mile    = $this->getMileData();
             $MileIMG = $this->getMileIMG();
             $TimeLine= $this->createMileTimeLine($Mile, $MileIMG);
@@ -140,11 +140,10 @@ Class Reservation_Detail {
     }
 
     public function getResData(){
-        $sql  = "SELECT tb_reservation.reservation_status, tb_reservation.id_reservation, tb_vehicle.vehicle_name, tb_reservation.start_date, tb_reservation.end_date, tb_reservation.ref_id_user, tb_reservation.urgent, tb_coordinates.place_name, tb_coordinates.latitude, tb_coordinates.longitude, tb_coordinates.zoom, tb_reservation.traveling_companion, tb_reservation.reason, tb_reservation.accessories, tb_driver.driver_name, tb_attachment.attachment, tb_attachment.date_uploaded ";
+        $sql  = "SELECT tb_reservation.reservation_status, tb_reservation.id_reservation, tb_reservation.ref_id_driver, tb_vehicle.vehicle_name, tb_reservation.start_date, tb_reservation.end_date, tb_reservation.ref_id_user, tb_reservation.urgent, tb_coordinates.place_name, tb_coordinates.latitude, tb_coordinates.longitude, tb_coordinates.zoom, tb_reservation.traveling_companion, tb_reservation.reason, tb_reservation.accessories, tb_attachment.attachment, tb_attachment.date_uploaded ";
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN db_carbooking.tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN db_carbooking.tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
-        $sql .= "LEFT JOIN db_carbooking.tb_driver ON (tb_driver.id_driver = tb_reservation.ref_id_driver) ";
         $sql .= "LEFT JOIN db_carbooking.tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
         $sql .= "WHERE id_reservation=$this->id;";
 
@@ -306,10 +305,12 @@ Class Reservation_Detail {
         $saveOut = $data['save_out'];
         $mileOut = $data['mile_out'];
 
-        $dateIn = convertToThaiDate($data['date_in']);
-        $timeIn = CustomDate($data['date_in'], "Y-m-d H:i:s", "H:i");
-        $saveIn = $data['save_in'];
-        $mileIn = $data['mile_in'];
+        if(!empty($data['mile_in'])) {
+            $dateIn = convertToThaiDate($data['date_in']);
+            $timeIn = CustomDate($data['date_in'], "Y-m-d H:i:s", "H:i");
+            $saveIn = $data['save_in'];
+            $mileIn = $data['mile_in'];
+        }
         
         $r  = "<h4 class='text-primary'><strong>บันทึกเข้า-ออกบริษัท</strong></h4>";
         $r .= "<div class='timeline'>";
@@ -337,28 +338,31 @@ Class Reservation_Detail {
         }
         $r .= "</div></div>";
 
-        $r .= "<div class='time-label'><span class='bg-green'>$dateIn</span></div>";
-        $r .= "<div><i class='fas fa-arrow-right bg-green'></i>";
-        $r .= "     <div class='timeline-item'>";
-        $r .= "     <span class='time'><i class='fas fa-clock'></i>$timeIn</span>";
-        $r .= "     <h4 class='timeline-header'><a href='#'>กลับเข้าบริษัท</a> บันทึกโดย $saveIn</h4>";
-        $r .= "     <div class='timeline-body'>";
-        $r .= "         <div class='row'>&nbsp;เลขไมล์ : $mileIn</div>";
-        if(!empty($img['mileIn'])){
-            $r .= "<div class='row'>";
-            foreach($img['mileIn'] as $k => $v){
-                $imgIn  = "dist/temp_img/".str_replace("-", "", $v['date_uploaded'])."/".$v['attachment'];
-                $r .= "<img class='product-image-thumb modal-img m-0 mt-1'src='$imgIn' alt='Img' data-id='$imgIn' data-toggle='modal' data-target='#modal-img'>";
+        if(!empty($data['mile_in'])) {
+            $r .= "<div class='time-label'><span class='bg-green'>$dateIn</span></div>";
+            $r .= "<div><i class='fas fa-arrow-right bg-green'></i>";
+            $r .= "     <div class='timeline-item'>";
+            $r .= "     <span class='time'><i class='fas fa-clock'></i>$timeIn</span>";
+            $r .= "     <h4 class='timeline-header'><a href='#'>กลับเข้าบริษัท</a> บันทึกโดย $saveIn</h4>";
+            $r .= "     <div class='timeline-body'>";
+            $r .= "         <div class='row'>&nbsp;เลขไมล์ : $mileIn</div>";
+            if(!empty($img['mileIn'])){
+                $r .= "<div class='row'>";
+                foreach($img['mileIn'] as $k => $v){
+                    $imgIn  = "dist/temp_img/".str_replace("-", "", $v['date_uploaded'])."/".$v['attachment'];
+                    $r .= "<img class='product-image-thumb modal-img m-0 mt-1'src='$imgIn' alt='Img' data-id='$imgIn' data-toggle='modal' data-target='#modal-img'>";
+                }
+                $r .= "</div>";
             }
             $r .= "</div>";
+            if(!IsNullOrEmptyString($data['remark_in'])){
+                $remark_in = $data['remark_in'];
+                $r .= "<div class='timeline-footer'><h6 class='timeline-header '>$remark_in</h6></div>";
+            }
+            $r .= "</div></div>";
+            $r .= "<div><i class='fas fa-flag-checkered bg-green'></i></div>";
         }
         $r .= "</div>";
-        if(!IsNullOrEmptyString($data['remark_in'])){
-            $remark_in = $data['remark_in'];
-            $r .= "<div class='timeline-footer'><h6 class='timeline-header '>$remark_in</h6></div>";
-        }
-        $r .= "</div></div>";
-        $r .= "<div><i class='fas fa-flag-checkered bg-green'></i></div></div>";
 
         return $r;
     }
@@ -568,7 +572,7 @@ Class Reservation_Detail {
             'companion'       => $MD['traveling_companion'],
             'reason'          => $MD['reason'],
             'acc'             => $Acc,
-            'driver'          => $MD['driver_name'],
+            'driver'          => $MD['ref_id_driver'],
             'attachment'      => $MD['attachment'],
             'date_attachment' => $MD['date_uploaded'],
             'timeline'        => $TimeLine,

@@ -94,7 +94,8 @@ include(__DIR__ . "/frame/v-modal.php");
                                     <th scope="col" style="width:5%">รูปภาพ</th>
                                     <th scope="col" style="width:5%">ยานพาหนะ</th>
                                     <th scope="col" style="width:10%">ผู้จอง</th>
-                                    <th scope="col" style="width:10%">ผู้เดินทาง</th>
+                                    <th scope="col" style="width:5%">ผู้ขับรถ</th>
+                                    <th scope="col" style="width:10%">ผู้ร่วมเดินทาง</th>
                                     <th scope="col" style="width:2%">เวลาเดินทาง</th>
                                 </tr>
                             </thead>

@@ -339,13 +339,13 @@ Class List_Config {
                          <label for="urgent_reservation1">
                             เปิดการใช้งาน
                         </label>
-                </div>
-                <div class="icheck-danger d-inline ">
-                    <input type="radio" id="urgent_reservation2" name="urgent_reservation" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
-                        <label for="urgent_reservation2">
-                            ปิดการใช้งาน
-                        </label>
-                </div>';
+                    </div>
+                    <div class="icheck-danger d-inline ">
+                        <input type="radio" id="urgent_reservation2" name="urgent_reservation" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                            <label for="urgent_reservation2">
+                                ปิดการใช้งาน
+                            </label>
+                    </div>';
 
             return $d;
         } catch (PDOException $e) {
@@ -391,6 +391,68 @@ Class List_Config {
                 </div>';
 
             return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getHandover_Field(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='handover_f'");
+            
+            switch($r['config_value']){
+                case 1:
+                    $w1 = "checked";
+                    $w2 = "";
+                    break;
+                case 0:
+                    $w1 = "";
+                    $w2 = "checked";
+                    break;
+            }
+           
+            $d = '<div class="icheck-success d-inline">
+                    <input type="radio" id="handover_f1" name="handover_f" value="1" '.$w1.' aria-describedby="inputGroupPrepend" required>
+                         <label for="handover_f1">
+                            เปิดการใช้งาน
+                        </label>
+                    </div>
+                    <div class="icheck-danger d-inline ">
+                        <input type="radio" id="handover_f2" name="handover_f" value="0" '.$w2.' aria-describedby="inputGroupPrepend" required>
+                            <label for="handover_f2">
+                                ปิดการใช้งาน
+                            </label>
+                    </div>';
+
+            return $d;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    public function getHandover_l(){
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $r = $obj->customSelect("SELECT config_value FROM tb_config WHERE config='handover_l'");
+
+            return $r['config_value'];
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         

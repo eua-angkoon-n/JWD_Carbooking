@@ -33,8 +33,6 @@
             form.classList.add('was-validated');
             return false;
 
-            
-
         });
 
     });

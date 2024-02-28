@@ -37,6 +37,8 @@ Class save_config {
     private $l_notify_main;
     private $urgent_res;
     private $handover;
+    private $handover_f;
+    private $handover_l;
     public function __construct($data){
         parse_str($data, $v);
 
@@ -45,6 +47,8 @@ Class save_config {
         $this->reservation_txt   = ['config_value' => $v['reservation_txt']];
         $this->urgent_res        = ['config_value' => $v['urgent_reservation']];
         $this->handover          = ['config_value' => $v['handover']];
+        $this->handover_f        = ['config_value' => $v['handover_f']];
+        $this->handover_l        = ['config_value' => $v['handover_l']];
         $this->l_token           = ['config_value' => $v['l_token']];
         $this->l_notify          = ['config_value' => $v['l_notify']];
         if ($_SESSION['car_class_user'] == 2) {
@@ -65,6 +69,8 @@ Class save_config {
             $reservation_txt = $obj->update($this->reservation_txt, 'id_config=12', 'tb_config');
             $urgent_res      = $obj->update($this->urgent_res, 'config="urgent_reservation"', 'tb_config');
             $handover        = $obj->update($this->handover, 'config="handover"', 'tb_config');
+            $handover_f      = $obj->update($this->handover_f, 'config="handover_f"', 'tb_config');
+            $handover_l      = $obj->update($this->handover_l, 'config="handover_l"', 'tb_config');
             if($this->chkEmptyRow('l_token', true)){
                 $l_token  = $this->insertNewConfig('l_token', $this->l_token['config_value'], true);
             } else {
@@ -94,7 +100,7 @@ Class save_config {
                 return $this->chkSuccess(array($reservation_t, $reservation_w, $reservation_txt, $sysPhase, $sysVersion, $l_token, $l_notify, $l_token_main, $l_notify_main));
             }
             
-            return $this->chkSuccess(array($reservation_t, $reservation_w, $reservation_txt, $urgent_res, $handover, $l_token, $l_notify));
+            return $this->chkSuccess(array($reservation_t, $reservation_w, $reservation_txt, $urgent_res, $handover, $handover_f, $handover_l, $l_token, $l_notify));
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         

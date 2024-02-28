@@ -54,6 +54,8 @@ Class Do_Vehicle {
     }
 
     public function getData(){
+        $hold = $this->holdHandover();
+        if($hold) return $hold;
         $Vehicle  = $this->getVehicle();
         $r = array(
             'vehicle'       => $Vehicle['vehicle_name'], 
@@ -79,6 +81,41 @@ Class Do_Vehicle {
             $result = $obj->customSelect($sql);
 
             return $result;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+
+        return 0;
+    }
+
+    protected function holdHandover(){
+
+        $sql  = "SELECT id_reservation ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "WHERE reservation_status=4 ";
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+
+            $mode  = $obj->customSelect("SELECT * FROM tb_config WHERE config='handover_f'");
+            if($mode['config_value'] == 0 || $_SESSION['handover'] == 0)
+                return false;
+            $num   = $obj->customSelect("SELECT * FROM tb_config WHERE config='handover_l'");
+        
+            $count = $obj->countAll($sql);
+
+            if($count >= $num['config_value'])
+                return $count;
+            else 
+                return false; 
+            
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         
@@ -162,12 +199,12 @@ Class Add_Reservation {
     private $haveAcc;
     private $driver; 
     private $urgent;
-    // private $test;
+    private $test;
     public function __construct($frmData){
         parse_str($frmData, $data);
         convertDateRange($data['res_date'], $start, $end);
         
-        // $this->test = $data['res_date'];
+        $this->test = $frmData;
 
         $this->id_vehicle = $data['id_vehicle'];
         $this->date_start = $start;
@@ -180,10 +217,10 @@ Class Add_Reservation {
         $this->lng        = $data['map_lon'];
         $this->zm         = $data['map_zoom'];
         $this->traveler   = $data['res_travel'];
-        $this->companion  = implode(", ",$data['res_companion']);
+        $this->companion  = !empty($data['res_companion']) ? implode(", ",$data['res_companion']) : 'ไม่มี';
         $this->reason     = $data['res_reason'];
         $this->chkAcc($data['res_acc']);
-        $this->driver     = $data['res_driver'];
+        $this->driver     = $data['selectDriver'] == 'self' ? $data['res_driver_self'] : $data['res_driver_need'];
         $this->urgent     = !empty($data['urgent']) ? true : false;
     }
 
@@ -206,6 +243,7 @@ Class Add_Reservation {
         //     'haveAcc' =>    $this->haveAcc,
         //     'driver' =>     $this->driver
         // );
+        // return $this->test;
     }
 
     public function chkAcc($arrAcc){
@@ -500,7 +538,7 @@ Class Add_Reservation {
         $name    = $_SESSION['car_fullname'];
         $dept    = $_SESSION['car_dept_initialname'];
         $comp    = $res['traveling_companion'];
-        $driver  = $res['driver_name'];
+        $driver  = $res['ref_id_driver'];
 
         $sToken    = $token;
         $sMessage  = $site;
@@ -508,8 +546,8 @@ Class Add_Reservation {
         $sMessage .= "วันที่: $date\n";
         $sMessage .= "ชื่อผู้จอง: $name\n";
         $sMessage .= "แผนกที่จอง: $dept\n";
+        $sMessage .= "ผู้ขับรถ: $driver\n";
         $sMessage .= "ผู้ร่วมเดินทาง: $comp\n";
-        $sMessage .= "พนักงานขับรถ: $driver\n";
         $sMessage .= "รายละเอียด/อนุมัติ: ".Setting::$domain."/?".PageSetting::$prefixController."=res".urlencode('&id=').$idRes;
     
 
@@ -542,7 +580,6 @@ Class Add_Reservation {
     public function getReservationData($id){
         $sql  = "SELECT * ";
         $sql .= "FROM tb_reservation ";
-        $sql .= "LEFT JOIN tb_driver ON (tb_driver.id_driver = tb_reservation.ref_id_driver) ";
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "WHERE id_reservation=$id ";
         try {

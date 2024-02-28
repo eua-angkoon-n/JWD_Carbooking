@@ -138,6 +138,7 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<div class='text-center'><img src='../dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'></div>";
                 $dataRow[] = "<div class='text-center'>".($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name'])."</div>";
                 $dataRow[] = getUserName($fetchRow[$key]['ref_id_user']);
+                $dataRow[] = $value['ref_id_driver'] ?? "-";
                 $dataRow[] = implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion']));
                 $dataRow[] = $date;
         

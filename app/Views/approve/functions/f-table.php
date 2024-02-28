@@ -73,7 +73,6 @@ Class DataTable extends TableProcessing {
         $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN tb_attachment ON (tb_attachment.id_attachment = tb_vehicle.ref_id_attachment) ";
         $sql .= "LEFT JOIN tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
-        $sql .= "LEFT JOIN tb_driver ON (tb_driver.id_driver = tb_reservation.ref_id_driver) ";
         $sql .= "WHERE ";
         $sql .= "reservation_status = 0 ";
         $sql .= "AND tb_reservation.ref_id_site=".$_SESSION['car_ref_id_site']." ";
@@ -137,8 +136,9 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
                 $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
                 $dataRow[] = $username;
+                $dataRow[] = ($fetchRow[$key]['ref_id_driver'] == '' ? '-' : wordwrap($fetchRow[$key]['ref_id_driver'], 15, "<br>\n"));
                 $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
-                $dataRow[] = ($fetchRow[$key]['driver_name'] == '' ? '-' : wordwrap($fetchRow[$key]['driver_name'], 15, "<br>\n"));
+                $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['place_name'])) );
                 $dataRow[] = $date;
                 $dataRow[] = $status;
                 $dataRow[] = "<h6 class='text-center'>$control</h6>";

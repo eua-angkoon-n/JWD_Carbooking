@@ -97,13 +97,58 @@ $user = $r->getUser();
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-12 col-xs-3 col-md-3 ">
+                                        <div class="col-sm-12 col-xs-2 col-md-2 ">
                                             <div class="form-group">
-                                                <label for="res_companion">ผู้เดินทาง</label><code> *ค้นหาหรือระบุเอง</code>
+                                                <label>ผู้ขับรถ</label>
+                                                <div class="row ml-1">
+                                                    <div class=" icheck-success mr-2">
+                                                        <input type="radio" name="selectDriver" value="self" checked id="SelfDrive">
+                                                        <label for="SelfDrive">
+                                                            ขับเอง
+                                                        </label>
+                                                    </div>
+                                                    <div class="icheck-success">
+                                                        <input type="radio" name="selectDriver" value="need" id="NeedDrive">
+                                                        <label for="NeedDrive">
+                                                            พนักงานขับรถ
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-12 col-xs-2 col-md-2 ">
+                                            <div class="form-group">
+                                                <label>ระบุชื่อผู้ขับรถ</label><code>
+                                                    *ค้นหาหรือระบุเอง</code>
+                                                <div class="driver_self">
+                                                    <select class="form-control select2bs4 res_driver" multiple="multiple" rows="3" id="res_driver_self"
+                                                    name="res_driver_self" data-placeholder="ค้นหาหรือระบุเอง..." style="width: 100%;"
+                                                    aria-describedby="inputGroupPrepend" required >
+                                                    <?php echo $user; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="driver_need">
+                                                    <select class="form-control select2bs4 res_driver" id="res_driver_need"
+                                                        name="res_driver_need" style="width: 100%;">
+                                                        <?php echo $drv; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-3 col-md-3">
+                                            <div class="form-group">
+                                                <label for="res_companion">ผู้ร่วมเดินทาง</label><code>
+                                                    *ค้นหาหรือระบุเอง</code>
                                                 <select class="select2bs4 " multiple="multiple" rows="3"
                                                     id="res_companion" name="res_companion[]"
                                                     data-placeholder="ค้นหาหรือระบุเอง..." style="width: 100%;"
-                                                    aria-describedby="inputGroupPrepend" required>
+                                                    aria-describedby="inputGroupPrepend">
                                                     <?php echo $user; ?>
                                                 </select>
                                             </div>
@@ -143,7 +188,7 @@ $user = $r->getUser();
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-xs-2 col-md-2 ">
+                                        <!-- <div class="col-sm-12 col-xs-2 col-md-2 ">
                                             <div class="form-group">
                                                 <label>พนักงานขับรถ</label>
                                                 <select class="form-control select2bs4" id="res_driver"
@@ -151,7 +196,7 @@ $user = $r->getUser();
                                                     <?php echo $drv; ?>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <?php if($_SESSION['urgent'] == 1){?>
                                     <div class="row">
@@ -198,7 +243,7 @@ $user = $r->getUser();
         <!--container-->
         <input type="hidden" value="" name="id_vehicle" id="id_vehicle" />
         <input type="hidden" value="" name="id_user" id="id_user" />
-        <input type="hidden" value="" name="res_travel" id="res_travel" />
+        <input type="hidden" value="1" name="res_travel" id="res_travel" />
         <input type="hidden" value="<?php echo $_SESSION['car_ref_id_site'] ?>" name="site" id="site" />
         <input type="hidden" value="" name="map_place_id" id="map_place_id" />
         <input type="hidden" value="" name="map_lat" id="map_lat" />
