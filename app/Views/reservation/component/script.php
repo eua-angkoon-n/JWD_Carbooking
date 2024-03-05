@@ -10,16 +10,18 @@
         });
 
         $('#SelfDrive').click(function(){
-        // แสดง driver_self และซ่อน driver_need
-        $('.driver_self').show();
-        $('.driver_need').hide();
-    });
+            // แสดง driver_self และซ่อน driver_need
+            $('.driver_self').show();
+            $('.driver_need').hide();
+            $('#res_driver_self').prop('required', true);
+        });
 
         // เมื่อคลิกที่ radio button พนักงานขับรถ (NeedDrive)
         $('#NeedDrive').click(function(){
             // แสดง driver_need และซ่อน driver_self
             $('.driver_need').show();
             $('.driver_self').hide();
+            $('#res_driver_self').removeAttr('required');
         });
 
         //input ต่างๆ////////////////////////////////////////////////////////////////
@@ -210,7 +212,7 @@
                 beforeSend: function (data) {},
                 success: function (data) {
                     var jsonParse = JSON.parse(data);
-                    // console.log(jsonParse);
+                    // console.log(jsonParse); return;
                     if ($.isNumeric(jsonParse)) {
                         cancelAll();
                         $('form#sendForm').each(function () {

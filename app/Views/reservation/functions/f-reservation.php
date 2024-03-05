@@ -79,7 +79,7 @@ class Reservation{
             $id   = $value['id_driver'];
             $name = $value['driver_name'];
             $id == 1 ? $s = "select" : $s = "";
-            $result .= "<option value='$id' $s>$name</option>";
+            $result .= "<option value='$name' $s>$name</option>";
         }
         return $result;
     }
