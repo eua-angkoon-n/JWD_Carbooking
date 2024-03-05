@@ -111,7 +111,7 @@ Class Do_Vehicle {
         
             $count = $obj->countAll($sql);
 
-            if($count >= $num['config_value'])
+            if($count > $num['config_value'])
                 return $count;
             else 
                 return false; 
@@ -317,6 +317,7 @@ Class Add_Reservation {
                $this->chkPhoneEService();
             }
             $this->CheckLineNotify($idRes);
+            // $this->sendEmail($idRes);
             return $idRes;
         }
         return false;
@@ -599,4 +600,34 @@ Class Add_Reservation {
             $con = null;
         }
     }
+
+    // protected function sendEmail($idRes){
+    //     $res     = $this->getReservationData($idRes);
+
+    //     $mail = new PHPMailer(true);
+    //     try {
+    //         //Server settings
+    //         $mail->isSMTP(); // Set mailer to use SMTP
+    //         $mail->Host = 'mail.cc.pcs-plp.com'; // SMTP server
+    //         $mail->SMTPAuth = true; // Enable SMTP authentication
+    //         $mail->Username = 'no-reply@cc.pcs-plp.com'; // SMTP username
+    //         $mail->Password = 'yourpassword'; // SMTP password
+    //         $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
+    //         $mail->Port = 465; // TCP port to connect to
+        
+    //         //Recipients
+    //         $mail->setFrom('yourname@example.com', 'Your Name');
+    //         $mail->addAddress('recipient@example.net', 'Recipient Name'); // Add a recipient
+        
+    //         // Content
+    //         $mail->isHTML(true); // Set email format to HTML
+    //         $mail->Subject = 'Subject of your email';
+    //         $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+        
+    //         $mail->send();
+    //         echo 'Message has been sent';
+    //     } catch (Exception $e) {
+    //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    //     }
+    // }
 }

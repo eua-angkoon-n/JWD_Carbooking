@@ -61,4 +61,9 @@
     min-height: 500px; /* Set a minimum height */
     resize: vertical; /* Allow vertical resizing if needed */
 }
+
+.modal-img{
+  height: 50px;
+  width: auto;
+}
 </style>

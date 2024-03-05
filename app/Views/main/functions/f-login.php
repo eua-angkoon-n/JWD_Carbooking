@@ -195,7 +195,7 @@ Class Register{
         } finally {
             $conn = null;
         }
-    }
+    } 
 
     public function chkMailDup(){
         $email = $this->output['email_regis'];
