@@ -549,6 +549,7 @@ Class Add_Reservation {
         $sMessage .= "แผนกที่จอง: $dept\n";
         $sMessage .= "ผู้ขับรถ: $driver\n";
         $sMessage .= "ผู้ร่วมเดินทาง: $comp\n";
+        $sMessage .= "จุดหมาย: $this->place\n";
         $sMessage .= "รายละเอียด/อนุมัติ: ".Setting::$domain."/?".PageSetting::$prefixController."=res".urlencode('&id=').$idRes;
     
 
