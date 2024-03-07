@@ -121,7 +121,7 @@ Class DataTable extends TableProcessing {
         );
 
         if (count($fetchRow) > 0) {
-            $No = ($numRow - $this->pStart);
+            $No = ($this->pStart + 1);
             foreach ($fetchRow as $key => $value) {
                 $folderDate = str_replace("-", "", $fetchRow[$key]['date_uploaded']);
                 $img =  $folderDate . "/" . $fetchRow[$key]['attachment'];
@@ -145,7 +145,7 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<h6 class='text-center'>$control</h6>";
     
                 $arrData[] = $dataRow;
-                $No--;
+                $No++;
                 
             }
         }

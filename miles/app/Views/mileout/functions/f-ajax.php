@@ -68,10 +68,10 @@ Class Mile_Out {
     }
 
     public function AddMileData() {
-        $canAdd = $this->chkTime();
+        $canAdd = $this->chkTime($errCode);
         // return $canAdd;
         if(!$canAdd)
-            return "Diff";
+            return $errCode;
         if(IsNullOrEmptyString($this->save_out))
             return "no_save";
         $Mile = $this->DoAddMile();
@@ -85,7 +85,7 @@ Class Mile_Out {
        return 0;
     }
 
-    public function chkTime(){
+    public function chkTime(&$errCode){
         $sql  = "SELECT * ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE id_reservation=$this->id_res ";
@@ -107,7 +107,13 @@ Class Mile_Out {
         }
 
         $diff = timeDifference($result['start_date'], $this->date_out);
+        $timestamp = strtotime($result['start_date']);
+
         if($diff > 90) {
+            $errCode = 'Diff';
+            return false;
+        } else if(date('Y-m-d', $timestamp) > date('Y-m-d')){
+            $errCode = 'forward';
             return false;
         } else {
             return true;

@@ -77,11 +77,65 @@ include(__DIR__ . "/frame/v-modal.php");
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-10 d-inline">
+                                        <span class="badge badge-warning mr-2" style="font-size:100%">ช่วงเช้า</span>
+                                        <span class="badge badge-success" style="font-size:100%">ช่วงบ่าย</span>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>
         </div>
             <div class="col-lg-12">
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6 row">
+                            <h1 class="m-0 text-primary"><strong>รายการจองที่จะใช้งานเร็วๆ นี้</strong></h1>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+                <div class="card">
+                    <div class="row m-2">
+                        <div class="col-sm-12 p-0 ">
+                            <table id="milesRecent_table" class="table table-hover dataTable dtr-inline nowrap">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th class="sorting_disabled" style="width:1%">ลำดับ</th>
+                                        <!-- <th scope="col" style="width:1%">ลำดับ</th> -->
+                                        <th scope="col" style="width:5%">จัดการ</th>
+                                        <th scope="col" style="width:5%">รูปภาพ</th>
+                                        <th scope="col" style="width:5%">ยานพาหนะ</th>
+                                        <th scope="col" style="width:10%">ผู้จอง</th>
+                                        <th scope="col" style="width:5%">ผู้ขับรถ</th>
+                                        <th scope="col" style="width:10%">ผู้ร่วมเดินทาง</th>
+                                        <th scope="col" style="width:2%">เวลาเดินทาง</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6 row">
+                           <h1 class="m-0 text-primary"><strong>รายการทั้งหมด</strong></h1>
+                        </div><!-- /.col -->
+                       
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
                 <div class="card">
                     <div class="row m-2">
                         <div class="col-sm-12 p-0 ">
