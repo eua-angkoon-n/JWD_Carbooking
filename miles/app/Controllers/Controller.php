@@ -6,25 +6,59 @@
 // }
 
 $prefixController = PageSetting::$prefixController;
-isset($_REQUEST[$prefixController]) ? $nowHref = $_REQUEST[$prefixController] : $nowHref = '';
+$prefixVehicle = PageSetting::$prefixVehicleMiles;
+isset($_REQUEST[$prefixController]) ? $nowHref     = $_REQUEST[$prefixController] : $nowHref     = '';
+isset($_REQUEST[$prefixVehicle])    ? $vehiclePage = $_REQUEST[$prefixVehicle]    : $vehiclePage = false;
 // $MilePage = PageSetting::$MilePage;
 
-setSideBarAndView($nowHref, $include_view, $title);
-$HeadTitle = TitlePage($nowHref, $title);
+setSideBarAndView($nowHref, $vehiclePage, $include_view, $title);
+$HeadTitle = TitlePage($nowHref, $title, $vehiclePage);
 
-function setSideBarAndView ($nowHref, &$include_view, &$title){
+function setSideBarAndView ($nowHref, $vehiclePage, &$include_view, &$title){
     $title = PageSetting::$MilePage[$nowHref]['title'];
-    $include_view = PageSetting::$MilePage[$nowHref]['view'];
+    if($vehiclePage){
+        $include_view = PageSetting::$MilePage[$nowHref]['viewTable'];
+    } else {
+        $include_view = PageSetting::$MilePage[$nowHref]['view'];
+    }
 }
 
-function TitlePage ($nowHref, $title) {
+function TitlePage ($nowHref, $title ,$vehiclePage) {
     if($nowHref != "") {
-        return "<a type='button' href='./'  class='btn btn-xs btn-outline-primary mr-1 mt-1 pt-1 justify-content-center'>
+        $vehicle = "";
+        if(!$vehiclePage)
+            $href = './';
+        else {
+            $href = "?".PageSetting::$prefixController."="."$nowHref";
+            $vehicle = " - ".VehicleName($vehiclePage);
+        }    
+        return "<a type='button' href='$href'  class='btn btn-xs btn-outline-primary mr-1 mt-1 pt-1 justify-content-center'>
                     <i class='fas fa-caret-left'></i> กลับ
                 </a>
-                <h1 class='m-0 text-primary'><strong>$title</strong></h1>";
+                <h1 class='m-0 text-primary'><strong>$title$vehicle</strong></h1>";
     } else {
         return "<h1 class='m-0 text-primary'><strong>$title</strong></h1>";
+    }
+}
+
+function VehicleName($id){
+    $sql  = "SELECT vehicle_name ";
+    $sql .= "FROM tb_vehicle ";
+    $sql .= "WHERE id_vehicle = $id ";
+
+    try {
+        $con = connect_database();
+        $obj = new CRUD($con);
+
+        $row = $obj->customSelect($sql);
+
+        return $row['vehicle_name'];
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    } catch (\PDOException $e){
+        return "Database Error: " . $e->getMessage();
+    } finally {
+        $con = null;
     }
 }
 

@@ -12,6 +12,7 @@ class Setting
     public static $noreply_mail = "no-reply@cc.pcs-plp.com";
     public static $domain = "ebooking.cc.pcs-plp.com/carbooking";
     public static $pass_mail = "Pcs@1234";
+    public static $PathBaseImg = "dist/temp_img";
     public static $PathImg = "../../../../dist/temp_img";
     public static $PathImgMile = "../../../../../dist/temp_img";
     public static $warning_text = array(
@@ -131,6 +132,7 @@ class Setting
 class PageSetting 
 {
     public static $prefixController = 'app';
+    public static $prefixVehicleMiles = 'vehicle';
 
     // ตั้งค่า SideBar (อย่าลืมไปตั้ง Controller ที่ app/Controller/Controllers.php)
     public static $AppPage = array (
@@ -237,13 +239,15 @@ class PageSetting
             "title" => "บันทึกเลขไมล์ออกบริษัท",
             "view" => "../mileout/view.php",
             "href" => "mileout",
-            "SideIcon" => "fa-chalkboard"
+            "SideIcon" => "fa-chalkboard",
+            "viewTable" => "../mileout/frame/v-table.php",
         ),
         "milein" => array (
             "title" => "บันทึกเลขไมล์เข้าบริษัท",
             "view" => "../milein/view.php",
             "href" => "milein",
-            "SideIcon" => "fa-chalkboard"
+            "SideIcon" => "fa-chalkboard",
+            "viewTable" => "../milein/frame/v-table.php",
         ),
         "editMile" => array (
             "title" => "แก้ไขการบันทึกเลขไมล์",

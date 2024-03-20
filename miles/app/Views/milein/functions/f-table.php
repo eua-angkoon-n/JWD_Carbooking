@@ -133,16 +133,10 @@ Class DataTable extends TableProcessing {
                 $control = $this->getControl($fetchRow[$key]['id_reservation'], getDateString2($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']), $fetchRow[$key]['vehicle_name']);
 
                 $dataRow = array();
-                $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = $control;
-                $dataRow[] = "<div class='text-center'><img src='../dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'></div>";
-                $dataRow[] = "<div class='text-center'>".($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name'])."</div>";
-                $dataRow[] = getUserName($fetchRow[$key]['ref_id_user']);
-                $dataRow[] = $value['ref_id_driver'] ?? "-";
+                $dataRow[] = "<div class='text-center'>".$date."</div>";
+                $dataRow[] = is_numeric($value['ref_id_driver']) ? getDriver($fetchRow[$key]['ref_id_driver']) : $value['ref_id_driver'];
                 $dataRow[] = implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion']));
-                $dataRow[] = $date;
-        
-                $dataRow[] = "<h6 class='text-center'>$control</h6>";
     
                 $arrData[] = $dataRow;
                 $No++;

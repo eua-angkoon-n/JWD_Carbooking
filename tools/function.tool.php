@@ -995,6 +995,34 @@ function getMainLineToken(){
     }
 }
 
+function getDriver($needle){
+    if(is_numeric($needle)){
+        $sql  = "SELECT driver_name ";
+        $sql .= "FROM tb_driver ";
+        $sql .= "WHERE id_driver=$needle ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+            $row =  $obj->customSelect($sql);
+            if(empty($row))
+                return '-';
+            else
+                return $row['driver_name'];
+        } catch (Exception $e) {
+            return 'Error Exception: '.$e->getMessage();
+        } catch (PDOException $e) {
+            return 'PDOError Exception: '.$e->getMessage();
+        } finally {
+            $con = null;
+        }
+    } else {
+        if(IsNullOrEmptyString($needle))
+            return '-';
+        else
+            return $needle;
+    }
+}
+
 class Processing{
 
     function __construct(){

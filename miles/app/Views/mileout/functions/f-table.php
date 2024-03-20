@@ -123,30 +123,33 @@ Class DataTable extends TableProcessing {
         if (count($fetchRow) > 0) {
             $No = ($this->pStart + 1);
             foreach ($fetchRow as $key => $value) {
-                $folderDate = str_replace("-", "", $fetchRow[$key]['date_uploaded']);
-                $img =  $folderDate . "/" . $fetchRow[$key]['attachment'];
-
-                
-                // $status = $this->chkStatus($fetchRow[$key]['reservation_status'], $fetchRow[$key]['id_vehicle'], $control);
+                // $folderDate = str_replace("-", "", $fetchRow[$key]['date_uploaded']);
+                // $img =  $folderDate . "/" . $fetchRow[$key]['attachment'];
+                if($key == 1) {
+                    $dataRow = array();
+                    $dataRow[] = "<br><br><br>";
+                    $dataRow[] = "<br><br><br>";
+                    $dataRow[] = "<br><br><br>";
+                    $dataRow[] = "<br><br><br>";
+                    $arrData[] = $dataRow;
+                }
+            
                 $date    = $this->getDateString($fetchRow[$key]['start_date']);
-                $status  = ResStatusTable($fetchRow[$key]['reservation_status']);
                 $control = $this->getControl($fetchRow[$key]['id_reservation'], getDateString2($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']), $fetchRow[$key]['vehicle_name'], $fetchRow[$key]['id_vehicle']);
 
+                
                 $dataRow = array();
-                $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = $control;
-                $dataRow[] = "<div class='text-center'><img src='../dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'></div>";
-                $dataRow[] = "<div class='text-center'>".($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name'])."</div>";
-                $dataRow[] = getUserName($fetchRow[$key]['ref_id_user']);
-                $dataRow[] = $value['ref_id_driver'] ?? "-";
+                $dataRow[] = "<div class='text-center'>".$date."</div>";
+                $dataRow[] = is_numeric($value['ref_id_driver']) ? getDriver($fetchRow[$key]['ref_id_driver']) : $value['ref_id_driver'];
                 $dataRow[] = implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion']));
-                $dataRow[] = $date;
-        
-                $dataRow[] = "<h6 class='text-center'>$control</h6>";
-    
+                // $dataRow[] = "<h6 class='text-center'>$No.</h6>";
+                // $dataRow[] = "<div class='text-center'><img src='../dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'></div>";
+                // $dataRow[] = "<div class='text-center'>".($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name'])."</div>";
+                // $dataRow[] = $value['ref_id_driver'] ?? "-";
+                // $dataRow[] = "<h6 class='text-center'>$control</h6>";
                 $arrData[] = $dataRow;
                 $No++;
-                
             }
         }
 
@@ -234,15 +237,22 @@ $DataTableSearch = array(
 
 switch($action){
     default:
+        // $DataTableCol = array( 
+        //     0 => "tb_reservation.id_reservation",
+        //     1 => "tb_reservation.id_reservation",
+        //     2 => "tb_reservation.id_reservation",
+        //     3 => "tb_vehicle.id_vehicle",
+        //     4 => "tb_vehicle.vehicle_name",
+        //     5 => "tb_reservation.ref_id_user",
+        //     6 => "tb_reservation.traveling_companion",
+        //     7 => "tb_reservation.start_date",
+        // );
         $DataTableCol = array( 
             0 => "tb_reservation.id_reservation",
             1 => "tb_reservation.id_reservation",
-            2 => "tb_reservation.id_reservation",
-            3 => "tb_vehicle.id_vehicle",
-            4 => "tb_vehicle.vehicle_name",
-            5 => "tb_reservation.ref_id_user",
-            6 => "tb_reservation.traveling_companion",
-            7 => "tb_reservation.start_date",
+            2 => "tb_reservation.start_date",
+            3 => "tb_reservation.ref_id_user",
+            4 => "tb_reservation.traveling_companion",
         );
     break;
 }
