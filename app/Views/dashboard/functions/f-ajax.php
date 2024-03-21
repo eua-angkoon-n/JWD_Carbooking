@@ -348,7 +348,7 @@ Class ModalCalendar {
     }
 
     public function getResData(){
-        $sql  = "SELECT tb_reservation.reservation_status, tb_reservation.id_reservation, tb_vehicle.vehicle_name, tb_reservation.start_date, tb_reservation.end_date, tb_reservation.ref_id_user, tb_coordinates.place_name, tb_coordinates.latitude, tb_coordinates.longitude, tb_coordinates.zoom, tb_reservation.traveling_companion, tb_reservation.reason,  tb_driver.driver_name, tb_attachment.attachment, tb_attachment.date_uploaded ";
+        $sql  = "SELECT tb_reservation.reservation_status, tb_reservation.id_reservation, tb_reservation.ref_id_driver, tb_vehicle.vehicle_name, tb_reservation.start_date, tb_reservation.end_date, tb_reservation.ref_id_user, tb_coordinates.place_name, tb_coordinates.latitude, tb_coordinates.longitude, tb_coordinates.zoom, tb_reservation.traveling_companion, tb_reservation.reason,  tb_driver.driver_name, tb_attachment.attachment, tb_attachment.date_uploaded ";
         $sql .= "FROM tb_reservation ";
         $sql .= "LEFT JOIN db_carbooking.tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
         $sql .= "LEFT JOIN db_carbooking.tb_coordinates ON (tb_coordinates.ref_id_reservation = tb_reservation.id_reservation) ";
@@ -409,6 +409,7 @@ Class ModalCalendar {
             'start'           => $MD['start_date'],
             'end'             => $MD['end_date'],
             'id_user'         => $MD['ref_id_user'],
+            'driver'          => getDriver($MD['ref_id_driver']),
             'userName'        => $Name,
             'place_Name'      => $MD['place_name'],
             'lat'             => $MD['latitude'],

@@ -129,6 +129,7 @@
                     show_date(js.start, js.end);
                     $('#show_user').text(js.userName);
                     $('.show_place').text(js.place_Name);
+                    $('#show_driver').text(js.driver);
                     show_companion(js.companion);
                     $('#show_reason').text(js.reason);
                     show_vehicle_img(js.attachment, js.date_attachment, 'show_img');

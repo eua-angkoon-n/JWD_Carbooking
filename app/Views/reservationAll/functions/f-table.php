@@ -143,7 +143,7 @@ Class DataTable extends TableProcessing {
                 $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
                 $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
-                $dataRow[] = ($fetchRow[$key]['ref_id_driver'] == '' ? '-' : $fetchRow[$key]['ref_id_driver']);
+                $dataRow[] = ($fetchRow[$key]['ref_id_driver'] == '' ? '-' : getDriver($fetchRow[$key]['ref_id_driver']));
                 $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
                 $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : wordwrap($fetchRow[$key]['place_name'], 15, "<br>\n"));
                 $dataRow[] = implode("<br>", explode(", ", $acc));
