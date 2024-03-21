@@ -99,6 +99,7 @@ Class Do_Vehicle {
         $sql  = "SELECT id_reservation ";
         $sql .= "FROM tb_reservation ";
         $sql .= "WHERE reservation_status=4 ";
+        $sql .= "AND ref_id_user=".$_SESSION['car_id_user'];
 
         try {
             $con = connect_database();

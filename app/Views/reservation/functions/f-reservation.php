@@ -79,7 +79,7 @@ class Reservation{
             $id   = $value['id_driver'];
             $name = $value['driver_name'];
             $id == 1 ? $s = "select" : $s = "";
-            $result .= "<option value='$name' $s>$name</option>";
+            $result .= "<option value='$id' $s>$name</option>";
         }
         return $result;
     }
@@ -88,7 +88,7 @@ class Reservation{
         $sql  = "SELECT fullname, id_user ";
         $sql .= "FROM tb_user ";
         $sql .= "WHERE ref_id_site=".$_SESSION['car_ref_id_site']." ";
-        // $sql .= "AND ref_id_dept=".$_SESSION['car_id_dept']." ";
+        $sql .= "OR ref_id_site=99 ";
 
         try {
             $con = connect_database('e-service');

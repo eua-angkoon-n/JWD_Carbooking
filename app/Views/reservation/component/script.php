@@ -1,12 +1,24 @@
 <script>
     $(document).ready(function () {
-
+    
         checkDriverSelection();
 
-        $('#res_driver_self').on('change', function(e) {
-            if ($(this).val() && $(this).val().length > 1) {
-                $(this).val($(this).val().slice(-1));
+        $('#res_driver_self').change(function(){
+            // ตรวจสอบว่ามี options ที่ถูกเลือกอยู่หรือไม่
+            event.preventDefault();
+            event.stopPropagation();
+
+            if($(this).find('option:selected').length > 1){
+                $(this).find("option:selected").prop('selected', false);;
             }
+
+            $(this).find('option:selected').each(function(){
+                // ตรวจสอบว่าค่าของ option เป็นตัวเลขอย่างเดียวหรือไม่
+                if (!isNaN($(this).val()) && $(this).val() !== '') {
+                    // กำหนดให้ option เป็น disabled
+                    $(this).prop('selected', false);
+                }
+            });
         });
 
         $('#SelfDrive').click(function(){
@@ -104,7 +116,7 @@
         });
 
 
-        $('#res_companion, #res_driver_self').select2({
+        $('#res_companion').select2({
             theme: 'bootstrap4',
             tags: true,
             createTag: function (params) {
@@ -121,7 +133,35 @@
                 };
             }
         }).on('select2:select', function (e) {
-            
+
+            if (e.params.data.newTag) {
+                // Handle the addition of a new tag here (if needed)
+                console.log('New tag selected:', e.params.data);
+            }
+        });
+
+        $('#res_driver_self').select2({
+            theme: 'bootstrap4',
+            tags: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                // if($('#res_driver_self').find('option:selected').length > 1){
+                //     $('#res_driver_self').val(null).trigger('change');
+                // }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters if needed
+                };
+            }
+        }).on('select2:select', function (e) {
+
             if (e.params.data.newTag) {
                 // Handle the addition of a new tag here (if needed)
                 console.log('New tag selected:', e.params.data);
@@ -143,7 +183,7 @@
                 format: 'MM/DD/YYYY HH:mm'
             }
         })
-        
+
         $('.form-group input[type="radio"]').on('change', function () {
             $('#reservation_table').DataTable().ajax.reload();
         });

@@ -6,16 +6,12 @@ var infowindow = []; // กำหนดตัวแปรสำหรับเ�
 var infowindowTmp; // กำหนดตัวแปรสำหรับเก็บลำดับของ infowindow ที่เปิดล่าสุด
 var my_Marker = []; // กำหนดตัวแปรสำหรับเก็บตัว marker เป็นตัวแปร array
 function initialize() { // ฟังก์ชันแสดงแผนที่
-
     GGM = new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM
-
     // กำหนดจุดเริ่มต้นของแผนที่
     var my_Latlng = new GGM.LatLng(13.584586432868923, 100.29150401289502);
-
     var my_mapTypeId = GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas
     var my_DivObj = $("#map_canvas")[0];
-
     // กำหนด Option ของแผนที่
     var myOptions = {
         zoom: 10, // กำหนดขนาดการ zoom
@@ -23,8 +19,75 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
         mapTypeId: my_mapTypeId // กำหนดรูปแบบแผนที่
     };
 
+
+
     map = new GGM.Map(my_DivObj, myOptions); // สร้างแผนที่และเก็บตัวแปรไว้ในชื่อ map
 
+    const input = document.getElementById("map_place");
+    const searchBox = new google.maps.places.SearchBox(input);
+
+    map.addListener("bounds_changed", () => {
+        searchBox.setBounds(map.getBounds());
+    });
+
+    let markers = [];
+    searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        // Clear out the old markers.
+        markers.forEach((marker) => {
+            marker.setMap(null);
+        });
+        markers = [];
+
+        // For each place, get the icon, name and location.
+        const bounds = new google.maps.LatLngBounds();
+
+        places.forEach((place) => {
+            if (!place.geometry || !place.geometry.location) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+
+            const icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25),
+            };
+
+            // Create a marker for each place.
+            markers.push(
+                new google.maps.Marker({
+                    map,
+                    icon,
+                    title: place.name,
+                    position: place.geometry.location,
+                }),
+            );
+            if (place.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+            $("#map_lat").val(place.geometry.location.lat()); // เอาค่า latitude ตัว marker แสดงใน textbox id=lat_value
+            $("#map_lon").val(place.geometry.location.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value
+            $("#map_zoom").val(map.getZoom());
+            $("#map_place_id").val(place.place_id);
+            getNameOfPlaceFromPlaceID(place.place_id, map, function (name) {
+                $("#map_place").val(name);
+            });
+
+
+        });
+        map.fitBounds(bounds);
+    });
     map.markers = []; // กำหนด property ของ object map ชื่อ markers ไว้เก็บ marker เป็น array
     $.ajax({
         url: "app/Views/reservation/component/marker.xml", // ใช้ ajax ใน jQuery เรียกใช้ไฟล์ xml 
@@ -52,14 +115,6 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
                 infowindow[i] = new GGM.InfoWindow({ // สร้าง infowindow ของแต่ละ marker เป็นแบบ array
                     content: my_Marker[i].getTitle() // ดึง title ในตัว marker มาแสดงใน infowindow
                 });
-                //              //  กรณีนำไปประยุกต์ ดึงข้อมูลจากฐานข้อมูลมาแสดง
-                //              infowindow[i] = new GGM.InfoWindow({   
-                //                  content:$.ajax({   
-                //                      url:'placeDetail.php',//ใช้ ajax ใน jQuery ดึงข้อมูล   
-                //                      data:'placeID='+markerID,// ส่งค่าตัวแปร ไปดึงข้อมูลจากฐานข้อมูล
-                //                      async:false   
-                //                  }).responseText   
-                //              });             
 
                 GGM.event.addListener(my_Marker[i], 'click', function () { // เมื่อคลิกตัว marker แต่ละตัว
 
@@ -187,37 +242,15 @@ function getNameOfPlaceFromPlaceID(placeID, map, callback) {
 
 function rad(x) {
     return x * Math.PI / 180;
-} // ฟังก์ชั่นที่กี่ยวข้อง
-// function find_closest_marker(event) { // ฟังก์ชั่นหาตำแหน่งใกล้เคียง
-//     var lat = event.latLng.lat(); // ตำแหน่ง lat ที่เราเลือก
-//     var lng = event.latLng.lng(); // ตำแหน่ง lng ที่เราเลือก
-//     var R = 6371; // รัศมีของโลกเป็น กิโลเมตร
-//     var distances = []; // กำหนดตัวแปร array ไว้เก็บระยะห่าง เทียบกับ marker แต่ละตัว
-//     var closest = -1; // กำหนดค่าไว้เก็บตำแหน่าง key ของ marker ที่ใกล้ที่สุด
-//     for (i = 0; i < map.markers.length; i++) { // วนลูป marker
-//         // เริ่มต้นส่วนของสูตรการคำนวณหาระยะทาง
-//         var mlat = map.markers[i].position.lat();
-//         var mlng = map.markers[i].position.lng();
-//         var dLat = rad(mlat - lat);
-//         var dLong = rad(mlng - lng);
-//         var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//             Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-//         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//         var d = R * c; // ได้ตัวแปร d คือระยะยทาง
-//         // สิ้นสุด ส่วนของสูตรการคำนวณหาระยะทาง
-//         distances[i] = d; // เก็บระยะทางไว้ใน ตัวแปร array
-//         if (closest == -1 || d < distances[closest]) { // เทียบระยะทางหาค่าที่น้ยอ หรือใกล้ที่สุด
-//             closest = i; // เก็บ key ของ marker ที่ใกล้ที่สุด
-//         }
-//     }
-//     // แสดง title ของ marker ที่ใกล้เคียง
-//     alert(map.markers[closest].title);
-// }
+}
 
 // Function to update map_olv with coordinates and zoom
 function updateMapOlv(lat, lng, zoom) {
     var mapOlv = new google.maps.Map($("#map_olv")[0], {
-        center: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        center: {
+            lat: parseFloat(lat),
+            lng: parseFloat(lng)
+        },
         zoom: parseInt(zoom),
         draggable: false, // Disable dragging
         scrollwheel: false, // Disable scrollwheel
@@ -227,28 +260,21 @@ function updateMapOlv(lat, lng, zoom) {
 
     // Add a marker to map_olv if needed
     var markerOlv = new google.maps.Marker({
-        position: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        position: {
+            lat: parseFloat(lat),
+            lng: parseFloat(lng)
+        },
         map: mapOlv
     });
 }
 
 $(function () {
-    // โหลด สคริป google map api เมื่อเว็บโหลดเรียบร้อยแล้ว
-    // ค่าตัวแปร ที่ส่งไปในไฟล์ google map api
-    // v=3.2&sensor=false&language=th&callback=initialize
-    //  v เวอร์ชัน่ 3.2
-    //  sensor กำหนดให้สามารถแสดงตำแหน่งทำเปิดแผนที่อยู่ได้ เหมาะสำหรับมือถือ ปกติใช้ false
-    //  language ภาษา th ,en เป็นต้น
-    //  callback ให้เรียกใช้ฟังก์ชันแสดง แผนที่ initialize
-    $("<script/>", {
-        "type": "text/javascript",
-        //    src: "//maps.google.com/maps/api/js?v=3.2&key=AIzaSyDK0J3fhDvmz99vcudgZI8KxEC7zlAl0JI&sensor=false&language=th&callback=initialize
-        src: "//maps.google.com/maps/api/js?key=AIzaSyD_3uR-M8yPx3Tv8DAgbenP2-vJfxzxSD8&language=th&libraries=places&callback=initialize"
-    }).appendTo("body");
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//maps.google.com/maps/api/js?key=AIzaSyD_3uR-M8yPx3Tv8DAgbenP2-vJfxzxSD8&language=th&libraries=places&callback=initialize';
+    script.async = true;
+    document.body.appendChild(script);
 });
 
-</script>
 
-<!-- //src: "https://maps.google.com/maps/api/js?v=3.2&sensor=false&language=th&callback=initialize"
-        src: "//maps.google.com/maps/api/js?v=3.2&key=AIzaSyDK0J3fhDvmz99vcudgZI8KxEC7zlAl0JI&sensor=false&language=th&callback=initialize"
-        //src: "https://maps.google.com/maps/api/js?v=3.2&sensor=false&language=th&callback=initialize&_=1700194845323" -->
+</script>
