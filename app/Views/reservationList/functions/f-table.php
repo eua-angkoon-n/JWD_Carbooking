@@ -152,12 +152,14 @@ Class DataTable extends TableProcessing {
                 $status  = ResStatusTable($fetchRow[$key]['reservation_status'], $fetchRow[$key]['urgent']);
                 $control = $this->getControl($fetchRow[$key]['id_reservation'], $fetchRow[$key]['reservation_status']);
 
+                $driver  = getDriver($value['ref_id_driver']);
+
 
                 $dataRow = array();
                 $dataRow[] = "<h6 class='text-center'>$No.</h6>";
                 $dataRow[] = "<img src='dist/temp_img/$img' alt='Vehicle Image' class='rounded img-thumbnail mx-auto d-block p-0 w-100' style='width=200px'>";
                 $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['vehicle_name']);
-                $dataRow[] = ($fetchRow[$key]['vehicle_name'] == '' ? '-' : $fetchRow[$key]['ref_id_driver']);
+                $dataRow[] = $driver;
                 $dataRow[] = ($fetchRow[$key]['traveling_companion'] == '' ? '-' : implode("<br>", explode(", ", $fetchRow[$key]['traveling_companion'])) );
                 $dataRow[] = ($fetchRow[$key]['place_name'] == '' ? '-' : wordwrap($fetchRow[$key]['place_name'], 50, "<br>\n"));
                 $dataRow[] = $date;
@@ -264,7 +266,8 @@ switch($action) {
 // print_r($_POST['formData']);
 // exit;
 ///////////////////////////////////////////////////////////////////////////////////
-
+// echo ($result);
 echo json_encode($result);
 exit;
 ?>
+

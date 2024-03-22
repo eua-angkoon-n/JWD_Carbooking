@@ -273,6 +273,55 @@
                 });
         });
 
+        $(document).off("click", ".btn-edit-mile").on("click", ".btn-edit-mile", function (e) {
+            var id_res = $(this).data('id');
+            $.ajax({
+                url: "app/Views/reservationAll/functions/f-ajax.php",
+                type: "POST",
+                data: {
+                    "id": $("#mile_id").val(),
+                    "out": $("#mileOut").val(),
+                    "in": $("#mileIn").val(),
+                    'vehicle': $('#id_vehicle').val(),
+                    "action": "edit-mile"
+                },
+                beforeSend: function () {},
+                success: function (data) {
+                    var js = JSON.parse(data);
+                    // console.log(js);
+                    // return false;
+                    switch(js.response){
+                        case 'err1':
+                            sweetAlert("ไม่สามารถบันทึกได้!", "เลขไมล์ขาออกไม่สามารถน้อยกว่าขาเข้าบริษัทได้", "warning");
+                            break;
+                        case 'err2':
+                            swal({
+                                title: "ไม่สามารถบันทึกได้!?",
+                                text: "เลขไมล์ขาออกบริษัทไม่สามารถน้อยกว่ารายการจองก่อนหน้าได้",
+                                type: "error",
+                                showCancelButton: true,
+                                confirmButtonColor: "#28a745",
+                                confirmButtonText: "รายการจองก่อนหน้า",
+                                cancelButtonColor: "#DD6B55",
+                                cancelButtonText: "ตกลง",
+                                closeOnConfirm: false
+                            }, function () {
+                                window.open('?<?php echo PageSetting::$prefixController?>=res&id=' + js.data1, '_blank');
+                            });
+                            break;
+                        case 'err3':
+                            sweetAlert("เกิดข้อผิดพลาด!", "เกิดข้อผิดพลาดในระบบ", "error");
+                            console.log(js.data1);
+                            break;
+                        case 'success':
+                            $("#modal-viewMiles").modal("hide");
+                            show_reservation(id_res);
+                            sweetAlert("สำเร็จ!", "แก้ไขเลขไมล์สำเร็จ", "success");
+                            break;
+                    }
+                }
+            });
+        });
 
         //ฟังก์ชัน    ///////////////////////////////////////////////////////////////////////
         function show_reservation(id) {
@@ -312,20 +361,26 @@
                     } else {
                         $('#map_olv').html("");
                     }
-                    
 
+                    var button = "";
                     if (js.status == '0') {
-                        var button = '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-success btn-approve text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-approve" title="อนุมัติ"><span>อนุมัติ</span></button></div><div class="col-12 text-center mb-1"><button type="button" class="btn btn-danger btn-noApprove text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-noApprove" title="ไม่อนุมัติ"><span>ไม่อนุมัติ</span></button></div><div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
-                        // <div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div>
+                        var button = '<div class="col-12 text-center mb-1">'+
+                        '<button type="button" class="btn btn-success btn-approve text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-approve" title="อนุมัติ">'+
+                        '<span>อนุมัติ</span></button></div>'+
+                        '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-danger btn-noApprove text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" id="btn-noApprove" title="ไม่อนุมัติ">'+
+                        '<span>ไม่อนุมัติ</span></button></div>'+
+                        '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div>';
                         modal_form(js.res_id, button, js.vehicle_name, js.vehicle_select, js.start, js.end);
                     } else if (js.status == '1') {
-                        var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
-                        // <div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div>
+                        var button = '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-view" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไข</span></button></div>';
                         modal_form(js.res_id, button, js.vehicle_name, js.vehicle_select, js.start, js.end);
-                    } else {
-                        var button = '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
-                        $("#show_button").html(button);
+                    } else if (js.status == '3' || js.status == '4' || js.status == '6'){
+                        var button = '<div class="col-12 text-center mb-1"><button type="button" class="btn btn-warning btn-edit text-center w-75 h-100" data-id="' + js.res_id + '" data-action="atShow" data-toggle="modal" data-target="#modal-viewMiles" data-backdrop="static" data-keyboard="false" id="btn-edit" title="แก้ไข"><span>แก้ไขเลขไมล์</span></button></div>';
+                        modal_form(js.res_id, button, js.vehicle_name, js.vehicle_select, js.start, js.end);
+                        modal_mile(js.id_mile, js.mileIn, js.mileOut, js.status);
                     }
+                    button += '<div class="col-12 text-center"><button type="button" class="btn btn-primary backPage text-center w-75 h-100" id="backPage" title="กลับ">กลับ</span></button></div>';
+                    $("#show_button").html(button);
 
                     if(js.timeline != 0){
                         $('.default-detail').addClass('col-md-6');
@@ -344,6 +399,10 @@
                     } else {
                         $('.handover').html('');
                     }
+
+                    $("#modal_vehicle option[value='" + js.id_vehicle + "']").attr('selected', 'selected');
+                    $("#id_vehicle").val(js.id_vehicle);
+                    $(".btn-edit-mile").attr('data-id', js.res_id);
                 }
             });
         }
@@ -354,9 +413,9 @@
             $("#modal_vehicle").html(select);
             $("#modal_id").val(id);
 
-            var startDate = moment(start, 'YYYY-MM-DD HH:mm:ss'); 
+            var startDate = moment(start, 'YYYY-MM-DD HH:mm:ss');
             var endDate = moment(end, 'YYYY-MM-DD HH:mm:ss');
-    
+
             $('#modal_date').daterangepicker({
                 startDate: startDate,
                 endDate: endDate,
@@ -367,6 +426,18 @@
                     format: 'DD/MM/YYYY HH:mm'
                 }
             });
+        }
+
+        function modal_mile(id, mlin, mlout, status){
+            if(status == 3) {
+                $("#mileIn").prop('disabled', true);
+            } else {
+                $("#mileIn").prop('disabled', false);
+            }
+            $("#mileOut").val(mlout);
+            $("#mileIn").val(mlin);
+            $("#mile_id").val(id);
+
         }
 
 

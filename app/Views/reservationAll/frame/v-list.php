@@ -1,10 +1,4 @@
-<?php 
-include __DIR__ . "/../functions/f-list.php";
 
-$Call = new List_Reservation();
-$status = $Call->getStatus();
-$vehicle = $Call->getVehicle();
-?>
 
 <div class="row">
 
@@ -97,6 +91,7 @@ $vehicle = $Call->getVehicle();
                                                 <th scope="col" style="width:5%">จุดหมายปลายทาง</th>
                                                 <th scope="col" style="width:5%">อุปกรณ์เสริม</th>
                                                 <th scope="col" style="width:5%">วันที่เดินทาง</th>
+                                                <th scope="col" style="width:5%">เลขไมล์</th>
                                                 <th scope="col" style="width:2%">สถานะ</th>
                                                 <th scope="col" style="width:8%">จัดการ</th>
                                             </tr>

@@ -1,18 +1,9 @@
-<style type="text/css">
-    .table-view tr td {
-        line-height: auto;
-        vertical-align: middle;
-        padding: 5px 5px;
-        margin: 0px;
-    }
-</style>
-
-<div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="dataformLabel" aria-hidden="true">
+<div class="modal fade" id="modal-viewMiles" tabindex="-1" role="dialog" aria-labelledby="dataformLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="exampleModalView"><i class="fas fa-angle-double-right"></i>
-                    <span>แก้ไขการจอง</span></h5>
+                    <span>แก้ไขเลขไมล์</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -34,36 +25,28 @@
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-lg-12 order-1 order-md-1 order-lg-1">
                                             <div class="row">
-                                        
+
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="form-group">
-                                                            <label for="modal_vehicle">ยานพาหนะ</label>
-                                                            <select class="form-control select2bs4" id="modal_vehicle"
-                                                                name="modal_vehicle" style="width: 100%;">
-                                                                <?php echo $Call->getVehicle(true);?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="modal_date">วันที่ทำการจอง</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i
-                                                                            class="far fa-clock"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control float-right"
-                                                                    id="modal_date" name="modal_date">
+                                                            <label for="modal_vehicle">เลขไมล์ขาออก</label>
+                                                            <div class="form-group">
+                                                                <input type="number" min="0" id="mileOut" name="mileOut" placeholder="ไมล์ขาออก..." class="form-control"/>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" class="form-control float-right"
-                                                                    id="modal_id" name="modal_id">
-                                               
+                                                    <div class="col-sm-12 col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="modal_vehicle">เลขไมล์ขาเข้า</label>
+                                                            <div class="form-group">
+                                                                <input type="number" min="0" id="mileIn" name="mileIn" placeholder="ไมล์ขาเข้า..." class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <input type="hidden" class="form-control float-right" id="mile_id" name="mile_id">
+                                                    <input type="hidden" class="form-control float-right" id="id_vehicle" name="id_vehicle">
                                             </div>
-
                                         </div>
-
                                     </div>
                                 </div>
                                 <!--card-body-->
@@ -83,11 +66,8 @@
             <div class="modal-footer justify-content-between text-right">
                 <input type="button" class="btn btn-cancel btn-danger float-right" data-dismiss="modal"
                     value="ยกเลิก" />
-                <input type="button" class="btn btn-save-edit btn-success float-right" value="บันทึก" />
+                <input type="button" class="btn btn-edit-mile btn-success float-right" data-id="" value="บันทึก" />
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal-default -->

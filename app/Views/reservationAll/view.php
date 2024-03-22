@@ -1,11 +1,19 @@
 <?php 
 include __DIR__ . "/component/style.php";
 include __DIR__ . '/../reservationList/frame/v-modal_img.php';
+include __DIR__ . "/functions/f-list.php";
+
+$Call = new List_Reservation();
+$status = $Call->getStatus();
+$vehicle = $Call->getVehicle();
 include __DIR__ . '/frame/v-modal-edit.php';
+include __DIR__ . '/frame/v-mile-edit.php';
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = '';
 if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2 ){
   header( "location: ?".PageSetting::$prefixController."=reservationList" );
 }
+
+
 ?>
 
 <section class="content">

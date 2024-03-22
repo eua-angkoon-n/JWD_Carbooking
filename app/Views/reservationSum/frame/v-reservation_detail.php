@@ -71,10 +71,18 @@
                                                             
                                                         </p>
                                                     </div>
-
                                                     <div class="post p-0" style="color:#000000;">
                                                         <div>
-                                                            <h5 class="text-primary" id="show_traveler">ผู้เดินทาง</h5>
+                                                            <h5 class="text-primary">ผู้ขับรถ</h5>
+                                                        </div>
+                                                        <!-- /.user-block -->
+                                                        <p id="show_driver">
+                                                            
+                                                        </p>
+                                                    </div>
+                                                    <div class="post p-0" style="color:#000000;">
+                                                        <div>
+                                                            <h5 class="text-primary" id="show_traveler">ผู้ร่วมเดินทาง</h5>
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <ul class="list-unstyled" id="show_companion">
@@ -101,15 +109,6 @@
                                                         </div>
                                                         <!-- /.user-block -->
                                                         <p id="show_acc">
-                                                            
-                                                        </p>
-                                                    </div>
-                                                    <div class="post p-0" style="color:#000000;">
-                                                        <div>
-                                                            <h5 class="text-primary">พนักงานขับรถ</h5>
-                                                        </div>
-                                                        <!-- /.user-block -->
-                                                        <p id="show_driver">
                                                             
                                                         </p>
                                                     </div>
