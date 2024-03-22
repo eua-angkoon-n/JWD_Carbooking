@@ -54,8 +54,8 @@ include(__DIR__ . "/../frame/v-modal.php");
                                         <div class="col-sm-12 col-md-6">
                                             <div class="input-group date" id="datetimepicker" name="datetimepicker"
                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
-                                                    id="date_start" name="date_start" data-target="#datetimepicker" />
+                                                <input type="text" class="form-control datetimepicker-input "
+                                                    id="date_start" name="date_start" data-target="#datetimepicker" data-toggle="datetimepicker" />
                                                 <div class="input-group-append" data-target="#datetimepicker"
                                                     data-toggle="datetimepicker">
                                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
