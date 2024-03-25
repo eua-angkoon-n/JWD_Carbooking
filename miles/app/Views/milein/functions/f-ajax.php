@@ -276,7 +276,7 @@ Class Mile_Out {
 
         $res     = $this->getReservationData($idRes);
         $vehicle = $res['vehicle_name'];
-        $name    = $_SESSION['car_fullname'];
+        $name    = getUserName($res['ref_id_user']);
         $driver  = is_numeric($res['ref_id_driver']) ? getDriver($res['ref_id_driver']) : $res['ref_id_driver'];
 
         $sToken    = $token;
