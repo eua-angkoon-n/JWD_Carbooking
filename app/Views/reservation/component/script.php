@@ -50,7 +50,7 @@
 
         $('#time_start').datetimepicker({
             format: 'HH:mm',
-            defaultDate: moment().add(7, 'hours'),
+            defaultDate: moment().add(5, 'hours'),
         });
 
         $('#time_end').datetimepicker({
@@ -113,6 +113,7 @@
                     $('#time_end').datetimepicker('date', timeStart.clone().add(1, 'minute'));
                 }
             }
+            $('#reservation_table').DataTable().ajax.reload();
         });
 
 
