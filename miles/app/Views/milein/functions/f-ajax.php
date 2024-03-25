@@ -73,6 +73,7 @@ Class Mile_Out {
             $this->remark_out != NULL ? $remark = $this->DoAddRemark() : '';
             ($this->img != NULL) ? $img = $this->DoAddImg() : '';
             $status = updateReservationStatus($this->id_res, '4');
+            $this->CheckLineNotify($this->id_res);
             return $status;
         }
 
@@ -176,6 +177,152 @@ Class Mile_Out {
             }
 
             return 'success';
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        
+        } finally {
+            $con = null;
+        }
+    }
+
+    protected function CheckLineNotify($idRes){
+
+        getLineConfig($token, $notify);
+        if(!$notify) // ผ่านเช็คแล้วผ่าน แสดงว่ามีส่งแน่นอน
+            return;
+        
+        switch($notify){
+            case 1 :
+                $this->MainNotify($idRes);
+                $this->CustomNotify($idRes);
+                break;
+            case 2 :
+                $this->MainNotify($idRes);
+                break;
+            case 3 :
+                $this->CustomNotify($idRes);
+                break;
+            default:
+            case 4 :
+                break;
+        }
+        return;
+    }
+
+    protected function MainNotify($idRes){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_notify_main' ";
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $ntf = $obj->customSelect($sql);
+    
+            if($ntf['config_value'] == 1) {
+                $tk = getMainLineToken();
+                if($tk){
+                    $this->sendLineNotify($idRes, $tk, 'Main');
+                }
+            }
+            
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    protected function CustomNotify($idRes){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_config ";
+        $sql .= "WHERE config = 'l_token' ";
+        $sql .= "AND ref_id_site=".$_SESSION['car_ref_id_site']." "; 
+
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+        
+            $tk = $obj->customSelect($sql);
+
+            if(empty($tk) || IsNullOrEmptyString($tk['config_value']))
+                return;
+                $this->sendLineNotify($idRes, $tk['config_value'], 'Custom');
+            return;
+        } catch (PDOException $e) {
+            return "Database connection failed: " . $e->getMessage();
+        } catch (Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        } finally {
+            $con = null;
+        }
+    }
+
+    protected function sendLineNotify($idRes, $token, $from){
+        switch($from){
+            case 'Main':
+                $site = "\nไซต์: ".$_SESSION['car_site_initialname'];
+                break;
+            case 'Custom':
+                $site = "";
+                break;
+        }
+
+        $res     = $this->getReservationData($idRes);
+        $vehicle = $res['vehicle_name'];
+        $name    = $_SESSION['car_fullname'];
+        $driver  = is_numeric($res['ref_id_driver']) ? getDriver($res['ref_id_driver']) : $res['ref_id_driver'];
+
+        $sToken    = $token;
+        $sMessage  = $site;
+        $sMessage .= "\nคืนยานพาหนะ: $vehicle\n";
+        $sMessage .= "ชื่อผู้จอง: $name\n";
+        $sMessage .= "ผู้ขับรถ: $driver\n";
+
+        $chOne = curl_init(); 
+        curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
+        curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+        curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+        curl_setopt( $chOne, CURLOPT_POST, 1); 
+        curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+        $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+        curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+        curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1); 
+    
+        try {
+            $result = curl_exec($chOne);
+            if ($result === false) {
+                throw new Exception(curl_error($chOne));
+            }
+        
+            $result_ = json_decode($result, true);
+            // echo "status : " . $result_['status'];
+            // echo "message : " . $result_['message'];
+        } catch (Exception $e) {
+            // echo 'Caught exception: ' . $e->getMessage();
+        } finally {
+            curl_close($chOne);
+        }
+    }
+
+    protected function getReservationData($id){
+        $sql  = "SELECT * ";
+        $sql .= "FROM tb_reservation ";
+        $sql .= "LEFT JOIN tb_vehicle ON (tb_vehicle.id_vehicle = tb_reservation.ref_id_vehicle) ";
+        $sql .= "WHERE id_reservation=$id ";
+        try {
+            $con = connect_database();
+            $obj = new CRUD($con);
+
+            $fetchRow = $obj->customSelect($sql);
+            return $fetchRow;
+            
         } catch (PDOException $e) {
             return "Database connection failed: " . $e->getMessage();
         
