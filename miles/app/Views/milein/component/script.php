@@ -135,7 +135,9 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                beforeSend: function () {},
+                beforeSend: function () {
+                    $('.btn-saveMile').attr('disabled', true).text("รอ...");
+                },
                 success: function (data) {
                     console.log(data);
                     // return false;

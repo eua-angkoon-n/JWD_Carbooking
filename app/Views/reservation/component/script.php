@@ -348,7 +348,9 @@
                         "frmData": frmData,
                         "action": "addReservation"
                     },
-                    beforeSend: function () {},
+                    beforeSend: function () {
+                        $('.confirm').attr('disabled', true).text("รอ...");
+                    },
                     success: function (data) {
                         // var log = data.replaceAll(' ', '');
                         // console.log(data);
