@@ -540,7 +540,7 @@ Class Add_Reservation {
         $name    = $_SESSION['car_fullname'];
         $dept    = $_SESSION['car_dept_initialname'];
         $comp    = $res['traveling_companion'];
-        $driver  = $res['ref_id_driver'];
+        $driver  = is_numeric($res['ref_id_driver']) ? getDriver($res['ref_id_driver']) : $res['ref_id_driver'];
 
         $sToken    = $token;
         $sMessage  = $site;
