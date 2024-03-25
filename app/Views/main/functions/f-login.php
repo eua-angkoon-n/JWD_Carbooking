@@ -119,9 +119,9 @@ Class Login{
         try{
             $conn = connect_database();
             $obj  = new CRUD($conn);
-            $start_date = date('Y-m-d H:i:s', strtotime('-8 hour'));
+            $start_date = date('Y-m-d H:i:s', strtotime('-24 hour'));
             $fetchRow = $obj->customSelect($sql);
-            $chkStillNotApprove = $obj->update(['reservation_status' => 2], "reservation_status = 0 AND start_date < '".$start_date."'", "tb_reservation");
+            $chkStillNotApprove = $obj->update(['reservation_status' => 2], "reservation_status IN (0,1) AND start_date < '".$start_date."'", "tb_reservation");
             if(!empty($fetchRow['class_user'])){
                 return $fetchRow['class_user'];
             } else {
