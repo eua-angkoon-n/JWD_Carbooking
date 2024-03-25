@@ -237,12 +237,13 @@ switch($action){
             1 => "tb_reservation.id_reservation",
             2 => "tb_vehicle.id_vehicle",
             3 => "tb_vehicle.vehicle_name",
-            4 => "tb_reservation.traveling_companion",
-            5 => "tb_coordinates.place_name",
-            6 => "tb_reservation.accessories",
-            7 => "tb_reservation.start_date",
-            8 => "reservation_status",
+            4 => "tb_vehicle.ref_id_driver",
+            5 => "tb_reservation.traveling_companion",
+            6 => "tb_coordinates.place_name",
+            7 => "tb_reservation.accessories",
+            8 => "tb_reservation.start_date",
             9 => "reservation_status",
+            10 => "reservation_status",
         );
     break;
 }

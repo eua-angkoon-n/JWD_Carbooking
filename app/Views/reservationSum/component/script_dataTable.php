@@ -4,14 +4,14 @@
      $('#reservation_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "order": [6, 'desc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
+            "order": [8, 'desc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
             "aoColumnDefs": [{
                     "bSortable": false,
-                    "aTargets": [0, 1, 5, 9]
+                    "aTargets": [0, 1, 5, 6, 7, 9, 11]
                 }, //คอลัมน์ที่จะไม่ให้ฟังก์ชั่นเรียง
                 {
                     "bSearchable": false,
-                    "aTargets": [0]
+                    "aTargets": [0, 1, 5, 6, 7, 9, 10, 11]
                 } //คอลัมน์ที่จะไม่ให้เสิร์ช
             ],
             ajax: {
