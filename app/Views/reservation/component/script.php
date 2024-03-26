@@ -202,8 +202,9 @@
         });
 
         $(document).off('click', '.viewReservation').on('click', '.viewReservation', function () {
-            $('#viewReservation_table').DataTable().ajax.reload();
             var id_row = $(this).data("id");
+            $('#viewid').val(id_row);
+            $('#viewReservation_table').DataTable().ajax.reload();
 
             $.ajax({
                 type: 'POST',

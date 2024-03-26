@@ -49,11 +49,11 @@
             "order": [1, 'asc'], //ถ้าโหลดครั้งแรกจะให้เรียงตามคอลัมน์ไหนก็ใส่เลขคอลัมน์ 0,'desc'
             "aoColumnDefs": [{
                     "bSortable": false,
-                    "aTargets": [0]
+                    "aTargets": [0,1]
                 }, //คอลัมน์ที่จะไม่ให้ฟังก์ชั่นเรียง
                 {
                     "bSearchable": false,
-                    "aTargets": [0]
+                    "aTargets": [0,1]
                 } //คอลัมน์ที่จะไม่ให้เสิร์ช
             ],
             ajax: {
@@ -64,7 +64,7 @@
                 type: 'POST',
                 data: function (data) {
                     var formData = $('#needs-validation').serialize();
-                    var id_row = $('.viewReservation').data("id");
+                    var id_row = $('#viewid').val();
                     formData += '&id_row=' + id_row;
                     data.formData = formData;
                     data.action = 'viewReservation';

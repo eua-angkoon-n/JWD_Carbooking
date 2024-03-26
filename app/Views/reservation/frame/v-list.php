@@ -187,3 +187,4 @@
   </div>
   <!-- /.col -->
 </div>
+<input type="hidden" id="viewid" name="viewid" value=''/>

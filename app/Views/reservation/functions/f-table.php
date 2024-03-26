@@ -305,7 +305,7 @@ Class DataTable_ViewReservation extends TableProcessing {
         $sql .= "WHERE ref_id_vehicle = $id ";
         $sql .= "AND start_date < '$end' ";
         $sql .= "AND end_date > '$start' ";
-        $sql .= "AND tb_reservation.reservation_status NOT IN (2,4,5) ";
+        $sql .= "AND reservation_status NOT IN (2,4,5) ";
      
        $sql .= "$this->query_search ";
        if($OrderBY) {
@@ -331,7 +331,7 @@ Class DataTable_ViewReservation extends TableProcessing {
         if (count($fetchRow) > 0) {
             $No = ($numRow - $this->pStart);
             foreach ($fetchRow as $key => $value) {
-                $name = $this->getNameReservation($fetchRow[$key]['ref_id_site']);
+                $name = getUserName($fetchRow[$key]['ref_id_user']);
                 $time = formatDates($fetchRow[$key]['start_date'], $fetchRow[$key]['end_date']);
 
                 $dataRow = array();
@@ -353,30 +353,6 @@ Class DataTable_ViewReservation extends TableProcessing {
         return $output;
     }
 
-    public function getNameReservation($id){
-
-        $sql  = "SELECT fullname ";
-        $sql .= "FROM tb_user ";
-        $sql .= "WHERE id_user=$id ";
-
-        try {
-            $con = connect_database('login');
-            $obj = new CRUD($con);
-
-            $result = $obj->customSelect($sql);
-
-            return $result['fullname'];
-        } catch (PDOException $e) {
-            return "Database connection failed: " . $e->getMessage();
-        
-        } catch (Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        
-        } finally {
-            $con = null;
-        }
-        return 0;
-    }
     
 }
 
@@ -400,8 +376,7 @@ switch($action){
         $DataTableCol = array( 
             0 => "tb_reservation.id_reservation",
             1 => "tb_reservation.id_reservation",
-            2 => "tb_reservation.id_reservation",
-            3 => "tb_reservation.start_date"
+            2 => "tb_reservation.start_date"
         );
         break;
     default:
