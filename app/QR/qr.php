@@ -16,6 +16,10 @@ switch($nowHref){
         $login = new Login(MySecret::$PACJSecuritymail, MySecret::$PACJSecuritypass, 2);
         $r     = $login->getLogin();
         break;
+    case MySecret::$PACKSecurity: 
+        $login = new Login(MySecret::$PACKSecuritymail, MySecret::$PACKSecuritypass, 5);
+        $r     = $login->getLogin();
+        break;
     default:
         header("Location:".Setting::$domain);
         break;
