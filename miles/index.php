@@ -19,10 +19,10 @@ if(empty($_SESSION['car_id_user'])){
     $_SESSION = []; //empty array. 
     session_destroy(); 
     include("app/Views/main/login.php"); 
-} else if($_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 3){
+} else if($_SESSION['car_class_user'] != 1 && $_SESSION['car_class_user'] != 2 && $_SESSION['car_class_user'] != 3){
     $_SESSION = []; //empty array. 
     session_destroy(); 
-    include("app/Views/main/login.php"); 
+    include("app/Views/main/login.php");
 } else {
     main();
 }
